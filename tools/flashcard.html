@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcard 溫習 · Lesson 1-3 · Hannah</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --sidebar-w: 280px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Noto Sans HK', 'Lora', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 1;
+  }
+
+  /* ============ LAYOUT ============ */
+  .app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid var(--cream-dark);
+    padding: 16px 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sidebar-header {
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .sidebar-header .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 6px;
+    margin-bottom: 4px;
+  }
+  .sidebar-header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .sidebar-header .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* STATS - compact 3 columns */
+  .stats-compact {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .stat-mini {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 10px 4px;
+    text-align: center;
+    border: 1px solid var(--cream-dark);
+  }
+  .stat-mini-num {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--terra-dark);
+    line-height: 1;
+  }
+  .stat-mini-label {
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+  }
+
+  /* SIDEBAR SECTIONS */
+  .sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sidebar-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    padding: 0 4px;
+  }
+
+  /* LESSON CHIPS (compact) */
+  .lesson-chips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .lesson-chip {
+    background: transparent;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 7px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .lesson-chip:hover:not(.locked) {
+    border-color: var(--gold);
+    background: var(--cream);
+  }
+  .lesson-chip.selected {
+    border-color: var(--terra);
+    background: var(--paper);
+  }
+  .lesson-chip.locked { opacity: 0.4; cursor: not-allowed; }
+  .lesson-chip-num {
+    font-family: 'Fraunces', serif;
+    font-size: 10px;
+    font-style: italic;
+    color: var(--terra-dark);
+  }
+  .lesson-chip-title {
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 1px;
+    line-height: 1.3;
+  }
+  .lesson-chip-count {
+    font-size: 9px;
+    color: var(--ink-soft);
+    margin-top: 1px;
+  }
+
+  .mini-btn-row {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .mini-btn {
+    flex: 1;
+    background: transparent;
+    border: 1.5px solid var(--cream-dark);
+    padding: 4px 6px;
+    border-radius: 12px;
+    font-size: 10px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }
+  .mini-btn:hover { border-color: var(--gold); color: var(--ink); }
+
+  /* MODE RADIOS */
+  .mode-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mode-option {
+    background: transparent;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+  }
+  .mode-option:hover { border-color: var(--gold); background: var(--cream); }
+  .mode-option.selected {
+    border-color: var(--terra);
+    background: var(--paper);
+  }
+  .mode-option-icon { font-size: 18px; }
+  .mode-option-main {
+    flex: 1;
+  }
+  .mode-option-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 1px;
+  }
+  .mode-option-desc {
+    font-size: 10px;
+    color: var(--ink-soft);
+    line-height: 1.3;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed var(--cream-dark);
+  }
+
+  /* Speed grid in flashcard sidebar */
+  .speed-grid-fc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .speed-btn-fc {
+    padding: 9px 4px;
+    border-radius: 7px;
+    border: 1.5px solid var(--cream-dark);
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.3;
+  }
+  .speed-btn-fc:hover:not(.active) {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+  .speed-btn-fc.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--paper);
+  }
+  .speed-btn-fc .rate {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    display: block;
+  }
+  .speed-btn-fc .rate-label {
+    font-size: 10.5px;
+    display: block;
+    margin-top: 1px;
+    opacity: 0.85;
+  }
+
+  .btn-start {
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2.5px 0 #000, 0 3px 8px var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-start:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: var(--terra-dark);
+    box-shadow: 0 3.5px 0 #000, 0 5px 12px var(--shadow);
+  }
+  .btn-start:active { transform: translateY(1px); box-shadow: 0 1.5px 0 #000; }
+  .btn-start:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 0 2.5px 0 #000;
+  }
+
+  .btn-reset {
+    background: transparent;
+    color: var(--ink-soft);
+    border: none;
+    padding: 6px;
+    font-size: 10px;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 6px;
+    width: 100%;
+    text-align: center;
+    opacity: 0.6;
+  }
+  .btn-reset:hover { opacity: 1; color: var(--terra); }
+
+  /* Custom scrollbar */
+  .main-inner::-webkit-scrollbar, .sidebar::-webkit-scrollbar { width: 8px; }
+  .main-inner::-webkit-scrollbar-track, .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .main-inner::-webkit-scrollbar-thumb, .sidebar::-webkit-scrollbar-thumb {
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+  .main-inner::-webkit-scrollbar-thumb:hover, .sidebar::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  /* ============ MAIN AREA ============ */
+  .main-area {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 32px;
+  }
+
+  .main-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 16px;
+    margin-right: -16px;
+  }
+
+  /* ============ HOME SCREEN (in main area) ============ */
+  .home-hero {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .home-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .home-hero .greeting-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .info-panel {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 20px 24px;
+  }
+  .info-panel h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--cream-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-panel h3 .icon {
+    color: var(--terra);
+    font-size: 20px;
+  }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .step-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .step-num-circle {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 13px; line-height: 1.45; }
+  .step-text strong { color: var(--terra-dark); }
+
+  .tip-card {
+    background: #fff8e8;
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 14px;
+  }
+  .tip-card strong { color: var(--gold-dark); }
+
+  .mode-hint {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .mode-hint-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .mode-hint-icon {
+    font-size: 22px;
+    width: 34px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .mode-hint-text {
+    line-height: 1.45;
+    flex: 1;
+  }
+  .mode-hint-text strong {
+    color: var(--terra-dark);
+    font-family: 'Fraunces', serif;
+  }
+
+  /* ============ SESSION SCREEN ============ */
+  .session-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .session-info {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .session-progress-num {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .session-mode-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold-dark);
+  }
+  .session-progress-bar {
+    flex: 1;
+    margin: 0 20px;
+    height: 5px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .session-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--gold));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .btn-exit {
+    background: transparent;
+    border: 1.5px solid var(--cream-dark);
+    color: var(--ink-soft);
+    padding: 6px 14px;
+    border-radius: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-exit:hover {
+    border-color: var(--terra);
+    color: var(--terra-dark);
+  }
+
+  /* ============ FLASHCARD MODE ============ */
+  .flashcard-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+    min-height: 500px;
+  }
+
+  .flashcard-area {
+    perspective: 1800px;
+  }
+  .flashcard {
+    width: 100%;
+    height: 380px;
+    position: relative;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .flashcard-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 20px;
+    padding: 30px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 2px solid var(--cream-dark);
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  .flashcard-face.front {
+    background: linear-gradient(135deg, #fffdf7 0%, #faf6ef 100%);
+  }
+  .flashcard-face.back {
+    background: linear-gradient(135deg, #faf6ef 0%, #f4e6d2 100%);
+    transform: rotateY(180deg);
+  }
+
+  .card-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 14px;
+  }
+
+  .card-text-en {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    letter-spacing: 0.01em;
+  }
+
+  .card-text-zh {
+    font-size: 28px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .card-hint-bottom {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .card-audio-btn {
+    background: var(--terra);
+    color: var(--paper);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 22px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 0 var(--terra-dark);
+  }
+  .card-audio-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--terra-dark);
+  }
+
+  /* RIGHT SIDE: RATING PANEL */
+  .rating-panel {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rating-panel-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .rating-panel-hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    padding: 14px 10px;
+  }
+
+  .rating-btn {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    width: 100%;
+  }
+  .rating-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .rating-btn .big { font-size: 22px; flex-shrink: 0; }
+  .rating-btn .rating-main {
+    flex: 1;
+  }
+  .rating-btn .rating-label {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+  }
+  .rating-btn .rating-sub {
+    font-size: 11px;
+    opacity: 0.8;
+  }
+  .rating-btn.again { background: #f5dcd0; color: var(--terra-dark); }
+  .rating-btn.again:hover:not(:disabled) { background: var(--terra); color: var(--paper); transform: translateY(-1px); }
+  .rating-btn.hard { background: #fdf4d9; color: var(--gold-dark); }
+  .rating-btn.hard:hover:not(:disabled) { background: var(--gold); color: var(--paper); transform: translateY(-1px); }
+  .rating-btn.good { background: #e8f0e2; color: var(--sage-dark); }
+  .rating-btn.good:hover:not(:disabled) { background: var(--sage); color: var(--paper); transform: translateY(-1px); }
+
+  .flip-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 2.5px 0 #000;
+    transition: all 0.2s ease;
+  }
+  .flip-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.5px 0 #000;
+  }
+
+  /* ============ LISTEN / REVERSE MODE ============ */
+  .qa-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .prompt-box {
+    background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+    border-radius: 16px;
+    padding: 28px 24px;
+    border: 1px solid var(--cream-dark);
+    text-align: center;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .prompt-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold-dark);
+    margin-bottom: 14px;
+    letter-spacing: 0.05em;
+  }
+  .prompt-zh {
+    font-size: 42px;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    margin-bottom: 14px;
+    line-height: 1.25;
+  }
+  .prompt-hint {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 6px;
+  }
+  .prompt-audio {
+    background: var(--blue);
+    color: var(--paper);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 26px;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2.5px 0 var(--blue-dark);
+    margin-top: 10px;
+    align-self: center;
+  }
+  .prompt-audio:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.5px 0 var(--blue-dark);
+  }
+  .prompt-audio-replay {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .answer-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .answer-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .choice-btn {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+    line-height: 1.35;
+  }
+  .choice-btn:hover:not(.disabled) {
+    border-color: var(--gold);
+    transform: translateX(3px);
+    background: var(--cream);
+  }
+  .choice-btn.correct { background: #e8f0e2; border-color: var(--sage); }
+  .choice-btn.incorrect { background: #f5dcd0; border-color: var(--terra); }
+  .choice-btn.disabled { cursor: default; opacity: 0.6; }
+  .choice-btn.disabled.correct, .choice-btn.disabled.incorrect { opacity: 1; }
+
+  .choice-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .next-btn-wrap {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .btn-next {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px 36px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2.5px 0 #000;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-next:hover { transform: translateY(-1px); box-shadow: 0 3.5px 0 #000; }
+
+  /* ============ RESULTS ============ */
+  .results-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .results-hero {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 10px 0 8px;
+  }
+  .results-trophy {
+    font-size: 60px;
+    display: inline-block;
+    animation: popIn 0.6s cubic-bezier(0.2, 1.5, 0.5, 1);
+    margin-bottom: 6px;
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .results-title {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .results-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 15px;
+  }
+
+  .score-big {
+    background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+    border-radius: 16px;
+    padding: 30px 20px;
+    border: 1px solid var(--cream-dark);
+    text-align: center;
+  }
+  .score-big-num {
+    font-family: 'Fraunces', serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--terra-dark);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .score-big-label { font-size: 13px; color: var(--ink-soft); }
+
+  .score-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .score-item {
+    background: var(--paper);
+    border-radius: 8px;
+    padding: 10px 6px;
+    text-align: center;
+    border: 1px solid var(--cream-dark);
+  }
+  .score-item-num {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .score-item-num.good { color: var(--sage-dark); }
+  .score-item-num.hard { color: var(--gold-dark); }
+  .score-item-num.again { color: var(--terra-dark); }
+  .score-item-label {
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  .results-side {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .results-tip {
+    background: var(--paper);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .results-tip-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--gold-dark);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .results-tip p { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+  .results-tip strong { color: var(--ink); }
+
+  .results-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .btn-primary-full {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 2.5px 0 #000;
+    transition: all 0.2s ease;
+  }
+  .btn-primary-full:hover { transform: translateY(-1px); box-shadow: 0 3.5px 0 #000; }
+  .btn-secondary-full {
+    background: transparent;
+    border: 1.5px solid var(--cream-dark);
+    color: var(--ink-soft);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    width: 100%;
+  }
+  .btn-secondary-full:hover { border-color: var(--gold); color: var(--ink); }
+
+  /* UTILITY */
+  .hidden { display: none !important; }
+
+  /* RESPONSIVE FALLBACK */
+  @media (max-width: 900px) {
+    html, body { overflow: auto; height: auto; }
+    .app-layout {
+      grid-template-columns: 1fr;
+      height: auto;
+      min-height: 100vh;
+    }
+    .sidebar { border-right: none; border-bottom: 1px solid var(--cream-dark); }
+    .main-area { padding: 20px 16px; }
+    .main-inner { overflow-y: visible; }
+    .flashcard-layout { grid-template-columns: 1fr; }
+    .qa-layout { grid-template-columns: 1fr; }
+    .home-grid { grid-template-columns: 1fr; }
+    .results-layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="ornament">· · ·</div>
+      <h1>套語溫習</h1>
+      <div class="subtitle">Lesson 1-3 · 24 個套語</div>
+    </div>
+
+    <div class="stats-compact">
+      <div class="stat-mini">
+        <div class="stat-mini-num" id="stat-known">0</div>
+        <div class="stat-mini-label">識</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num" id="stat-streak">0</div>
+        <div class="stat-mini-label">連續日</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-num" id="stat-today">0</div>
+        <div class="stat-mini-label">今日</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">📚 揀溫習嘅堂</div>
+      <div class="lesson-chips" id="lesson-chips"></div>
+      <div class="mini-btn-row">
+        <button class="mini-btn" onclick="selectAllLessons()">全部</button>
+        <button class="mini-btn" onclick="selectNoLessons()">冇</button>
+        <button class="mini-btn" onclick="selectUnmastered()">⭐ 未熟</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">🎯 揀模式</div>
+      <div class="mode-list">
+        <button class="mode-option selected" data-mode="flashcard" onclick="selectMode(this)">
+          <span class="mode-option-icon">🃏</span>
+          <span class="mode-option-main">
+            <div class="mode-option-title">閃卡</div>
+            <div class="mode-option-desc">英 → 中，自評</div>
+          </span>
+        </button>
+        <button class="mode-option" data-mode="listen" onclick="selectMode(this)">
+          <span class="mode-option-icon">🎧</span>
+          <span class="mode-option-main">
+            <div class="mode-option-title">聽力</div>
+            <div class="mode-option-desc">聽英文，揀中文</div>
+          </span>
+        </button>
+        <button class="mode-option" data-mode="reverse" onclick="selectMode(this)">
+          <span class="mode-option-icon">🔄</span>
+          <span class="mode-option-main">
+            <div class="mode-option-title">反向</div>
+            <div class="mode-option-desc">中 → 英</div>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">🐢 聲音速度</div>
+      <div class="speed-grid-fc">
+        <button class="speed-btn-fc" data-speed="0.2" onclick="setFlashSpeed(0.2, this)">
+          <span class="rate">0.2x</span><span class="rate-label">極慢</span>
+        </button>
+        <button class="speed-btn-fc active" data-speed="0.3" onclick="setFlashSpeed(0.3, this)">
+          <span class="rate">0.3x</span><span class="rate-label">好慢</span>
+        </button>
+        <button class="speed-btn-fc" data-speed="0.4" onclick="setFlashSpeed(0.4, this)">
+          <span class="rate">0.4x</span><span class="rate-label">慢</span>
+        </button>
+        <button class="speed-btn-fc" data-speed="0.6" onclick="setFlashSpeed(0.6, this)">
+          <span class="rate">0.6x</span><span class="rate-label">正常</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="btn-start" onclick="startSession()" id="start-btn">
+        <span>開始溫習</span><span>→</span>
+      </button>
+      <button class="btn-reset" onclick="resetProgress()">↻ 清除進度</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main-area">
+    <div class="main-inner">
+
+      <!-- ============ HOME ============ -->
+      <div id="home-screen">
+        <div class="home-hero">
+          <h2>Hannah，今日你完成咗 3 堂！🎉</h2>
+          <div class="greeting-sub">而家用呢 24 張卡鞏固 Lesson 1-3 嘅套語</div>
+        </div>
+
+        <div class="home-grid">
+          <div class="info-panel">
+            <h3><span class="icon">📖</span> 點樣用</h3>
+            <ul class="step-list">
+              <li>
+                <div class="step-num-circle">1</div>
+                <div class="step-text">左邊揀 <strong>溫習邊啲堂</strong>（可多選）</div>
+              </li>
+              <li>
+                <div class="step-num-circle">2</div>
+                <div class="step-text">揀一個 <strong>溫習模式</strong>（3 種選擇）</div>
+              </li>
+              <li>
+                <div class="step-num-circle">3</div>
+                <div class="step-text">㩒「開始溫習」— 每次 <strong>最多 15 張卡</strong></div>
+              </li>
+              <li>
+                <div class="step-num-circle">4</div>
+                <div class="step-text">自評之後，唔熟嘅卡下次會 <strong>再出現多啲</strong></div>
+              </li>
+            </ul>
+
+            <div class="tip-card">
+              <strong>💡 建議用法：</strong> 每日一次，5 分鐘。Streak（連續日數）每日都會自動加 1，斷咗就由 1 重新開始。
+            </div>
+          </div>
+
+          <div class="info-panel">
+            <h3><span class="icon">🎯</span> 3 種模式點揀</h3>
+
+            <div class="mode-hint">
+              <div class="mode-hint-item">
+                <div class="mode-hint-icon">🃏</div>
+                <div class="mode-hint-text">
+                  <strong>閃卡模式</strong> — 睇英文，諗中文意思，㩒卡翻轉自評「識／有啲難／再嚟」。最基本嘅溫習。
+                </div>
+              </div>
+
+              <div class="mode-hint-item">
+                <div class="mode-hint-icon">🎧</div>
+                <div class="mode-hint-text">
+                  <strong>聽力模式</strong> — 聽老師講英文，揀中文意思。訓練你嘅耳仔。
+                </div>
+              </div>
+
+              <div class="mode-hint-item">
+                <div class="mode-hint-icon">🔄</div>
+                <div class="mode-hint-text">
+                  <strong>反向模式</strong> — 睇中文，揀啱嘅英文講法。訓練你嘅 output 能力。
+                </div>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <strong>🌀 建議輪流用：</strong> 週一閃卡、週三聽力、週五反向。每種模式練唔同嘅腦區。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SESSION ============ -->
+      <div id="session-screen" class="hidden">
+        <div class="session-header-bar">
+          <div class="session-info">
+            <span class="session-progress-num" id="session-progress">1 / 10</span>
+            <span class="session-mode-tag" id="session-mode-label">閃卡模式</span>
+          </div>
+          <div class="session-progress-bar">
+            <div class="session-progress-fill" id="session-progress-fill" style="width: 0%;"></div>
+          </div>
+          <button class="btn-exit" onclick="exitSession()">✕ 退出</button>
+        </div>
+
+        <div id="session-content"></div>
+      </div>
+
+      <!-- ============ RESULTS ============ -->
+      <div id="results-screen" class="hidden"></div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// ============================================================
+// DATA: ALL CHUNKS FROM MONTH 1
+// ============================================================
+
+const ALL_CHUNKS = [
+  // Lesson 1: Self-Introduction (5 chunks)
+  { id: "l1_1", lesson: 1, en: "My name is Hannah.", zh: "我叫 Hannah。", hint: "填入自己個名" },
+  { id: "l1_2", lesson: 1, en: "I'm from Hong Kong.", zh: "我嚟自香港。", hint: "出生地" },
+  { id: "l1_3", lesson: 1, en: "I live in England.", zh: "我住喺英國。", hint: "而家住嘅地方" },
+  { id: "l1_4", lesson: 1, en: "I'm retired.", zh: "我退咗休。", hint: "講自己職業" },
+  { id: "l1_5", lesson: 1, en: "Nice to meet you.", zh: "好開心識到你。", hint: "自我介紹收尾" },
+
+  // Lesson 2: Greetings (11 chunks)
+  { id: "l2_1", lesson: 2, en: "Good morning!", zh: "早晨！", hint: "中午前用" },
+  { id: "l2_2", lesson: 2, en: "Good afternoon!", zh: "下午好！", hint: "12點至6點" },
+  { id: "l2_3", lesson: 2, en: "Good evening!", zh: "晚上好！", hint: "6點之後" },
+  { id: "l2_4", lesson: 2, en: "Good night!", zh: "晚安！", hint: "臨瞓前" },
+  { id: "l2_5", lesson: 2, en: "Hi!", zh: "嗨！(隨意打招呼)", hint: "最常用" },
+  { id: "l2_6", lesson: 2, en: "Hello!", zh: "你好！", hint: "稍為正式少少" },
+  { id: "l2_7", lesson: 2, en: "How are you?", zh: "你點呀？", hint: "最常用嘅問候" },
+  { id: "l2_8", lesson: 2, en: "How's it going?", zh: "點呀？(你好嗎？)", hint: "隨意嘅問法" },
+  { id: "l2_9", lesson: 2, en: "I'm good, thanks.", zh: "我好好，唔該。", hint: "自然嘅答法" },
+  { id: "l2_10", lesson: 2, en: "I'm fine, thank you.", zh: "我都幾好，唔該。", hint: "正式嘅答法" },
+  { id: "l2_11", lesson: 2, en: "And you?", zh: "你呢？", hint: "禮貌反問" },
+
+  // Lesson 3: Goodbyes & Politeness (8 chunks)
+  { id: "l3_1", lesson: 3, en: "Goodbye!", zh: "再見！", hint: "正式告別" },
+  { id: "l3_2", lesson: 3, en: "See you later!", zh: "陣間見！", hint: "輕鬆告別" },
+  { id: "l3_3", lesson: 3, en: "See you tomorrow!", zh: "聽日見！", hint: "今日再見聽日" },
+  { id: "l3_4", lesson: 3, en: "Thank you.", zh: "多謝。", hint: "表達感謝" },
+  { id: "l3_5", lesson: 3, en: "Thanks!", zh: "謝啦！", hint: "隨意版" },
+  { id: "l3_6", lesson: 3, en: "You're welcome.", zh: "唔使客氣。", hint: "回應 thank you" },
+  { id: "l3_7", lesson: 3, en: "Excuse me.", zh: "唔好意思／借過。", hint: "引起注意" },
+  { id: "l3_8", lesson: 3, en: "Sorry.", zh: "對唔住。", hint: "道歉" },
+];
+
+const LESSONS_META = [
+  { num: 1, title: "自我介紹", unlocked: true },
+  { num: 2, title: "問候語", unlocked: true },
+  { num: 3, title: "告別禮貌", unlocked: true },
+];
+
+// ============================================================
+// STATE & STORAGE
+// ============================================================
+
+const STORAGE_KEY = 'hannah_flashcard_l1-3_v1';
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultProgress();
+    return JSON.parse(raw);
+  } catch (e) { return defaultProgress(); }
+}
+
+function defaultProgress() {
+  return {
+    cards: {},
+    lastDate: null,
+    streak: 0,
+    todayCount: 0,
+    todayDate: null,
+  };
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }
+  catch (e) { console.warn('Could not save progress'); }
+}
+
+let progress = loadProgress();
+
+function todayString() { return new Date().toISOString().slice(0, 10); }
+
+function resetTodayIfNewDay() {
+  const today = todayString();
+  if (progress.todayDate !== today) {
+    progress.todayDate = today;
+    progress.todayCount = 0;
+    saveProgress();
+  }
+}
+
+function updateStreak() {
+  const today = todayString();
+  if (progress.lastDate === today) return;
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const ystr = yesterday.toISOString().slice(0, 10);
+  if (progress.lastDate === ystr) {
+    progress.streak = (progress.streak || 0) + 1;
+  } else if (progress.lastDate !== null) {
+    progress.streak = 1;
+  } else {
+    progress.streak = 1;
+  }
+  progress.lastDate = today;
+  saveProgress();
+}
+
+function getCardState(cardId) {
+  return progress.cards[cardId] || { level: 0, lastSeen: null, seenCount: 0 };
+}
+
+function rateCard(cardId, rating) {
+  const state = getCardState(cardId);
+  let newLevel;
+  if (rating === 'again') newLevel = 0;
+  else if (rating === 'hard') newLevel = Math.max(0, state.level);
+  else newLevel = Math.min(3, state.level + 1);
+
+  progress.cards[cardId] = {
+    level: newLevel,
+    lastSeen: Date.now(),
+    seenCount: (state.seenCount || 0) + 1
+  };
+  saveProgress();
+}
+
+// ============================================================
+// HOME
+// ============================================================
+
+let selectedLessons = new Set([1, 2, 3]);
+let selectedMode = 'flashcard';
+let flashSpeed = 0.3;
+
+function setFlashSpeed(speed, btn) {
+  flashSpeed = speed;
+  document.querySelectorAll('.speed-btn-fc').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function renderHome() {
+  resetTodayIfNewDay();
+
+  const knownCount = Object.values(progress.cards).filter(c => c.level >= 2).length;
+  document.getElementById('stat-known').textContent = knownCount;
+  document.getElementById('stat-streak').textContent = progress.streak || 0;
+  document.getElementById('stat-today').textContent = progress.todayCount || 0;
+
+  renderLessonChips();
+  updateStartButton();
+}
+
+function renderLessonChips() {
+  const grid = document.getElementById('lesson-chips');
+  grid.innerHTML = LESSONS_META.map(l => {
+    const count = ALL_CHUNKS.filter(c => c.lesson === l.num).length;
+    if (count === 0) return '';
+    const isSelected = selectedLessons.has(l.num) && l.unlocked;
+    const locked = !l.unlocked;
+    return `
+      <button class="lesson-chip ${isSelected ? 'selected' : ''} ${locked ? 'locked' : ''}"
+              onclick="${locked ? '' : `toggleLesson(${l.num})`}"
+              ${locked ? 'disabled' : ''}>
+        <div class="lesson-chip-num">L${l.num}</div>
+        <div class="lesson-chip-title">${l.title}</div>
+        <div class="lesson-chip-count">${count} 個</div>
+      </button>
+    `;
+  }).join('');
+}
+
+function toggleLesson(num) {
+  if (selectedLessons.has(num)) selectedLessons.delete(num);
+  else selectedLessons.add(num);
+  renderLessonChips();
+  updateStartButton();
+}
+
+function selectAllLessons() {
+  LESSONS_META.forEach(l => { if (l.unlocked) selectedLessons.add(l.num); });
+  renderLessonChips();
+  updateStartButton();
+}
+
+function selectNoLessons() {
+  selectedLessons.clear();
+  renderLessonChips();
+  updateStartButton();
+}
+
+function selectUnmastered() {
+  selectedLessons.clear();
+  const lessonsWithUnmastered = new Set();
+  ALL_CHUNKS.forEach(c => {
+    const state = getCardState(c.id);
+    if (state.level < 2) lessonsWithUnmastered.add(c.lesson);
+  });
+  lessonsWithUnmastered.forEach(n => {
+    const meta = LESSONS_META.find(l => l.num === n);
+    if (meta && meta.unlocked) selectedLessons.add(n);
+  });
+  renderLessonChips();
+  updateStartButton();
+}
+
+function selectMode(btn) {
+  document.querySelectorAll('.mode-option').forEach(c => c.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedMode = btn.dataset.mode;
+}
+
+function updateStartButton() {
+  document.getElementById('start-btn').disabled = selectedLessons.size === 0;
+}
+
+function resetProgress() {
+  if (confirm('確定要清除所有溫習進度？\n\n呢個動作唔可以還原。')) {
+    progress = defaultProgress();
+    saveProgress();
+    renderHome();
+  }
+}
+
+// ============================================================
+// SESSION
+// ============================================================
+
+let sessionCards = [];
+let sessionIdx = 0;
+let sessionStats = { good: 0, hard: 0, again: 0 };
+let currentCardFlipped = false;
+
+function startSession() {
+  if (selectedLessons.size === 0) return;
+
+  let pool = ALL_CHUNKS.filter(c => selectedLessons.has(c.lesson));
+  pool = pool.map(c => ({ ...c, _state: getCardState(c.id) }));
+  pool.sort((a, b) => {
+    if (a._state.seenCount === 0 && b._state.seenCount > 0) return -1;
+    if (b._state.seenCount === 0 && a._state.seenCount > 0) return 1;
+    if (a._state.level !== b._state.level) return a._state.level - b._state.level;
+    return Math.random() - 0.5;
+  });
+  sessionCards = pool.slice(0, 15);
+
+  if (sessionCards.length < 1) return;
+
+  sessionIdx = 0;
+  sessionStats = { good: 0, hard: 0, again: 0 };
+  updateStreak();
+
+  document.getElementById('home-screen').classList.add('hidden');
+  document.getElementById('session-screen').classList.remove('hidden');
+  document.getElementById('results-screen').classList.add('hidden');
+
+  const modeLabels = { flashcard: '🃏 閃卡模式', listen: '🎧 聽力模式', reverse: '🔄 反向模式' };
+  document.getElementById('session-mode-label').textContent = modeLabels[selectedMode];
+
+  renderCurrentCard();
+}
+
+function renderCurrentCard() {
+  if (sessionIdx >= sessionCards.length) {
+    showResults();
+    return;
+  }
+
+  document.getElementById('session-progress').textContent = `${sessionIdx + 1} / ${sessionCards.length}`;
+  const pct = (sessionIdx / sessionCards.length) * 100;
+  document.getElementById('session-progress-fill').style.width = pct + '%';
+
+  const card = sessionCards[sessionIdx];
+  currentCardFlipped = false;
+
+  if (selectedMode === 'flashcard') renderFlashcardMode(card);
+  else if (selectedMode === 'listen') renderListenMode(card);
+  else if (selectedMode === 'reverse') renderReverseMode(card);
+
+  document.querySelector('.main-inner').scrollTop = 0;
+}
+
+// ============ FLASHCARD MODE ============
+function renderFlashcardMode(card) {
+  const container = document.getElementById('session-content');
+  container.innerHTML = `
+    <div class="flashcard-layout">
+      <div class="flashcard-area">
+        <div class="flashcard" onclick="flipCard()">
+          <div class="flashcard-face front">
+            <div class="card-tag">Lesson ${card.lesson}</div>
+            <div class="card-text-en">${card.en}</div>
+            <button class="card-audio-btn" onclick="event.stopPropagation(); speak('${card.en.replace(/'/g, "\\'")}');">
+              🔊 <span>播放</span>
+            </button>
+            <div class="card-hint-bottom">㩒卡片睇答案 ↻</div>
+          </div>
+          <div class="flashcard-face back">
+            <div class="card-tag">中文意思</div>
+            <div class="card-text-zh">${card.zh}</div>
+            ${card.hint ? `<div class="card-hint-bottom">💡 ${card.hint}</div>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="rating-panel">
+        <div class="rating-panel-title" id="rating-title">㩒卡睇答案先</div>
+        <div id="rating-buttons">
+          <div class="rating-panel-hint">翻開卡片之後，自評你對呢個套語嘅熟悉度。</div>
+        </div>
+      </div>
+    </div>
+  `;
+  setTimeout(() => speak(card.en, 0.3), 300);
+}
+
+function flipCard() {
+  const card = document.querySelector('.flashcard');
+  if (!card) return;
+  card.classList.toggle('flipped');
+  currentCardFlipped = !currentCardFlipped;
+
+  const title = document.getElementById('rating-title');
+  const buttonsArea = document.getElementById('rating-buttons');
+
+  if (currentCardFlipped) {
+    title.textContent = '你有幾熟悉？';
+    buttonsArea.innerHTML = `
+      <button class="rating-btn again" onclick="rateAndNext('again')">
+        <span class="big">🔁</span>
+        <div class="rating-main">
+          <span class="rating-label">再嚟一次</span>
+          <span class="rating-sub">完全唔識</span>
+        </div>
+      </button>
+      <button class="rating-btn hard" onclick="rateAndNext('hard')">
+        <span class="big">🤔</span>
+        <div class="rating-main">
+          <span class="rating-label">有啲難</span>
+          <span class="rating-sub">要諗一諗</span>
+        </div>
+      </button>
+      <button class="rating-btn good" onclick="rateAndNext('good')">
+        <span class="big">✓</span>
+        <div class="rating-main">
+          <span class="rating-label">識</span>
+          <span class="rating-sub">好熟</span>
+        </div>
+      </button>
+    `;
+  } else {
+    title.textContent = '㩒卡睇答案先';
+    buttonsArea.innerHTML = `<div class="rating-panel-hint">翻開卡片之後，自評你對呢個套語嘅熟悉度。</div>`;
+  }
+}
+
+function rateAndNext(rating) {
+  const card = sessionCards[sessionIdx];
+  rateCard(card.id, rating);
+  sessionStats[rating]++;
+  progress.todayCount = (progress.todayCount || 0) + 1;
+  saveProgress();
+  sessionIdx++;
+  renderCurrentCard();
+}
+
+// ============ LISTEN MODE ============
+function renderListenMode(card) {
+  const others = ALL_CHUNKS.filter(c => c.id !== card.id && selectedLessons.has(c.lesson));
+  const distractors = shuffleArr(others).slice(0, 3);
+  const choices = shuffleArr([card, ...distractors]);
+
+  const container = document.getElementById('session-content');
+  container.innerHTML = `
+    <div class="qa-layout">
+      <div class="prompt-box">
+        <div class="prompt-label">Lesson ${card.lesson} · 聽英文</div>
+        <button class="prompt-audio" onclick="speak('${card.en.replace(/'/g, "\\'")}', 0.3)">
+          🔊 <span>播放英文</span>
+        </button>
+        <div class="prompt-audio-replay">可以㩒幾多次都得</div>
+      </div>
+      <div class="answer-area">
+        <div class="answer-title">揀啱嘅中文意思：</div>
+        ${choices.map((c, i) => `
+          <button class="choice-btn" onclick="answerListen(this, ${c.id === card.id}, '${card.id}')">
+            <div class="choice-inner">
+              <span>${String.fromCharCode(65 + i)}. ${c.zh}</span>
+            </div>
+          </button>
+        `).join('')}
+        <div class="next-btn-wrap hidden" id="next-btn-wrap">
+          <button class="btn-next" onclick="nextCard()">
+            <span>${sessionIdx + 1 === sessionCards.length ? '完成' : '下一題'}</span>
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  setTimeout(() => speak(card.en, 0.3), 400);
+}
+
+function answerListen(btn, correct, cardId) {
+  if (btn.classList.contains('disabled')) return;
+  const allChoices = document.querySelectorAll('.choice-btn');
+  allChoices.forEach(c => c.classList.add('disabled'));
+  if (correct) {
+    btn.classList.add('correct');
+    rateCard(cardId, 'good');
+    sessionStats.good++;
+  } else {
+    btn.classList.add('incorrect');
+    allChoices.forEach(c => {
+      if (c.getAttribute('onclick').includes('true, ')) c.classList.add('correct');
+    });
+    rateCard(cardId, 'again');
+    sessionStats.again++;
+  }
+  progress.todayCount = (progress.todayCount || 0) + 1;
+  saveProgress();
+  document.getElementById('next-btn-wrap').classList.remove('hidden');
+}
+
+// ============ REVERSE MODE ============
+function renderReverseMode(card) {
+  const others = ALL_CHUNKS.filter(c => c.id !== card.id && selectedLessons.has(c.lesson));
+  const distractors = shuffleArr(others).slice(0, 3);
+  const choices = shuffleArr([card, ...distractors]);
+
+  const container = document.getElementById('session-content');
+  container.innerHTML = `
+    <div class="qa-layout">
+      <div class="prompt-box">
+        <div class="prompt-label">Lesson ${card.lesson} · 中文</div>
+        <div class="prompt-zh">${card.zh}</div>
+        ${card.hint ? `<div class="prompt-hint">💡 ${card.hint}</div>` : ''}
+      </div>
+      <div class="answer-area">
+        <div class="answer-title">揀啱嘅英文講法：</div>
+        ${choices.map((c, i) => `
+          <button class="choice-btn" onclick="answerReverse(this, ${c.id === card.id}, '${card.id}', '${c.en.replace(/'/g, "\\'")}')">
+            <div class="choice-inner">
+              <span>${String.fromCharCode(65 + i)}. ${c.en}</span>
+              <span style="font-size: 12px; opacity: 0.5;">🔊</span>
+            </div>
+          </button>
+        `).join('')}
+        <div class="next-btn-wrap hidden" id="next-btn-wrap">
+          <button class="btn-next" onclick="nextCard()">
+            <span>${sessionIdx + 1 === sessionCards.length ? '完成' : '下一題'}</span>
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function answerReverse(btn, correct, cardId, spokenText) {
+  if (btn.classList.contains('disabled')) return;
+  const allChoices = document.querySelectorAll('.choice-btn');
+  allChoices.forEach(c => c.classList.add('disabled'));
+  if (correct) {
+    btn.classList.add('correct');
+    rateCard(cardId, 'good');
+    sessionStats.good++;
+    speak(spokenText);
+  } else {
+    btn.classList.add('incorrect');
+    allChoices.forEach(c => {
+      if (c.getAttribute('onclick').includes(', true, ')) c.classList.add('correct');
+    });
+    rateCard(cardId, 'again');
+    sessionStats.again++;
+    const correctCard = sessionCards[sessionIdx];
+    setTimeout(() => speak(correctCard.en), 400);
+  }
+  progress.todayCount = (progress.todayCount || 0) + 1;
+  saveProgress();
+  document.getElementById('next-btn-wrap').classList.remove('hidden');
+}
+
+function nextCard() {
+  sessionIdx++;
+  renderCurrentCard();
+}
+
+// ============ RESULTS ============
+function showResults() {
+  document.getElementById('session-screen').classList.add('hidden');
+  const results = document.getElementById('results-screen');
+  results.classList.remove('hidden');
+
+  const total = sessionStats.good + sessionStats.hard + sessionStats.again;
+  const goodPct = total > 0 ? Math.round((sessionStats.good / total) * 100) : 0;
+
+  let trophy, title, sub;
+  if (goodPct >= 80) {
+    trophy = '🏆'; title = '好叻呀！'; sub = '大部分都識，繼續保持！';
+  } else if (goodPct >= 50) {
+    trophy = '✨'; title = '不錯！'; sub = '有進步，再嚟多次會更熟。';
+  } else {
+    trophy = '🌱'; title = '做得好，堅持下去！'; sub = '唔熟嘅會再出現，慢慢就識。';
+  }
+
+  results.innerHTML = `
+    <div class="results-layout">
+      <div class="results-hero">
+        <div class="results-trophy">${trophy}</div>
+        <div class="results-title">${title}</div>
+        <div class="results-sub">${sub}</div>
+      </div>
+
+      <div class="score-big">
+        <div class="score-big-num">${goodPct}%</div>
+        <div class="score-big-label">今次熟悉度</div>
+        <div class="score-breakdown">
+          <div class="score-item">
+            <div class="score-item-num good">${sessionStats.good}</div>
+            <div class="score-item-label">識</div>
+          </div>
+          <div class="score-item">
+            <div class="score-item-num hard">${sessionStats.hard}</div>
+            <div class="score-item-label">有啲難</div>
+          </div>
+          <div class="score-item">
+            <div class="score-item-num again">${sessionStats.again}</div>
+            <div class="score-item-label">再練</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-side">
+        <div class="results-tip">
+          <div class="results-tip-title">💡 記憶小貼士</div>
+          <p>溫習左嘅套語，<strong>每日重溫一次</strong>，3 日後、1 週後再嚟，記憶會深好多。呢個叫「間隔重複」。</p>
+        </div>
+        <div class="results-actions">
+          <button class="btn-primary-full" onclick="startSession()">↻ 再溫一次</button>
+          <button class="btn-secondary-full" onclick="exitSession()">返主頁</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function exitSession() {
+  document.getElementById('session-screen').classList.add('hidden');
+  document.getElementById('results-screen').classList.add('hidden');
+  document.getElementById('home-screen').classList.remove('hidden');
+  speechSynthesis.cancel();
+  renderHome();
+  document.querySelector('.main-inner').scrollTop = 0;
+}
+
+// ============ HELPERS ============
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ============ SPEECH ============
+let englishVoice = null;
+function loadVoice() {
+  const voices = speechSynthesis.getVoices();
+  englishVoice = voices.find(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-GB')
+              || voices.find(v => v.lang === 'en-US' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-US')
+              || voices.find(v => v.lang.startsWith('en'))
+              || voices[0];
+}
+if ('speechSynthesis' in window) {
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
+function speak(text, rate) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-GB';
+  utter.rate = rate || flashSpeed;
+  if (englishVoice) utter.voice = englishVoice;
+  speechSynthesis.speak(utter);
+}
+
+// INIT
+renderHome();
+</script>
+
+</body>
+</html>

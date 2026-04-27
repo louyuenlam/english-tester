@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2：問候語 · Greetings</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --shadow: rgba(58, 40, 28, 0.12);
+
+    /* SIDEBAR width */
+    --sidebar-w: 260px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Noto Sans HK', 'Lora', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 1;
+  }
+
+  /* ============ LAYOUT ============ */
+  .app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid var(--cream-dark);
+    padding: 20px 18px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sidebar-header {
+    text-align: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .sidebar-header .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 6px;
+    margin-bottom: 4px;
+  }
+  .sidebar-header .lesson-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--terra-dark);
+    margin-bottom: 2px;
+  }
+  .sidebar-header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .sidebar-header .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .progress-compact {
+    padding: 10px 12px;
+    background: var(--cream);
+    border-radius: 10px;
+  }
+  .progress-compact .label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .progress-compact .value {
+    font-family: 'Fraunces', serif;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .progress-bar { height: 5px; background: var(--cream-dark); border-radius: 4px; overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--gold));
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* STEPS NAV */
+  .steps-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .steps-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    padding: 0 6px;
+    margin-bottom: 2px;
+  }
+  .step-btn {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1.5px solid transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+  .step-btn:hover {
+    background: var(--cream);
+    color: var(--ink);
+  }
+  .step-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .step-btn.completed { color: var(--sage-dark); }
+  .step-btn .step-num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .step-btn.active .step-num { background: var(--gold); color: var(--ink); }
+  .step-btn.completed .step-num { background: var(--sage); color: var(--paper); }
+
+  /* SPEED CONTROL */
+  .speed-panel {
+    padding: 12px;
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1px solid var(--cream-dark);
+  }
+  .speed-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .speed-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .speed-btn {
+    padding: 6px 4px;
+    border-radius: 6px;
+    border: 1.5px solid var(--cream-dark);
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .speed-btn:hover:not(.active) {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+  .speed-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--paper);
+  }
+
+  /* ============ MAIN CONTENT ============ */
+  .main-area {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 28px;
+  }
+
+  .main-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 12px;
+    margin-right: -12px;
+  }
+
+  /* Custom scrollbar */
+  .main-inner::-webkit-scrollbar, .sidebar::-webkit-scrollbar { width: 8px; }
+  .main-inner::-webkit-scrollbar-track, .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .main-inner::-webkit-scrollbar-thumb, .sidebar::-webkit-scrollbar-thumb {
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+  .main-inner::-webkit-scrollbar-thumb:hover, .sidebar::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  /* ============ STEP CONTENT ============ */
+  .step-content {
+    animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+
+  .step-content h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .card-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+
+  .instruction {
+    background: var(--paper);
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .instruction strong { color: var(--ink); }
+
+  .callback {
+    background: #eaf0e4;
+    border-left: 3px solid var(--sage);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--sage-dark);
+  }
+  .callback strong { color: var(--sage-dark); }
+
+  /* ============ STEP 1: WARM-UP ============ */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .goal-card {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 16px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .goal-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+  .goal-text { font-size: 13px; line-height: 1.45; }
+  .goal-text strong { color: var(--terra-dark); }
+
+  /* ============ STEP 2: TIME CARDS ============ */
+  .time-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .time-card {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 16px 14px;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .time-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+  .time-card.active {
+    border-color: var(--terra);
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+  .time-icon { font-size: 36px; line-height: 1; margin-bottom: 6px; }
+  .time-english {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--terra-dark);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .time-chinese {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 2px;
+  }
+  .time-when { font-size: 11px; color: var(--ink-soft); }
+
+  /* SENTENCE CARDS - 2 column layout on desktop */
+  .sentences-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .sentence-card {
+    background: var(--paper);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: all 0.2s ease;
+  }
+  .sentence-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .sentence-head {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .sentence-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .sentence-english {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .sentence-chinese {
+    color: var(--ink-soft);
+    font-size: 12px;
+    margin-left: 30px;
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+  .sentence-actions {
+    margin-left: 30px;
+    display: flex;
+    gap: 6px;
+  }
+  .play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--terra);
+    color: var(--paper);
+    border: none;
+    padding: 5px 11px;
+    border-radius: 16px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1.5px 0 var(--terra-dark);
+  }
+  .play-btn:hover { transform: translateY(-1px); box-shadow: 0 2.5px 0 var(--terra-dark); }
+  .play-btn:active { transform: translateY(1px); box-shadow: 0 0.5px 0 var(--terra-dark); }
+  .play-btn.secondary { background: var(--sage); box-shadow: 0 1.5px 0 var(--sage-dark); }
+  .play-btn.secondary:hover { box-shadow: 0 2.5px 0 var(--sage-dark); }
+  .play-btn.blue { background: var(--blue); box-shadow: 0 1.5px 0 var(--blue-dark); }
+  .play-btn.blue:hover { box-shadow: 0 2.5px 0 var(--blue-dark); }
+
+  .teacher-note {
+    background: #fff8e8;
+    border-left: 3px solid var(--gold);
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .teacher-note strong { color: var(--gold-dark); }
+
+  .subsection-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--ink);
+    margin: 14px 0 8px;
+    font-weight: 600;
+  }
+
+  /* ============ STEP 3: RESPONSE PAIR ============ */
+  .qa-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .qa-column { display: flex; flex-direction: column; gap: 8px; }
+  .qa-column-title {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--terra-dark);
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+  .response-option {
+    background: var(--paper);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .response-en {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--ink);
+    flex: 1;
+  }
+  .response-small-zh {
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-style: italic;
+  }
+  .play-btn.mini {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  /* ============ STEP 4: DIALOGUE ============ */
+  .dialogue-scene {
+    background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border: 1px solid var(--cream-dark);
+  }
+  .dialogue-scene-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--terra-dark);
+    margin-bottom: 8px;
+  }
+  .dialogue-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .dialogue-line {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .dialogue-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    color: var(--paper);
+    flex-shrink: 0;
+    font-size: 11px;
+  }
+  .dialogue-avatar.other { background: var(--blue); }
+  .dialogue-avatar.you { background: var(--terra); }
+  .dialogue-bubble {
+    flex: 1;
+    background: var(--paper);
+    border-radius: 10px 10px 10px 2px;
+    padding: 5px 12px;
+    box-shadow: 0 1px 3px var(--shadow);
+  }
+  .dialogue-line.you .dialogue-bubble {
+    background: #fdf4e3;
+    border-radius: 10px 10px 2px 10px;
+  }
+  .dialogue-speaker {
+    font-size: 10px;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    line-height: 1.3;
+  }
+  .dialogue-text {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .dialogue-zh {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.3;
+  }
+
+  .dialogue-bottom-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .dialogue-bottom-row > * {
+    flex: 1;
+  }
+
+  /* ============ STEP 5: QUIZ ============ */
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .quiz-box {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--cream-dark);
+    display: flex;
+    flex-direction: column;
+  }
+  .quiz-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+  .quiz-q {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .quiz-audio-btn {
+    background: var(--blue);
+    color: var(--paper);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    margin-bottom: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 1.5px 0 var(--blue-dark);
+    align-self: flex-start;
+  }
+  .quiz-audio-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2.5px 0 var(--blue-dark);
+  }
+  .quiz-choices { display: flex; flex-direction: column; gap: 4px; }
+  .quiz-choice {
+    background: var(--cream);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 5px;
+    padding: 5px 9px;
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+    line-height: 1.35;
+  }
+  .quiz-choice:hover:not(.disabled) {
+    border-color: var(--gold);
+    transform: translateX(2px);
+  }
+  .quiz-choice.correct {
+    background: #e8f0e2;
+    border-color: var(--sage);
+  }
+  .quiz-choice.incorrect {
+    background: #f5dcd0;
+    border-color: var(--terra);
+  }
+  .quiz-choice.disabled { cursor: default; opacity: 0.6; }
+  .quiz-choice.disabled.correct, .quiz-choice.disabled.incorrect { opacity: 1; }
+
+  .quiz-feedback-container { margin-top: 4px; }
+  .quiz-feedback {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    animation: fadeIn 0.3s ease;
+    line-height: 1.35;
+  }
+  .quiz-feedback.good {
+    background: #e8f0e2;
+    color: var(--sage-dark);
+    border-left: 2px solid var(--sage);
+  }
+  .quiz-feedback.oops {
+    background: #f5dcd0;
+    color: var(--terra-dark);
+    border-left: 2px solid var(--terra);
+  }
+
+  /* Last quiz spans 1.5 col on desktop */
+  .quiz-box.full { grid-column: auto; }
+
+  #quiz-result {
+    grid-column: 1 / -1;
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 10px 18px;
+    text-align: center;
+    border-left: 3px solid var(--gold);
+  }
+  #quiz-result h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  #quiz-result p { font-size: 11px; color: var(--ink-soft); }
+
+  /* ============ STEP 6: COMPLETE ============ */
+  .complete-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .complete-header {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 10px 0 8px;
+  }
+  .complete-trophy {
+    font-size: 52px;
+    display: inline-block;
+    animation: popIn 0.6s cubic-bezier(0.2, 1.5, 0.5, 1);
+    margin-bottom: 2px;
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .complete-title {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .complete-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 14px;
+  }
+
+  .completion-card {
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 14px 18px;
+    border: 1px solid var(--cream-dark);
+  }
+  .completion-card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .chunks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .chunks-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+  }
+  .chunks-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--sage);
+    font-weight: 700;
+  }
+
+  .homework-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    background: var(--cream);
+    border-radius: 6px;
+  }
+  .homework-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .homework-item strong { font-size: 13px; }
+  .homework-item .hw-sub { color: var(--ink-soft); font-size: 11px; }
+
+  .next-lesson-preview {
+    grid-column: 1 / -1;
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 12px 18px;
+    border-left: 3px solid var(--terra);
+  }
+  .next-lesson-preview .tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+  .next-lesson-preview h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .next-lesson-preview p { font-size: 12px; color: var(--ink-soft); }
+
+  /* ============ FOOTER NAV ============ */
+  .footer-nav {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0 0;
+    margin-top: 14px;
+    border-top: 1px dashed var(--cream-dark);
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2.5px 0 #000, 0 4px 10px var(--shadow);
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.5px 0 #000, 0 6px 14px var(--shadow);
+    background: var(--terra-dark);
+  }
+  .btn-primary:active { transform: translateY(1px); box-shadow: 0 1.5px 0 #000; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1.5px solid var(--cream-dark);
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--ink); }
+
+  .hidden { display: none !important; }
+
+  /* ============ RESPONSIVE FALLBACK ============ */
+  @media (max-width: 900px) {
+    html, body { overflow: auto; height: auto; }
+    .app-layout {
+      grid-template-columns: 1fr;
+      height: auto;
+      min-height: 100vh;
+    }
+    .sidebar { border-right: none; border-bottom: 1px solid var(--cream-dark); }
+    .main-area { padding: 20px 16px; }
+    .main-inner { overflow-y: visible; }
+    .goals-grid { grid-template-columns: 1fr; }
+    .sentences-grid { grid-template-columns: 1fr; }
+    .qa-grid { grid-template-columns: 1fr; }
+    .time-grid { grid-template-columns: 1fr; }
+    .complete-layout { grid-template-columns: 1fr; }
+    .quiz-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="ornament">· · ·</div>
+      <div class="lesson-num">Lesson 2 · 第二堂</div>
+      <h1>問候語</h1>
+      <div class="subtitle">Greetings</div>
+    </div>
+
+    <div class="progress-compact">
+      <div class="label">
+        <span id="progress-text">第 1 部分 / 共 6 部分</span>
+        <span class="value" id="progress-time">3 分鐘</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 16.7%;"></div>
+      </div>
+    </div>
+
+    <nav class="steps-nav">
+      <div class="steps-label">學習步驟</div>
+      <button class="step-btn active" data-step="1" onclick="goToStep(1)">
+        <span class="step-num">1</span><span>熱身 & 定調</span>
+      </button>
+      <button class="step-btn" data-step="2" onclick="goToStep(2)">
+        <span class="step-num">2</span><span>一日三問候</span>
+      </button>
+      <button class="step-btn" data-step="3" onclick="goToStep(3)">
+        <span class="step-num">3</span><span>How are you</span>
+      </button>
+      <button class="step-btn" data-step="4" onclick="goToStep(4)">
+        <span class="step-num">4</span><span>完整對話</span>
+      </button>
+      <button class="step-btn" data-step="5" onclick="goToStep(5)">
+        <span class="step-num">5</span><span>小測驗</span>
+      </button>
+      <button class="step-btn" data-step="6" onclick="goToStep(6)">
+        <span class="step-num">6</span><span>完成</span>
+      </button>
+    </nav>
+
+    <div class="speed-panel">
+      <div class="speed-label">🐢 聲音速度</div>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="0.2" onclick="setSpeed(0.2, this)">0.2x<br>極慢</button>
+        <button class="speed-btn active" data-speed="0.3" onclick="setSpeed(0.3, this)">0.3x<br>好慢</button>
+        <button class="speed-btn" data-speed="0.4" onclick="setSpeed(0.4, this)">0.4x<br>慢</button>
+        <button class="speed-btn" data-speed="0.6" onclick="setSpeed(0.6, this)">0.6x<br>正常</button>
+        <button class="speed-btn" data-speed="0.7" onclick="setSpeed(0.7, this)">0.7x<br>稍快</button>
+        <button class="speed-btn" data-speed="0.9" onclick="setSpeed(0.9, this)">0.9x<br>較快</button>
+        <button class="speed-btn" data-speed="1.0" onclick="setSpeed(1.0, this)">1.0x<br>原速</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main-area">
+    <div class="main-inner">
+
+      <!-- STEP 1 -->
+      <div class="step-content" data-step="1">
+        <div class="section-label">Part 1 · 熱身 (3 分鐘)</div>
+        <h2>歡迎返嚟 🌿</h2>
+        <p class="card-sub">Welcome back to Lesson 2</p>
+
+        <div class="callback">
+          <strong>✦ 上堂我哋學咗：</strong> 自我介紹嘅 5 句黃金套語 (My name is / I'm from / I live in / I'm retired / Nice to meet you)。試下而家心入面講一次，睇你仲記唔記得。
+        </div>
+
+        <div class="instruction">
+          <strong>今日目標：</strong> 學習日常打招呼嘅句子。即係別人同你見面、打電話、出去買嘢嘅時候，你識自然咁回應。加上 Lesson 1 嘅自我介紹，你已經可以做到一個完整嘅見面對話。
+        </div>
+
+        <div class="subsection-title">🎯 今日嘅 3 個小目標</div>
+
+        <div class="goals-grid">
+          <div class="goal-card">
+            <div class="goal-num">1</div>
+            <div class="goal-text">識 <strong>早晨／下午／晚安</strong> 點講，同埋幾點至幾點用邊個</div>
+          </div>
+          <div class="goal-card">
+            <div class="goal-num">2</div>
+            <div class="goal-text">識回應 <strong>"How are you?"</strong>，唔止係 "I'm fine"</div>
+          </div>
+          <div class="goal-card">
+            <div class="goal-num">3</div>
+            <div class="goal-text">可以將 Lesson 1 + 今日嘅，<strong>做一個完整見面對話</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-content hidden" data-step="2">
+        <div class="section-label">Part 2 · 一日三問候 (6 分鐘)</div>
+        <h2>Good morning / afternoon / evening</h2>
+        <p class="card-sub">不同時間嘅打招呼</p>
+
+        <div class="instruction">
+          <strong>點用：</strong> 㩒每張卡聽下點讀，留意幾點用邊個。呢 3 個係一日裏面最常用嘅打招呼。
+        </div>
+
+        <div class="time-grid">
+          <div class="time-card" onclick="playTimeCard(this, 'Good morning!')">
+            <div class="time-icon">🌅</div>
+            <div class="time-english">Good morning!</div>
+            <div class="time-chinese">早晨</div>
+            <div class="time-when">至中午 12 點前</div>
+          </div>
+          <div class="time-card" onclick="playTimeCard(this, 'Good afternoon!')">
+            <div class="time-icon">☀️</div>
+            <div class="time-english">Good afternoon!</div>
+            <div class="time-chinese">下午好</div>
+            <div class="time-when">12 點至 6 點</div>
+          </div>
+          <div class="time-card" onclick="playTimeCard(this, 'Good evening!')">
+            <div class="time-icon">🌆</div>
+            <div class="time-english">Good evening!</div>
+            <div class="time-chinese">晚上好</div>
+            <div class="time-when">6 點之後</div>
+          </div>
+        </div>
+
+        <div class="teacher-note">
+          <strong>⚠️ 注意：</strong> <em>Good night</em> 唔係打招呼，係<strong>臨瞓前或者離開嘅時候</strong>先用。例如夜晚同屋企人話 "Good night!" = 「晚安／早抖」。
+        </div>
+
+        <div class="subsection-title">✦ 輕鬆版嘅問候</div>
+
+        <div class="sentences-grid" id="casual-greetings"></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-content hidden" data-step="3">
+        <div class="section-label">Part 3 · 點答 "How are you?" (8 分鐘)</div>
+        <h2>唔止係 "I'm fine"</h2>
+        <p class="card-sub">Beyond "I'm fine, thank you"</p>
+
+        <div class="instruction">
+          <strong>重點：</strong> 你之前可能學過 "How are you?" 答 "I'm fine, thank you"。冇錯，但其實有好多<strong>更自然嘅答法</strong>。今日我哋學 4 個，你可以變換咁答。
+        </div>
+
+        <div class="qa-grid">
+          <div class="qa-column">
+            <div class="qa-column-title">① 問人家點：</div>
+            <div id="asking-how" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+
+          <div class="qa-column">
+            <div class="qa-column-title">② 點答返人家：</div>
+            <div id="response-choices" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+        </div>
+
+        <div class="teacher-note">
+          <strong>💡 小貼士：</strong> 講完自己點之後，記住 <strong>問返對方</strong>「And you?」（你呢？）。呢個係禮貌，亦都令對話可以繼續落去。
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-content hidden" data-step="4">
+        <div class="section-label">Part 4 · 完整對話 (7 分鐘)</div>
+        <h2>連埋 Lesson 1 一齊做對話</h2>
+        <p class="card-sub">Put it all together · 同陌生人 Sarah 傾偈</p>
+
+        <div class="dialogue-scene">
+          <div class="dialogue-scene-title">場景：你喺英國嘅社區中心，遇到一個新朋友 Sarah</div>
+
+          <div class="dialogue-grid">
+            <div class="dialogue-line">
+              <div class="dialogue-avatar other">S</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-speaker">Sarah</div>
+                <div class="dialogue-text">Hello! Good morning!</div>
+                <div class="dialogue-zh">你好！早晨！</div>
+              </div>
+            </div>
+
+            <div class="dialogue-line you">
+              <div class="dialogue-avatar you">你</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-speaker">你答</div>
+                <div class="dialogue-text">Good morning!</div>
+                <div class="dialogue-zh">早晨！</div>
+              </div>
+            </div>
+
+            <div class="dialogue-line">
+              <div class="dialogue-avatar other">S</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-speaker">Sarah</div>
+                <div class="dialogue-text">How are you?</div>
+                <div class="dialogue-zh">你點呀？</div>
+              </div>
+            </div>
+
+            <div class="dialogue-line you">
+              <div class="dialogue-avatar you">你</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-speaker">你答</div>
+                <div class="dialogue-text">I'm good, thank you. And you?</div>
+                <div class="dialogue-zh">我好，唔該。你呢？</div>
+              </div>
+            </div>
+
+            <div class="dialogue-line">
+              <div class="dialogue-avatar other">S</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-speaker">Sarah</div>
+                <div class="dialogue-text">I'm fine, thanks. What's your name?</div>
+                <div class="dialogue-zh">我都幾好。你叫咩名？</div>
+              </div>
+            </div>
+
+            <div class="dialogue-line you">
+              <div class="dialogue-avatar you">你</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-speaker">你答</div>
+                <div class="dialogue-text">My name is Hannah. Nice to meet you.</div>
+                <div class="dialogue-zh">我叫 Hannah。好開心識到你。</div>
+              </div>
+            </div>
+
+            <div class="dialogue-line">
+              <div class="dialogue-avatar other">S</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-speaker">Sarah</div>
+                <div class="dialogue-text">Nice to meet you too, Hannah!</div>
+                <div class="dialogue-zh">我都好開心識到你，Hannah！</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialogue-bottom-row">
+          <button class="play-btn blue" onclick="playFullDialogue()" style="padding: 10px 20px; font-size: 13px; justify-content: center;">
+            🔊 <span>聽成段對話</span>
+          </button>
+          <div class="teacher-note" style="margin-top: 0; flex: 2;">
+            <strong>✦ 練習方法：</strong>
+            (1) 按上面個掣聽成段對話
+            (2) 老師扮 Sarah，你答「你」嘅部分
+            (3) 試唔睇字做一次
+            (4) 換自己名再做一次
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-content hidden" data-step="5">
+        <div class="section-label">Part 5 · 小測驗 (5 分鐘)</div>
+        <h2>試下你記唔記得</h2>
+        <p class="card-sub">Quick check · 冇壓力，錯咗完全冇問題</p>
+
+        <div class="quiz-grid" id="quiz-container"></div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-content hidden" data-step="6">
+        <div class="complete-layout">
+          <div class="complete-header">
+            <div class="complete-trophy">🌸</div>
+            <div class="complete-title">又完成一堂！</div>
+            <div class="complete-sub">Another lesson done! · 你已經會 10+ 個套語</div>
+          </div>
+
+          <div class="completion-card" style="border-left: 3px solid var(--sage);">
+            <h3 style="color: var(--sage-dark);">✦ 今日學咗嘅套語</h3>
+            <ul class="chunks-list">
+              <li>Good morning / afternoon / evening</li>
+              <li>Hi / Hello / Hey</li>
+              <li>How are you? / How's it going?</li>
+              <li>I'm good / I'm fine / Not bad / Pretty good</li>
+              <li>And you? / How about you?</li>
+            </ul>
+          </div>
+
+          <div class="completion-card" style="border-left: 3px solid var(--gold);">
+            <h3 style="color: var(--gold-dark);">🎒 今日嘅功課</h3>
+            <div class="homework-item">
+              <div class="homework-num">1</div>
+              <div>
+                <strong>朝早用英文同屋企人打招呼</strong>
+                <div class="hw-sub">真係開口講 "Good morning!"，講一次過算數</div>
+              </div>
+            </div>
+            <div class="homework-item">
+              <div class="homework-num">2</div>
+              <div>
+                <strong>對住鏡練 3 次完整對話</strong>
+                <div class="hw-sub">返去 Part 4 睇對話，自己扮兩個角色練</div>
+              </div>
+            </div>
+            <div class="homework-item">
+              <div class="homework-num">3</div>
+              <div>
+                <strong>開個 Flashcard app 溫 5 分鐘</strong>
+                <div class="hw-sub">溫 Lesson 1 + Lesson 2 所有套語，加強記憶</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="next-lesson-preview">
+            <div class="tag">📅 下堂預告</div>
+            <h3>Lesson 3：告別 & 禮貌</h3>
+            <p>學點禮貌咁結束對話：Goodbye / See you later / Thank you / Sorry / Excuse me。有禮貌嘅英文先識打招呼識告別，對話先完整。</p>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /main-inner -->
+
+    <!-- FIXED FOOTER NAV -->
+    <div class="footer-nav">
+      <button class="btn-secondary" id="prev-btn" onclick="goPrev()">← 上一步</button>
+      <div style="font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-soft); font-size: 12px;" id="step-indicator">
+        Step 1 of 6
+      </div>
+      <button class="btn-primary" id="next-btn" onclick="goNext()"><span id="next-btn-text">開始學習</span><span>→</span></button>
+    </div>
+  </main>
+</div>
+
+<script>
+let currentStep = 1;
+let currentSpeed = 0.3;
+let englishVoice = null;
+const completedSteps = new Set();
+const TOTAL_STEPS = 6;
+
+const CASUAL_GREETINGS = [
+  { en: "Hi!", zh: "嗨！(最常用，冇分時間)" },
+  { en: "Hello!", zh: "你好！(稍為正式少少)" },
+  { en: "Hey!", zh: "嗨！(好熟嘅朋友先用)" }
+];
+
+const ASKING_HOW = [
+  { en: "How are you?", zh: "你點呀？(最常用)" },
+  { en: "How are you doing?", zh: "你近來點？" },
+  { en: "How's it going?", zh: "點呀？(好自然)" }
+];
+
+const RESPONSES = [
+  { en: "I'm good, thanks.", zh: "我好好，唔該。(最常用)" },
+  { en: "I'm fine, thank you.", zh: "我都幾好，唔該。" },
+  { en: "Not bad.", zh: "都唔錯。" },
+  { en: "Pretty good!", zh: "幾好呀！" }
+];
+
+const QUIZ = [
+  {
+    type: "audio", q: "聽下老師講咩，揀啱嘅中文意思：",
+    audioText: "Good afternoon!",
+    choices: [
+      { text: "早晨！", correct: false },
+      { text: "下午好！", correct: true },
+      { text: "晚安！", correct: false },
+      { text: "再見！", correct: false }
+    ]
+  },
+  {
+    type: "text", q: "朝早 9 點見到朋友，你會講？",
+    choices: [
+      { text: "Good night!", correct: false },
+      { text: "Good evening!", correct: false },
+      { text: "Good morning!", correct: true },
+      { text: "Good afternoon!", correct: false }
+    ]
+  },
+  {
+    type: "text", q: "有人問你 \"How are you?\"，下面邊句係啱嘅答法？",
+    choices: [
+      { text: "My name is Hannah.", correct: false },
+      { text: "I'm good, thanks. And you?", correct: true },
+      { text: "I'm from Hong Kong.", correct: false },
+      { text: "Good morning!", correct: false }
+    ]
+  },
+  {
+    type: "audio", q: "聽下老師講嘅，揀意思：",
+    audioText: "How's it going?",
+    choices: [
+      { text: "你去邊？", correct: false },
+      { text: "你叫咩名？", correct: false },
+      { text: "點呀？(你好嗎？)", correct: true },
+      { text: "幾點？", correct: false }
+    ]
+  },
+  {
+    type: "text", q: "夜晚 10 點臨瞓前，同家人講？",
+    choices: [
+      { text: "Good evening!", correct: false },
+      { text: "Good morning!", correct: false },
+      { text: "Hello!", correct: false },
+      { text: "Good night!", correct: true }
+    ]
+  }
+];
+
+let quizScore = 0;
+let quizAnswered = 0;
+
+// ============ SPEECH ============
+function loadVoice() {
+  const voices = speechSynthesis.getVoices();
+  englishVoice = voices.find(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-GB')
+              || voices.find(v => v.lang === 'en-US' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-US')
+              || voices.find(v => v.lang.startsWith('en'))
+              || voices[0];
+}
+if ('speechSynthesis' in window) {
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
+function speak(text, rate) {
+  if (!('speechSynthesis' in window)) {
+    alert("你嘅瀏覽器唔支援聲音播放，請用 Chrome、Edge 或 Safari。");
+    return;
+  }
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-GB';
+  utter.rate = rate || currentSpeed;
+  if (englishVoice) utter.voice = englishVoice;
+  speechSynthesis.speak(utter);
+}
+function setSpeed(speed, btn) {
+  currentSpeed = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ============ CONTENT RENDER ============
+function playTimeCard(card, text) {
+  document.querySelectorAll('.time-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  speak(text);
+}
+
+function renderCasualGreetings() {
+  const container = document.getElementById('casual-greetings');
+  container.innerHTML = CASUAL_GREETINGS.map((s, i) => `
+    <div class="sentence-card">
+      <div class="sentence-head">
+        <div class="sentence-num">${i + 1}</div>
+        <div class="sentence-english">${s.en}</div>
+      </div>
+      <div class="sentence-chinese">${s.zh}</div>
+      <div class="sentence-actions">
+        <button class="play-btn" onclick="speak('${s.en.replace(/'/g, "\\'")}')">🔊 <span>播放</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAskingHow() {
+  const container = document.getElementById('asking-how');
+  container.innerHTML = ASKING_HOW.map((s, i) => `
+    <div class="sentence-card">
+      <div class="sentence-head">
+        <div class="sentence-num">${i + 1}</div>
+        <div class="sentence-english">${s.en}</div>
+      </div>
+      <div class="sentence-chinese">${s.zh}</div>
+      <div class="sentence-actions">
+        <button class="play-btn" onclick="speak('${s.en.replace(/'/g, "\\'")}')">🔊 <span>播放</span></button>
+        <button class="play-btn secondary" onclick="playRepeat('${s.en.replace(/'/g, "\\'")}')">🔁 3x</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function playRepeat(text) {
+  speechSynthesis.cancel();
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => speak(text), i * 2500);
+  }
+}
+
+function renderResponses() {
+  const container = document.getElementById('response-choices');
+  container.innerHTML = RESPONSES.map((r, i) => `
+    <div class="response-option">
+      <div style="flex: 1;">
+        <div class="response-en">${r.en}</div>
+        <div class="response-small-zh">${r.zh}</div>
+      </div>
+      <button class="play-btn mini" onclick="speak('${r.en.replace(/'/g, "\\'")}')">🔊</button>
+    </div>
+  `).join('');
+}
+
+function playFullDialogue() {
+  const lines = [
+    "Hello! Good morning!", "Good morning!",
+    "How are you?", "I'm good, thank you. And you?",
+    "I'm fine, thanks. What's your name?", "My name is Hannah. Nice to meet you.",
+    "Nice to meet you too, Hannah!"
+  ];
+  speechSynthesis.cancel();
+  lines.forEach((line, i) => {
+    setTimeout(() => speak(line, 0.4), i * 3500);
+  });
+}
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = QUIZ.map((q, i) => {
+    let promptHtml = '';
+    if (q.type === 'audio') {
+      promptHtml = `
+        <button class="quiz-audio-btn" onclick="speak('${q.audioText.replace(/'/g, "\\'")}', 0.3)">
+          🔊 <span>聽聲音</span>
+        </button>
+      `;
+    }
+
+    const classExtra = '';
+    return `
+      <div class="quiz-box${classExtra}" data-quiz-idx="${i}">
+        <div class="quiz-tag">第 ${i + 1} 題</div>
+        <div class="quiz-q">${q.q}</div>
+        ${promptHtml}
+        <div class="quiz-choices">
+          ${q.choices.map((c, j) => `
+            <button class="quiz-choice" onclick="answerQuiz(${i}, ${j}, ${c.correct})">
+              ${String.fromCharCode(65 + j)}. ${c.text}
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback-container"></div>
+      </div>
+    `;
+  }).join('') + '<div id="quiz-result" class="hidden"></div>';
+}
+
+function answerQuiz(qIdx, choiceIdx, isCorrect) {
+  const quizBox = document.querySelector(`[data-quiz-idx="${qIdx}"]`);
+  const choices = quizBox.querySelectorAll('.quiz-choice');
+
+  if (choices[0].classList.contains('disabled')) return;
+  choices.forEach(c => c.classList.add('disabled'));
+  const selected = choices[choiceIdx];
+
+  if (isCorrect) {
+    selected.classList.add('correct');
+    quizScore++;
+  } else {
+    selected.classList.add('incorrect');
+    const correctIdx = QUIZ[qIdx].choices.findIndex(c => c.correct);
+    choices[correctIdx].classList.add('correct');
+  }
+  quizAnswered++;
+
+  const feedbackContainer = quizBox.querySelector('.quiz-feedback-container');
+  if (isCorrect) {
+    feedbackContainer.innerHTML = `<div class="quiz-feedback good">✦ 答啱喇！</div>`;
+  } else {
+    const correctText = QUIZ[qIdx].choices.find(c => c.correct).text;
+    feedbackContainer.innerHTML = `<div class="quiz-feedback oops">冇問題！答案：<strong>${correctText}</strong></div>`;
+  }
+
+  if (quizAnswered === QUIZ.length) {
+    setTimeout(showQuizResult, 500);
+  }
+}
+
+function showQuizResult() {
+  const result = document.getElementById('quiz-result');
+  result.classList.remove('hidden');
+  const percent = (quizScore / QUIZ.length) * 100;
+  let title, text;
+  if (percent >= 80) {
+    title = `🏆 ${quizScore} / ${QUIZ.length} 分 — 好叻呀！`;
+    text = '你今日吸收得好好，繼續保持！';
+  } else if (percent >= 60) {
+    title = `✦ ${quizScore} / ${QUIZ.length} 分 — 唔錯！`;
+    text = '大部分都識，返去溫習下答錯嘅就掂。';
+  } else {
+    title = `🌱 ${quizScore} / ${QUIZ.length} 分 — 繼續努力！`;
+    text = '第一次接觸呢啲句，記得唔多正常。返去 Part 2–4 多聽幾次。';
+  }
+  result.innerHTML = `<h3>${title}</h3><p>${text}</p>`;
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ============ NAVIGATION ============
+function goToStep(step) {
+  speechSynthesis.cancel();
+  if (step > currentStep) completedSteps.add(currentStep);
+  currentStep = step;
+
+  document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+  document.querySelector(`.step-content[data-step="${step}"]`).classList.remove('hidden');
+
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    const btnStep = parseInt(btn.dataset.step);
+    btn.classList.remove('active', 'completed');
+    if (btnStep === step) btn.classList.add('active');
+    else if (completedSteps.has(btnStep)) btn.classList.add('completed');
+  });
+
+  const progress = (step / TOTAL_STEPS) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('progress-text').textContent = `第 ${step} 部分 / 共 6 部分`;
+
+  const timeMap = { 1: "3 分鐘", 2: "6 分鐘", 3: "8 分鐘", 4: "7 分鐘", 5: "5 分鐘", 6: "1 分鐘" };
+  document.getElementById('progress-time').textContent = timeMap[step] || "";
+
+  // Update footer nav
+  document.getElementById('step-indicator').textContent = `Step ${step} of ${TOTAL_STEPS}`;
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const nextText = document.getElementById('next-btn-text');
+
+  prevBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
+  if (step === TOTAL_STEPS) {
+    nextText.textContent = '🖨 列印記錄';
+    nextBtn.onclick = () => window.print();
+  } else if (step === 1) {
+    nextText.textContent = '開始學習';
+    nextBtn.onclick = goNext;
+  } else {
+    nextText.textContent = '下一步';
+    nextBtn.onclick = goNext;
+  }
+
+  // Scroll content to top
+  document.querySelector('.main-inner').scrollTop = 0;
+
+  // Initialize content on first visit
+  if (step === 2 && !document.getElementById('casual-greetings').innerHTML) {
+    renderCasualGreetings();
+  }
+  if (step === 3) {
+    if (!document.getElementById('asking-how').innerHTML) renderAskingHow();
+    if (!document.getElementById('response-choices').innerHTML) renderResponses();
+  }
+  if (step === 5 && !document.getElementById('quiz-container').innerHTML) {
+    renderQuiz();
+  }
+}
+
+function goNext() {
+  if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
+}
+
+function goPrev() {
+  if (currentStep > 1) goToStep(currentStep - 1);
+}
+
+// INIT
+goToStep(1);
+</script>
+
+</body>
+</html>

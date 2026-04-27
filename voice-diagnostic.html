@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Voice Diagnostic</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, 'Noto Sans HK', sans-serif;
+  background: #faf6ef;
+  padding: 20px;
+  line-height: 1.5;
+  color: #2a2420;
+  max-width: 600px;
+  margin: 0 auto;
+}
+h1 { color: #c86b4a; margin-bottom: 10px; font-size: 22px; }
+h2 { font-size: 17px; margin: 18px 0 8px; color: #5a7a8b; }
+.info {
+  background: #fffdf7;
+  border: 1.5px solid #f2ebdc;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+.info strong { color: #c86b4a; }
+.voice-list { background: white; border-radius: 10px; padding: 8px; border: 1px solid #eee; }
+.voice-item {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.voice-item:last-child { border: none; }
+.voice-name { font-weight: 600; color: #2a2420; }
+.voice-meta { font-size: 12px; color: #888; }
+.voice-selected { background: #fffbeb; border-radius: 6px; padding-left: 8px; border-left: 3px solid #c9a84c; }
+
+.test-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: #c86b4a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 8px 0;
+  cursor: pointer;
+}
+.test-btn.secondary { background: #5a7a8b; }
+.test-btn.gold { background: #c9a84c; }
+.pitch-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+.pitch-btn {
+  padding: 10px 4px;
+  background: #fff;
+  border: 1.5px solid #c9a84c;
+  color: #2a2420;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.pitch-btn:active { background: #fff3d6; }
+#log {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+}
+</style>
+</head>
+<body>
+<h1>🎙️ Voice Diagnostic 診斷</h1>
+<p style="margin-bottom: 16px;">呢個 page 可以 check 你部電話實際有咩 voices，解決聲音問題</p>
+
+<div class="info">
+  <strong>Step 1：㩒下面個 button 載入 voices</strong><br>
+  (Android / Chrome 有時要㩒一次 button 先會加載)
+</div>
+<button class="test-btn gold" onclick="loadVoices(); refresh();">🔄 載入 Voices</button>
+
+<h2>📊 你部電話資料</h2>
+<div class="info" id="device-info">Loading...</div>
+
+<h2>✅ 揀咗嘅 voice</h2>
+<div class="info" id="selected-voice">Loading...</div>
+
+<h2>🧪 測試聲音</h2>
+<p style="font-size: 13px; margin: 8px 0;">試下唔同 pitch 值，聽下邊個似女聲：</p>
+<div class="pitch-row">
+  <button class="pitch-btn" onclick="testSpeak(1.0)">Pitch 1.0<br>(正常)</button>
+  <button class="pitch-btn" onclick="testSpeak(1.4)">Pitch 1.4<br>(升高)</button>
+  <button class="pitch-btn" onclick="testSpeak(1.8)">Pitch 1.8<br>(更高)</button>
+</div>
+
+<h2>📜 Log</h2>
+<div id="log"></div>
+
+<h2>📋 所有可用 voices</h2>
+<div class="voice-list" id="all-voices">Loading...</div>
+
+<script>
+let selectedVoice = null;
+
+function log(msg) {
+  document.getElementById('log').textContent += msg + '\n';
+}
+
+const FEMALE_NAMES = [
+  'Samantha', 'Karen', 'Moira', 'Kate', 'Serena', 'Victoria', 'Tessa',
+  'Fiona', 'Veena', 'Allison', 'Ava', 'Susan', 'Zoe',
+  'Google UK English Female', 'Google US English',
+  'Hazel', 'Zira', 'Eva', 'Catherine', 'Female', 'female'
+];
+
+function isFemale(v) {
+  if (!v || !v.name) return false;
+  return FEMALE_NAMES.some(name => v.name.includes(name));
+}
+
+function refresh() {
+  const voices = speechSynthesis.getVoices();
+  log(`Found ${voices.length} voices`);
+
+  // Device info
+  document.getElementById('device-info').innerHTML =
+    `<strong>UA:</strong> ${navigator.userAgent.substring(0, 60)}...<br>` +
+    `<strong>Language:</strong> ${navigator.language}<br>` +
+    `<strong>Voices count:</strong> ${voices.length}`;
+
+  // Selected voice using same logic as the main lessons
+  selectedVoice =
+    voices.find(v => v.lang === 'en-GB' && isFemale(v)) ||
+    voices.find(v => v.lang === 'en-AU' && isFemale(v)) ||
+    voices.find(v => v.lang === 'en-IE' && isFemale(v)) ||
+    voices.find(v => v.lang === 'en-ZA' && isFemale(v)) ||
+    voices.find(v => v.lang.startsWith('en-') && isFemale(v)) ||
+    voices.find(v => v.lang === 'en-GB') ||
+    voices.find(v => v.lang.startsWith('en-')) ||
+    voices[0];
+
+  if (selectedVoice) {
+    const female = isFemale(selectedVoice);
+    document.getElementById('selected-voice').innerHTML =
+      `<strong>Name:</strong> ${selectedVoice.name}<br>` +
+      `<strong>Lang:</strong> ${selectedVoice.lang}<br>` +
+      `<strong>Is female?:</strong> ${female ? '✅ YES' : '❌ NO（會用 pitch fallback）'}<br>` +
+      `<strong>Default:</strong> ${selectedVoice.default ? 'yes' : 'no'}`;
+    log('Selected: ' + selectedVoice.name + ' (' + selectedVoice.lang + ') Female=' + female);
+  } else {
+    document.getElementById('selected-voice').innerHTML = '<strong style="color:red">⚠️ 搵唔到任何 voice！</strong>';
+  }
+
+  // All voices list
+  const listDiv = document.getElementById('all-voices');
+  if (voices.length === 0) {
+    listDiv.innerHTML = '<p style="color:red">⚠️ 0 voices available. Tap "Reload Voices" again.</p>';
+  } else {
+    listDiv.innerHTML = voices.map(v => {
+      const isSelected = v === selectedVoice;
+      const female = isFemale(v);
+      return `<div class="voice-item ${isSelected ? 'voice-selected' : ''}">
+        <div class="voice-name">${isSelected ? '👉 ' : ''}${v.name} ${female ? '🚺' : ''}</div>
+        <div class="voice-meta">${v.lang} · ${v.localService ? 'local' : 'online'} · ${v.default ? 'default' : ''}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function testSpeak(pitch) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance('Hello, my name is Hannah. I am fine, thanks.');
+  u.rate = 0.7;
+  u.pitch = pitch;
+  u.volume = 1;
+  if (selectedVoice) {
+    u.voice = selectedVoice;
+    u.lang = selectedVoice.lang;
+  } else {
+    u.lang = 'en-GB';
+  }
+  speechSynthesis.speak(u);
+  log('Speaking with pitch ' + pitch + ' — voice: ' + (selectedVoice ? selectedVoice.name + ' (' + selectedVoice.lang + ')' : 'none'));
+}
+
+// Initial load
+speechSynthesis.onvoiceschanged = refresh;
+setTimeout(refresh, 300);
+setTimeout(refresh, 1000);
+</script>
+
+</body>
+</html>

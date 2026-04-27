@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf6ef">
+<title>Hannah 英文</title>
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/app-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="images/app-icon-512.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    min-height: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: 'Noto Sans HK', 'Fraunces', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    padding: calc(20px + var(--safe-top)) 20px calc(20px + var(--safe-bottom));
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============ GREETING HEADER ============ */
+  .greeting {
+    text-align: center;
+    padding: 16px 0 28px;
+  }
+  .greeting .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+  }
+  .greeting h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .greeting .sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 18px;
+  }
+
+  /* ============ MAIN BOXES ============ */
+  .main-boxes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .main-box {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 24px;
+    padding: 32px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.3, 0.8, 0.4, 1);
+    box-shadow: 0 3px 0 var(--cream-dark);
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .main-box::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 6px;
+    background: var(--accent);
+    transition: height 0.2s ease;
+  }
+  .main-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--shadow), 0 3px 0 var(--cream-dark);
+    border-color: var(--accent);
+  }
+  .main-box:hover::before { height: 10px; }
+  .main-box:active { transform: translateY(0); }
+
+  .main-box[data-color="terra"] { --accent: var(--terra); }
+  .main-box[data-color="gold"] { --accent: var(--gold); }
+
+  .main-box .box-emoji {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .main-box h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--ink);
+    line-height: 1.1;
+    margin: 0;
+  }
+  .main-box .box-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+  .main-box .box-arrow {
+    font-size: 24px;
+    color: var(--accent);
+    font-family: 'Fraunces', serif;
+    margin-top: 4px;
+  }
+
+  /* ============ LESSONS MODAL ============ */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 36, 32, 0.5);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px 0 0;
+  }
+  .modal-backdrop.open { display: flex; }
+
+  .modal-sheet {
+    background: var(--paper);
+    width: 100%;
+    max-width: 640px;
+    max-height: 85vh;
+    border-radius: 24px 24px 0 0;
+    overflow-y: auto;
+    padding: 20px 24px calc(24px + var(--safe-bottom));
+    animation: slideUp 0.3s cubic-bezier(0.3, 0.85, 0.4, 1);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-handle {
+    width: 44px;
+    height: 5px;
+    background: var(--cream-dark);
+    border-radius: 3px;
+    margin: 0 auto 16px;
+  }
+  .modal-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .modal-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .lesson-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .week-separator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0 4px;
+    padding: 0 4px;
+  }
+  .week-separator .label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--terra-dark);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .week-separator .line {
+    flex: 1;
+    height: 1px;
+    background: var(--cream-dark);
+  }
+  .lesson-item.new-lesson {
+    position: relative;
+  }
+  .lesson-item.new-lesson::after {
+    content: 'NEW';
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--terra);
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+  }
+  .lesson-item {
+    background: var(--cream);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 0.15s ease;
+  }
+  .lesson-item:hover {
+    border-color: var(--gold);
+    transform: translateX(3px);
+  }
+  .lesson-item .num {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lesson-item.special .num { background: var(--sage); }
+  .lesson-item .meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .lesson-item .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .lesson-item .sub {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .lesson-item .arrow {
+    flex-shrink: 0;
+    color: var(--ink-soft);
+    font-size: 20px;
+  }
+
+  .modal-close {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    min-height: 50px;
+  }
+  .modal-close:hover { background: var(--terra-dark); }
+
+  /* ============ DESKTOP ============ */
+  @media (min-width: 769px) {
+    body { padding: 40px 20px; }
+    .greeting { padding: 24px 0 36px; }
+    .greeting h1 { font-size: 38px; }
+    .greeting .sub { font-size: 20px; }
+
+    /* 2-column layout on desktop */
+    .main-boxes {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .main-box {
+      min-height: 220px;
+      padding: 40px 24px;
+    }
+    .main-box .box-emoji { font-size: 64px; }
+    .main-box h2 { font-size: 32px; }
+    .main-box .box-desc { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="greeting">
+    <div class="ornament">· · ·</div>
+    <h1 id="greeting-title">Hannah，早晨！</h1>
+    <div class="sub">你今日想做咩？</div>
+  </div>
+
+  <div class="main-boxes">
+
+    <button class="main-box" data-color="terra" onclick="openLessons()">
+      <div class="box-emoji">📚</div>
+      <h2>課堂內容</h2>
+      <div class="box-desc">睇 lessons 學新嘢</div>
+      <div class="box-arrow">→</div>
+    </button>
+
+    <button class="main-box" data-color="gold" onclick="openGames()">
+      <div class="box-emoji">🎮</div>
+      <h2>溫習</h2>
+      <div class="box-desc">玩遊戲練熟套語</div>
+      <div class="box-arrow">→</div>
+    </button>
+
+  </div>
+
+</div>
+
+<!-- LESSONS MODAL -->
+<div class="modal-backdrop" id="lessons-modal" onclick="closeLessonsIfBackdrop(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">📖 所有課堂</h2>
+    <p class="modal-sub">揀一堂去睇返內容</p>
+
+    <div class="lesson-list">
+      <div class="week-separator">
+        <span class="label">Week 1 · 基礎社交</span>
+        <span class="line"></span>
+      </div>
+      <a class="lesson-item" href="lessons/lesson1-introduction.html">
+        <span class="num">1</span>
+        <div class="meta">
+          <div class="title">自我介紹</div>
+          <div class="sub">我叫... / 我嚟自... / 我住...</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item" href="lessons/lesson2-greetings.html">
+        <span class="num">2</span>
+        <div class="meta">
+          <div class="title">問候語</div>
+          <div class="sub">早晨／下午好 / 你點呀？</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item" href="lessons/lesson3-goodbyes.html">
+        <span class="num">3</span>
+        <div class="meta">
+          <div class="title">告別禮貌</div>
+          <div class="sub">再見 / 多謝 / 唔好意思</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item" href="lessons/lesson4-questions.html">
+        <span class="num">4</span>
+        <div class="meta">
+          <div class="title">問簡單問題</div>
+          <div class="sub">你叫咩名？／你住邊？</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item" href="lessons/lesson5-week1-review.html">
+        <span class="num">5</span>
+        <div class="meta">
+          <div class="title">Week 1 綜合評估</div>
+          <div class="sub">完整對話練習</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item new-lesson" href="lessons/lesson5-5-contractions.html">
+        <span class="num" style="background: var(--gold); font-size: 14px;">🔤</span>
+        <div class="meta">
+          <div class="title">縮寫聽明白（Bonus）</div>
+          <div class="sub">I'm / It's / I'll 係乜意思？</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <div class="week-separator">
+        <span class="label">Week 2 · 🛍️ 購物 Deep Dive</span>
+        <span class="line"></span>
+      </div>
+      <a class="lesson-item" href="lessons/week2-day1-shopping.html">
+        <span class="num">1</span>
+        <div class="meta">
+          <div class="title">🛒 Supermarket 基本</div>
+          <div class="sub">喺 Tesco 買嘢 · 問價錢 · 俾錢</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item new-lesson" href="lessons/week2-day2-dairy.html">
+        <span class="num">2</span>
+        <div class="meta">
+          <div class="title">🥛 奶類 & 早餐</div>
+          <div class="sub">milk, eggs, bread, cheese...</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item new-lesson" href="lessons/week2-day3-meat.html">
+        <span class="num">3</span>
+        <div class="meta">
+          <div class="title">🥩 肉類</div>
+          <div class="sub">beef, chicken, mince, sausages...</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item new-lesson" href="lessons/week2-day4-seafood.html">
+        <span class="num">4</span>
+        <div class="meta">
+          <div class="title">🦐 海鮮</div>
+          <div class="sub">salmon, prawns, crab, mussels...</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item new-lesson" href="lessons/week2-day5-produce.html">
+        <span class="num">5</span>
+        <div class="meta">
+          <div class="title">🍎 水果 & 🥕 蔬菜</div>
+          <div class="sub">apples, bananas, carrots, tomatoes...</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item new-lesson" href="lessons/week2-day6-review.html">
+        <span class="num" style="background: var(--gold);">6</span>
+        <div class="meta">
+          <div class="title">🛒 Week 2 綜合 Review</div>
+          <div class="sub">完整買餸 roleplay + 測驗</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <div class="week-separator">
+        <span class="label">其他</span>
+        <span class="line"></span>
+      </div>
+      <a class="lesson-item special" href="lessons/placement-test.html">
+        <span class="num">★</span>
+        <div class="meta">
+          <div class="title">入學評估測試</div>
+          <div class="sub">睇你而家嘅程度</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <button class="modal-close" onclick="closeLessons()">關閉</button>
+  </div>
+</div>
+
+<!-- GAMES MODAL -->
+<div class="modal-backdrop" id="games-modal" onclick="closeGamesIfBackdrop(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">🎮 揀個遊戲玩</h2>
+    <p class="modal-sub">玩遊戲 = 溫習</p>
+
+    <div class="lesson-list">
+      <a class="lesson-item" href="tools/flashcard-game.html">
+        <span class="num" style="background: var(--terra);">🌲</span>
+        <div class="meta">
+          <div class="title">套語森林</div>
+          <div class="sub">8 關闖關 · 認字 · 5-10 分鐘</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item" href="tools/qa-game.html">
+        <span class="num" style="background: var(--gold);">🏘️</span>
+        <div class="meta">
+          <div class="title">對答小鎮</div>
+          <div class="sub">8 關 · 聽問題即刻答 · 5-10 分鐘</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lesson-item" href="tools/test-game.html">
+        <span class="num" style="background: var(--sage);">🏔️</span>
+        <div class="meta">
+          <div class="title">評估山頂</div>
+          <div class="sub">5 站登山 · 5 種題型 · 10-15 分鐘</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <button class="modal-close" onclick="closeGames()">關閉</button>
+  </div>
+</div>
+
+<script>
+// Dynamic greeting based on time of day
+function setGreeting() {
+  const hour = new Date().getHours();
+  let greeting;
+  if (hour >= 5 && hour < 12) greeting = "Hannah，早晨！";
+  else if (hour >= 12 && hour < 18) greeting = "Hannah，下午好！";
+  else if (hour >= 18 && hour < 22) greeting = "Hannah，晚上好！";
+  else greeting = "Hannah，夜晚好！";
+  document.getElementById('greeting-title').textContent = greeting;
+}
+setGreeting();
+
+// Lessons modal
+function openLessons() {
+  document.getElementById('lessons-modal').classList.add('open');
+}
+function closeLessons() {
+  document.getElementById('lessons-modal').classList.remove('open');
+}
+function closeLessonsIfBackdrop(e) {
+  if (e.target.id === 'lessons-modal') closeLessons();
+}
+
+// Games modal
+function openGames() {
+  document.getElementById('games-modal').classList.add('open');
+}
+function closeGames() {
+  document.getElementById('games-modal').classList.remove('open');
+}
+function closeGamesIfBackdrop(e) {
+  if (e.target.id === 'games-modal') closeGames();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLessons();
+    closeGames();
+  }
+});
+</script>
+
+</body>
+</html>

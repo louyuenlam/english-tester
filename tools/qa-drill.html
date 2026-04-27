@@ -1,0 +1,2232 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf6ef">
+<title>Q&A Drill · Hannah</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23faf6ef'/><text x='50' y='65' text-anchor='middle' font-size='54'>🎯</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --burgundy: #8b3a3a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --sidebar-w: 300px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Noto Sans HK', 'Lora', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 18px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 1;
+  }
+
+  .app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid var(--cream-dark);
+    padding: 16px 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sidebar-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .sidebar-header .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 6px;
+    margin-bottom: 4px;
+  }
+  .sidebar-header .subtitle-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--terra-dark);
+    margin-bottom: 2px;
+  }
+  .sidebar-header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .sidebar-header .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  /* STATS */
+  .stats-compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .stat-block {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+  }
+  .stat-block .num {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-block.streak .num { color: var(--terra-dark); }
+  .stat-block.today .num { color: var(--sage-dark); }
+  .stat-block.conf .num { color: var(--gold-dark); }
+  .stat-block .lbl {
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  /* SECTION LABEL */
+  .sb-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    padding: 0 4px;
+    margin-bottom: 4px;
+  }
+
+  /* MODE CARDS (Full selection UI) */
+  .mode-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .mode-card {
+    background: var(--paper);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .mode-card:hover {
+    border-color: var(--gold);
+    transform: translateX(2px);
+  }
+  .mode-card.selected {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .mode-card.selected .mode-desc { color: rgba(255, 253, 247, 0.75); }
+  .mode-card .icon {
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .mode-card .mode-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .mode-card .mode-desc {
+    font-size: 11.5px;
+    line-height: 1.3;
+    color: var(--ink-soft);
+  }
+
+  /* CATEGORY FILTER */
+  .category-chips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .cat-chip {
+    background: var(--paper);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 7px;
+    padding: 7px 4px;
+    font-family: inherit;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .cat-chip:hover:not(.selected) { border-color: var(--gold); color: var(--ink); }
+  .cat-chip.selected {
+    background: var(--terra);
+    color: var(--paper);
+    border-color: var(--terra);
+  }
+  .cat-chip .lbl { font-weight: 600; display: block; }
+  .cat-chip .count { font-size: 10px; opacity: 0.85; }
+
+  /* SPEED */
+  .speed-panel {
+    padding: 10px 12px;
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1px solid var(--cream-dark);
+  }
+  .speed-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-top: 6px;
+  }
+  .speed-btn {
+    padding: 6px 4px;
+    border-radius: 7px;
+    border: 1.5px solid var(--cream-dark);
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.25;
+  }
+  .speed-btn:hover:not(.active) { border-color: var(--gold); color: var(--ink); }
+  .speed-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--paper);
+  }
+  .speed-btn .rate { font-family: 'Fraunces', serif; font-weight: 700; display: block; }
+  .speed-btn .rate-label { font-size: 10px; display: block; opacity: 0.85; }
+
+  /* START BUTTON */
+  .btn-start {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2.5px 0 #000;
+    letter-spacing: 0.02em;
+    width: 100%;
+  }
+  .btn-start:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.5px 0 #000;
+    background: var(--terra-dark);
+  }
+  .btn-reset {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--cream-dark);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 6px;
+    width: 100%;
+  }
+  .btn-reset:hover { border-color: var(--terra); color: var(--terra-dark); }
+
+  /* ============ MAIN ============ */
+  .main-area {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 40px;
+  }
+  .main-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 14px;
+    margin-right: -14px;
+  }
+  .main-inner::-webkit-scrollbar, .sidebar::-webkit-scrollbar { width: 8px; }
+  .main-inner::-webkit-scrollbar-track, .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .main-inner::-webkit-scrollbar-thumb, .sidebar::-webkit-scrollbar-thumb {
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+
+  /* ============ HOME SCREEN ============ */
+  .home-hero {
+    text-align: center;
+    padding: 14px 0 18px;
+    animation: fadeIn 0.5s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .home-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .home-hero .sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+  }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 18px;
+  }
+  .info-panel {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 16px 20px;
+  }
+  .info-panel h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--cream-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-panel h3 .icon { font-size: 22px; }
+
+  .problem-statement {
+    background: #fdf0e8;
+    border-left: 3px solid var(--terra);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .problem-statement strong { color: var(--terra-dark); }
+
+  .flow-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .flow-list li {
+    padding: 6px 0 6px 26px;
+    position: relative;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .flow-list li strong { color: var(--terra-dark); }
+  .flow-list li::before {
+    content: counter(flow);
+    counter-increment: flow;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 11.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flow-list { counter-reset: flow; }
+
+  .mode-hint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mode-hint-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 12px;
+    background: var(--cream);
+    border-radius: 8px;
+  }
+  .mode-hint-icon {
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .mode-hint-text {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .mode-hint-text strong { color: var(--blue-dark); }
+
+  .tip-card {
+    background: #f4f0e0;
+    border-left: 2px solid var(--gold);
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .tip-card strong { color: var(--gold-dark); }
+
+  /* ============ DRILL SCREEN ============ */
+  .drill-screen {
+    display: none;
+    height: 100%;
+    flex-direction: column;
+  }
+  .drill-screen.active { display: flex; }
+
+  .drill-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--cream-dark);
+  }
+  .drill-progress-inline {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .drill-counter {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .drill-mode-badge {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .drill-progbar-wrap {
+    flex: 1;
+    height: 5px;
+    background: var(--cream-dark);
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 320px;
+  }
+  .drill-progbar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--gold));
+    transition: width 0.4s ease;
+  }
+  .btn-exit {
+    background: transparent;
+    border: 1.5px solid var(--cream-dark);
+    color: var(--ink-soft);
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-exit:hover { border-color: var(--terra); color: var(--terra-dark); }
+
+  .drill-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  /* SCENARIO CONTEXT */
+  .scenario-ctx {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 10px 20px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    font-style: italic;
+    text-align: center;
+    max-width: 640px;
+  }
+  .scenario-ctx strong { color: var(--terra-dark); font-style: normal; }
+
+  /* PROMPT BUBBLE */
+  .prompt-box {
+    width: 100%;
+    max-width: 720px;
+    background: linear-gradient(135deg, var(--paper) 0%, #fdf4e3 100%);
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    padding: 22px 26px 18px;
+    text-align: center;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 16px var(--shadow);
+  }
+  .prompt-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--terra-dark);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .prompt-en {
+    font-family: 'Fraunces', serif;
+    font-size: 46px;
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    letter-spacing: 0.005em;
+  }
+  .prompt-zh {
+    font-size: 20px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+  .prompt-audio {
+    background: var(--terra);
+    color: var(--paper);
+    border: none;
+    padding: 11px 26px;
+    border-radius: 24px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2.5px 0 var(--terra-dark);
+    margin: 0 4px;
+  }
+  .prompt-audio:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.5px 0 var(--terra-dark);
+  }
+  .prompt-audio.repeat { background: var(--sage); box-shadow: 0 2.5px 0 var(--sage-dark); font-size: 13px; padding: 8px 16px; }
+  .prompt-audio.repeat:hover { box-shadow: 0 3.5px 0 var(--sage-dark); }
+
+  /* COUNTDOWN / YOUR-TURN AREA */
+  .response-area {
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .countdown-wrap {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 16px 20px;
+    animation: fadeIn 0.4s ease;
+  }
+  .countdown-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  .countdown-number {
+    font-family: 'Fraunces', serif;
+    font-size: 54px;
+    font-weight: 700;
+    color: var(--terra);
+    line-height: 1;
+    margin-bottom: 6px;
+    animation: countPulse 1s ease-in-out infinite;
+  }
+  @keyframes countPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  .countdown-hint {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .countdown-hint strong { color: var(--terra-dark); }
+
+  .your-turn-wrap {
+    background: var(--paper);
+    border: 2px solid var(--blue);
+    border-radius: 14px;
+    padding: 18px 22px;
+    animation: fadeIn 0.4s ease;
+  }
+  .your-turn-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--blue-dark);
+    font-size: 17px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .your-turn-mic {
+    font-size: 40px;
+    margin: 6px 0 10px;
+    animation: micBounce 2s ease-in-out infinite;
+    display: inline-block;
+  }
+  @keyframes micBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .your-turn-text {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .your-turn-text strong { color: var(--terra-dark); }
+  .btn-done {
+    background: var(--sage);
+    color: var(--paper);
+    border: none;
+    padding: 10px 26px;
+    border-radius: 22px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2.5px 0 var(--sage-dark);
+  }
+  .btn-done:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.5px 0 var(--sage-dark);
+  }
+
+  /* ANSWER REVEAL */
+  .answer-wrap {
+    background: var(--paper);
+    border: 2px solid var(--sage);
+    border-radius: 14px;
+    padding: 18px 24px;
+    animation: fadeIn 0.4s ease;
+  }
+  .answer-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--sage-dark);
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .answer-en {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    color: var(--sage-dark);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .answer-zh {
+    font-size: 18px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .answer-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .answer-play {
+    background: var(--sage);
+    color: var(--paper);
+    border: none;
+    padding: 9px 18px;
+    border-radius: 20px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 0 var(--sage-dark);
+  }
+  .answer-play:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--sage-dark);
+  }
+  .answer-play.both { background: var(--blue); box-shadow: 0 2px 0 var(--blue-dark); }
+  .answer-play.both:hover { box-shadow: 0 3px 0 var(--blue-dark); }
+
+  .self-rate {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding-top: 12px;
+    border-top: 1px dashed var(--cream-dark);
+  }
+  .rate-btn {
+    flex: 1;
+    max-width: 130px;
+    padding: 10px 6px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .rate-btn .big { font-size: 22px; }
+  .rate-btn .lbl {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 13.5px;
+  }
+  .rate-btn .sub { font-size: 10.5px; opacity: 0.75; }
+  .rate-btn.again { background: #f5dcd0; color: var(--terra-dark); }
+  .rate-btn.again:hover { background: var(--terra); color: var(--paper); transform: translateY(-1px); }
+  .rate-btn.ok { background: #fdf4d9; color: var(--gold-dark); }
+  .rate-btn.ok:hover { background: var(--gold); color: var(--paper); transform: translateY(-1px); }
+  .rate-btn.good { background: #e8f0e2; color: var(--sage-dark); }
+  .rate-btn.good:hover { background: var(--sage); color: var(--paper); transform: translateY(-1px); }
+
+  /* SUMMARY */
+  .summary-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeIn 0.5s ease;
+  }
+  .summary-icon {
+    font-size: 72px;
+    line-height: 1;
+    margin-bottom: 8px;
+    animation: popIn 0.6s cubic-bezier(0.2, 1.5, 0.5, 1);
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .summary-title {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .summary-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 17px;
+    margin-bottom: 16px;
+  }
+  .summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .summary-stat {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 14px 8px;
+  }
+  .summary-stat .num {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .summary-stat.good .num { color: var(--sage-dark); }
+  .summary-stat.ok .num { color: var(--gold-dark); }
+  .summary-stat.again .num { color: var(--terra-dark); }
+  .summary-stat .lbl {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 4px;
+  }
+  .summary-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ========================================================
+     📱 MOBILE (iPhone 17 Pro Max and similar)
+     Breakpoint: 768px (covers all phones in portrait)
+  ======================================================== */
+  @media (max-width: 768px) {
+    :root {
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+    }
+
+    html, body {
+      overflow: hidden;
+      height: 100%;
+      position: fixed;
+      width: 100%;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+      overscroll-behavior: none;
+    }
+
+    body { font-size: 16px; }
+
+    /* =========== LAYOUT =========== */
+    .app-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh; /* dynamic viewport for iOS */
+    }
+
+    /* Hide sidebar — replaced by top bar + settings drawer */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 86%;
+      max-width: 360px;
+      z-index: 100;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.3, 0.85, 0.4, 1);
+      padding: calc(16px + var(--safe-top)) 18px calc(16px + var(--safe-bottom));
+      box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border-right: none;
+      border-left: 1px solid var(--cream-dark);
+    }
+    .sidebar.open { transform: translateX(0); }
+
+    /* Backdrop when sidebar open */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 36, 32, 0.4);
+      z-index: 99;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* =========== TOP APP BAR (replaces sidebar header) =========== */
+    .mobile-top-bar {
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(10px + var(--safe-top)) 16px 10px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--cream-dark);
+      flex-shrink: 0;
+      z-index: 10;
+      position: relative;
+    }
+    .mobile-top-bar .title-group {
+      flex: 1;
+      min-width: 0;
+    }
+    .mobile-top-bar .tag {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 11px;
+      color: var(--terra-dark);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .mobile-top-bar h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--ink);
+      line-height: 1.1;
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    .mobile-top-bar .mini-stats {
+      display: flex;
+      gap: 8px;
+      margin-right: 8px;
+      align-items: center;
+    }
+    .mobile-top-bar .mini-stat {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 4px 9px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .mobile-top-bar .mini-stat .n {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      color: var(--terra-dark);
+      font-size: 13px;
+    }
+    .mobile-top-bar .menu-btn {
+      background: var(--cream);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ink);
+    }
+    .mobile-top-bar .menu-btn:active { background: var(--cream-dark); }
+
+    /* Hide old desktop sidebar header - use top bar instead */
+    .sidebar .sidebar-header { display: none; }
+    .sidebar .stats-compact { display: none; }
+    .sidebar .btn-start,
+    .sidebar .btn-reset { display: none; } /* start moved to main home */
+
+    /* Sidebar in mobile mode becomes "settings" drawer */
+    .sidebar::before {
+      content: "⚙️ 設定";
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--ink);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--cream-dark);
+      margin-bottom: 14px;
+    }
+
+    .sidebar .sb-label {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    /* =========== MAIN AREA =========== */
+    .main-area {
+      flex: 1;
+      padding: 14px 16px calc(14px + var(--safe-bottom));
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-inner {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-right: 0;
+      margin-right: 0;
+    }
+
+    /* =========== HOME SCREEN =========== */
+    .home-hero {
+      padding: 8px 0 14px;
+    }
+    .home-hero h2 {
+      font-size: 28px;
+      line-height: 1.15;
+    }
+    .home-hero .sub {
+      font-size: 15px;
+    }
+
+    .home-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding-bottom: 90px; /* room for floating start button */
+    }
+    .info-panel {
+      padding: 14px 16px;
+    }
+    .info-panel h3 {
+      font-size: 17px;
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+    }
+    .info-panel h3 .icon { font-size: 19px; }
+
+    .problem-statement {
+      font-size: 13.5px;
+      padding: 10px 12px;
+      line-height: 1.5;
+    }
+    .flow-list li {
+      font-size: 13.5px;
+      padding-left: 26px;
+    }
+    .mode-hint-text { font-size: 13.5px; }
+    .mode-hint-icon { font-size: 20px; }
+    .tip-card { font-size: 12.5px; }
+
+    /* =========== MOBILE FLOATING START BUTTON =========== */
+    .mobile-fab-start {
+      display: flex !important;
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: calc(16px + var(--safe-bottom));
+      z-index: 20;
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-size: 17px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(42, 36, 32, 0.25), 0 2px 0 #000;
+      min-height: 56px;
+      letter-spacing: 0.02em;
+    }
+    .mobile-fab-start.in-drill {
+      display: none !important;
+    }
+    .mobile-fab-start:active {
+      transform: translateY(1px);
+      background: var(--terra-dark);
+    }
+    .mobile-fab-start .selection-meta {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 13px;
+      font-weight: 400;
+      opacity: 0.75;
+      margin-left: 4px;
+    }
+
+    /* =========== DRILL SCREEN (Full immersive mode) =========== */
+    .drill-screen.active {
+      height: 100%;
+    }
+    .drill-header {
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+    }
+    .drill-progress-inline {
+      gap: 10px;
+    }
+    .drill-counter {
+      font-size: 16px;
+    }
+    .drill-mode-badge {
+      font-size: 12px;
+    }
+    .drill-progbar-wrap {
+      max-width: none;
+      height: 6px;
+    }
+    .btn-exit {
+      padding: 7px 14px;
+      font-size: 13px;
+      min-height: 36px;
+    }
+
+    .drill-stage {
+      padding: 0;
+      flex: 1;
+      justify-content: flex-start;
+      padding-top: 8px;
+    }
+
+    /* =========== PROMPT BOX (mobile) =========== */
+    .scenario-ctx {
+      font-size: 13px;
+      padding: 8px 14px;
+      margin-bottom: 12px;
+      max-width: 100%;
+      border-radius: 20px;
+    }
+
+    .prompt-box {
+      padding: 18px 16px 14px;
+      margin-bottom: 10px;
+      border-radius: 18px;
+      border-width: 2.5px;
+      max-width: 100%;
+    }
+    .prompt-tag {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .prompt-en {
+      font-size: 34px;
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+    .prompt-zh {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .prompt-audio {
+      padding: 10px 18px;
+      font-size: 14px;
+      min-height: 44px;
+      box-shadow: 0 2px 0 var(--terra-dark);
+    }
+    .prompt-audio.repeat {
+      font-size: 12px;
+      padding: 8px 14px;
+    }
+
+    /* =========== COUNTDOWN (mobile) =========== */
+    .countdown-wrap {
+      padding: 16px 16px 18px;
+      border-radius: 16px;
+      border-width: 2px;
+    }
+    .countdown-label {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .countdown-number {
+      font-size: 72px;
+      margin-bottom: 4px;
+    }
+    .countdown-hint {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* =========== YOUR TURN (mobile) =========== */
+    .your-turn-wrap {
+      padding: 18px 16px 20px;
+      border-radius: 16px;
+      border-width: 2px;
+    }
+    .your-turn-label {
+      font-size: 15px;
+    }
+    .your-turn-mic {
+      font-size: 52px;
+      margin: 8px 0 12px;
+    }
+    .your-turn-text {
+      font-size: 15px;
+      margin-bottom: 14px;
+    }
+    .btn-done {
+      padding: 14px 28px;
+      font-size: 15px;
+      min-height: 50px;
+      border-radius: 25px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    /* =========== ANSWER REVEAL (mobile) =========== */
+    .answer-wrap {
+      padding: 16px 16px;
+      border-radius: 16px;
+      border-width: 2px;
+    }
+    .answer-label {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .answer-en {
+      font-size: 26px;
+      margin-bottom: 4px;
+      line-height: 1.15;
+    }
+    .answer-zh {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+    .answer-actions {
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .answer-play {
+      padding: 10px 14px;
+      font-size: 13px;
+      min-height: 40px;
+    }
+    .self-rate {
+      gap: 6px;
+      padding-top: 10px;
+    }
+    .rate-btn {
+      padding: 11px 4px;
+      min-height: 70px;
+      border-radius: 12px;
+    }
+    .rate-btn .big { font-size: 24px; }
+    .rate-btn .lbl { font-size: 13.5px; }
+    .rate-btn .sub { font-size: 10.5px; }
+
+    /* =========== SUMMARY (mobile) =========== */
+    .summary-wrap {
+      padding: 14px 0 90px;
+    }
+    .summary-icon { font-size: 64px; }
+    .summary-title { font-size: 26px; }
+    .summary-sub { font-size: 14px; }
+    .summary-stats {
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .summary-stat { padding: 12px 6px; }
+    .summary-stat .num { font-size: 26px; }
+    .summary-stat .lbl { font-size: 12px; }
+    .summary-actions {
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+    .summary-actions .btn-start,
+    .summary-actions .btn-reset {
+      width: 100% !important;
+      max-width: 320px;
+      min-height: 50px;
+    }
+
+    /* =========== SIDEBAR SETTINGS (when open) =========== */
+    .sidebar .mode-cards {
+      gap: 8px;
+    }
+    .sidebar .mode-card {
+      padding: 12px 14px;
+      min-height: 56px;
+    }
+    .sidebar .mode-card .icon { font-size: 24px; }
+    .sidebar .mode-card .mode-title { font-size: 15px; }
+    .sidebar .mode-card .mode-desc { font-size: 12.5px; }
+
+    .sidebar .category-chips {
+      gap: 7px;
+    }
+    .sidebar .cat-chip {
+      padding: 10px 6px;
+      font-size: 13px;
+      min-height: 50px;
+      border-radius: 10px;
+    }
+
+    .sidebar .speed-panel {
+      padding: 12px 14px;
+    }
+    .sidebar .speed-buttons {
+      gap: 6px;
+    }
+    .sidebar .speed-btn {
+      padding: 10px 4px;
+      min-height: 44px;
+      font-size: 13px;
+    }
+
+    /* Mobile-only elements visibility */
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block; }
+  }
+
+  /* Desktop-only elements visibility */
+  @media (min-width: 769px) {
+    .mobile-only { display: none !important; }
+    .mobile-top-bar { display: none !important; }
+    .mobile-fab-start { display: none !important; }
+    .sidebar-backdrop { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="ornament">· · ·</div>
+      <div class="subtitle-tag">Q&A Drill · 反應訓練</div>
+      <h1>問答反應</h1>
+      <div class="subtitle">Hannah · Lesson 1-3</div>
+    </div>
+
+    <div class="stats-compact">
+      <div class="stat-block streak">
+        <div class="num" id="stat-streak">0</div>
+        <div class="lbl">連續日</div>
+      </div>
+      <div class="stat-block today">
+        <div class="num" id="stat-today">0</div>
+        <div class="lbl">今日</div>
+      </div>
+      <div class="stat-block conf">
+        <div class="num" id="stat-total">0</div>
+        <div class="lbl">總次數</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sb-label">📋 訓練模式</div>
+      <div class="mode-cards">
+        <div class="mode-card selected" data-mode="passive" onclick="selectMode('passive', this)">
+          <span class="icon">🎧</span>
+          <div>
+            <div class="mode-title">被動 Drill</div>
+            <div class="mode-desc">聽問題 → 諗幾秒 → 聽正解</div>
+          </div>
+        </div>
+        <div class="mode-card" data-mode="active" onclick="selectMode('active', this)">
+          <span class="icon">🎤</span>
+          <div>
+            <div class="mode-title">主動 Drill</div>
+            <div class="mode-desc">聽問題 → 自己開口答 → 比對</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sb-label">🎯 揀類別</div>
+      <div class="category-chips" id="category-chips"></div>
+    </div>
+
+    <div class="speed-panel">
+      <div class="sb-label" style="margin: 0 0 4px;">🐢 聲音速度</div>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="0.2" onclick="setSpeed(0.2, this)">
+          <span class="rate">0.2x</span><span class="rate-label">極慢</span>
+        </button>
+        <button class="speed-btn active" data-speed="0.3" onclick="setSpeed(0.3, this)">
+          <span class="rate">0.3x</span><span class="rate-label">好慢</span>
+        </button>
+        <button class="speed-btn" data-speed="0.4" onclick="setSpeed(0.4, this)">
+          <span class="rate">0.4x</span><span class="rate-label">慢</span>
+        </button>
+        <button class="speed-btn" data-speed="0.6" onclick="setSpeed(0.6, this)">
+          <span class="rate">0.6x</span><span class="rate-label">正常</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn-start" onclick="startSession()" id="start-btn">
+        開始練習 →
+      </button>
+      <button class="btn-reset" onclick="resetProgress()">↻ 重置記錄</button>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar backdrop -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+  <main class="main-area">
+    <!-- Mobile top bar (only visible on mobile) -->
+    <div class="mobile-top-bar">
+      <div class="title-group">
+        <div class="tag">Q&A Drill · Hannah</div>
+        <h1>問答反應</h1>
+      </div>
+      <div class="mini-stats">
+        <div class="mini-stat"><span class="n" id="mobile-stat-streak">0</span>🔥</div>
+        <div class="mini-stat"><span class="n" id="mobile-stat-today">0</span>今</div>
+      </div>
+      <button class="menu-btn" onclick="openMobileSidebar()" aria-label="設定">⚙️</button>
+    </div>
+
+    <div class="main-inner">
+
+      <!-- HOME SCREEN -->
+      <div id="home-screen">
+        <div class="home-hero">
+          <h2>建立自動反應 🎯</h2>
+          <div class="sub">聽問題 → 即刻答 · 唔使再諗</div>
+        </div>
+
+        <div class="home-grid">
+          <div class="info-panel">
+            <h3><span class="icon">🧠</span> 呢個 Drill 係咩</h3>
+
+            <div class="problem-statement">
+              <strong>常見問題：</strong>你識「How are you」=「你點呀」，但聽到問題時要諗一諗先答到「I'm fine, thank you」。呢個 Drill 係訓練你<strong>聽到即刻有反應</strong>。
+            </div>
+
+            <ol class="flow-list">
+              <li>左邊揀 <strong>訓練模式</strong>（被動／主動）</li>
+              <li>揀 <strong>問題類別</strong>（例如「How are you」組）</li>
+              <li>㩒「開始練習」— 每次 <strong>10 題</strong></li>
+              <li>自評之後，<strong>未熟嘅會喺尾段再出現</strong></li>
+            </ol>
+
+            <div class="tip-card">
+              <strong>💡 Hannah 嘅建議：</strong>先用「被動」3-4 次建立直覺，再用「主動」開口講。每日 5 分鐘。
+            </div>
+          </div>
+
+          <div class="info-panel">
+            <h3><span class="icon">🎯</span> 2 個模式點揀</h3>
+
+            <div class="mode-hint-list">
+              <div class="mode-hint-item">
+                <div class="mode-hint-icon">🎧</div>
+                <div class="mode-hint-text">
+                  <strong>被動 Drill</strong> — 聽完問題有 <strong>5 秒倒數</strong>，畀你腦海裏諗答案；之後自動播放標準答案。好似靜下來跟老師走。啱啱開始用呢個。
+                </div>
+              </div>
+
+              <div class="mode-hint-item">
+                <div class="mode-hint-icon">🎤</div>
+                <div class="mode-hint-text">
+                  <strong>主動 Drill</strong> — 聽完問題就要 <strong>自己大聲講出答案</strong>，㩒「講咗」掣就聽標準答案對比。訓練真實反應。
+                </div>
+              </div>
+
+              <div class="mode-hint-item" style="background: #fdf4e3;">
+                <div class="mode-hint-icon">💡</div>
+                <div class="mode-hint-text">
+                  <strong>自評邏輯：</strong>「識」= 唔使諗即刻答；「有啲難」= 停咗一下；「再練」= 諗唔出。唔熟嘅會自動多練幾次。
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile floating start button (only on home) -->
+      <button class="mobile-fab-start" id="mobile-fab-start" onclick="startSession()">
+        <span>開始練習</span>
+        <span class="selection-meta" id="mobile-selection-meta">全部 · 被動</span>
+        <span>→</span>
+      </button>
+
+      <!-- DRILL SCREEN -->
+      <div id="drill-screen" class="drill-screen">
+        <div class="drill-header">
+          <div class="drill-progress-inline">
+            <div class="drill-counter" id="drill-counter">1 / 10</div>
+            <div class="drill-progbar-wrap">
+              <div class="drill-progbar-fill" id="drill-progbar-fill" style="width: 10%;"></div>
+            </div>
+            <div class="drill-mode-badge" id="drill-mode-badge">🎧 被動 Drill</div>
+          </div>
+          <button class="btn-exit" onclick="exitDrill()">× 退出</button>
+        </div>
+
+        <div class="drill-stage" id="drill-stage"></div>
+      </div>
+
+      <!-- SUMMARY SCREEN -->
+      <div id="summary-screen" class="drill-screen">
+        <div class="summary-wrap" id="summary-content"></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// ============================================================
+// DATA: Q&A PAIRS FROM LESSON 1-3
+// ============================================================
+
+const QA_PAIRS = [
+  // ============ GREETINGS (Lesson 2 core) ============
+  {
+    id: "qa_morning",
+    category: "greetings",
+    context: "朝早見到朋友",
+    prompt: { en: "Good morning!", zh: "早晨！" },
+    answer: { en: "Good morning!", zh: "早晨！" },
+    note: "跟對方講同一句"
+  },
+  {
+    id: "qa_afternoon",
+    category: "greetings",
+    context: "下午打招呼",
+    prompt: { en: "Good afternoon!", zh: "下午好！" },
+    answer: { en: "Good afternoon!", zh: "下午好！" },
+    note: "回應同一句"
+  },
+  {
+    id: "qa_evening",
+    category: "greetings",
+    context: "晚上打招呼",
+    prompt: { en: "Good evening!", zh: "晚上好！" },
+    answer: { en: "Good evening!", zh: "晚上好！" },
+    note: "回應同一句"
+  },
+  {
+    id: "qa_hi",
+    category: "greetings",
+    context: "有人打招呼",
+    prompt: { en: "Hi!", zh: "嗨！" },
+    answer: { en: "Hi! / Hello!", zh: "嗨！／你好！" },
+    note: "兩個答法都 OK"
+  },
+
+  // ============ HOW ARE YOU (Core problem area) ============
+  {
+    id: "qa_how1",
+    category: "howareyou",
+    context: "有人問你好嗎（你心情好）",
+    prompt: { en: "How are you?", zh: "你點呀？" },
+    answer: { en: "I'm fine, thank you. And you?", zh: "我都幾好，唔該。你呢？" },
+    note: "最禮貌版本，加埋反問"
+  },
+  {
+    id: "qa_how2",
+    category: "howareyou",
+    context: "朋友問你近況",
+    prompt: { en: "How are you?", zh: "你點呀？" },
+    answer: { en: "I'm good, thanks. And you?", zh: "我好好，唔該。你呢？" },
+    note: "日常版，更自然"
+  },
+  {
+    id: "qa_how3",
+    category: "howareyou",
+    context: "隨意嘅打招呼",
+    prompt: { en: "How's it going?", zh: "點呀？（你好嗎？）" },
+    answer: { en: "Good, thanks. And you?", zh: "幾好，唔該。你呢？" },
+    note: "好 casual 嘅版本"
+  },
+  {
+    id: "qa_how4",
+    category: "howareyou",
+    context: "對方反問你",
+    prompt: { en: "And you?", zh: "你呢？" },
+    answer: { en: "I'm good, thanks!", zh: "我好好，唔該！" },
+    note: "簡短答返"
+  },
+
+  // ============ INTRODUCTION (Lesson 1 responses) ============
+  {
+    id: "qa_name",
+    category: "intro",
+    context: "陌生人問你名",
+    prompt: { en: "What's your name?", zh: "你叫咩名？" },
+    answer: { en: "My name is Hannah.", zh: "我叫 Hannah。" },
+    note: "完整介紹自己"
+  },
+  {
+    id: "qa_from",
+    category: "intro",
+    context: "問你邊度人",
+    prompt: { en: "Where are you from?", zh: "你嚟自邊度？" },
+    answer: { en: "I'm from Hong Kong.", zh: "我嚟自香港。" },
+    note: "出生地／鄉下"
+  },
+  {
+    id: "qa_live",
+    category: "intro",
+    context: "問你而家住邊",
+    prompt: { en: "Where do you live?", zh: "你住邊？" },
+    answer: { en: "I live in England.", zh: "我住喺英國。" },
+    note: "現居地"
+  },
+  {
+    id: "qa_meet",
+    category: "intro",
+    context: "剛剛識到新朋友",
+    prompt: { en: "Nice to meet you.", zh: "好開心識到你。" },
+    answer: { en: "Nice to meet you too.", zh: "我都好開心識到你。" },
+    note: "加 \"too\" 表示「我都係」"
+  },
+
+  // ============ POLITENESS PAIRS (Lesson 3) ============
+  {
+    id: "qa_thanks1",
+    category: "polite",
+    context: "有人幫你／畀嘢你",
+    prompt: { en: "(對方幫你)", zh: "對方幫你做嘢" },
+    answer: { en: "Thank you.", zh: "多謝。" },
+    note: "禮貌版"
+  },
+  {
+    id: "qa_thanks2",
+    category: "polite",
+    context: "人哋同你講 thank you",
+    prompt: { en: "Thank you.", zh: "多謝。" },
+    answer: { en: "You're welcome.", zh: "唔使客氣。" },
+    note: "⭐ 呢個要訓練成自動反應！"
+  },
+  {
+    id: "qa_thanks3",
+    category: "polite",
+    context: "人哋同你講 thanks（隨意）",
+    prompt: { en: "Thanks!", zh: "謝啦！" },
+    answer: { en: "You're welcome.", zh: "唔使客氣。" },
+    note: "同樣答 You're welcome"
+  },
+  {
+    id: "qa_excuse",
+    category: "polite",
+    context: "你想經過人群",
+    prompt: { en: "(想借過)", zh: "人多，要過" },
+    answer: { en: "Excuse me.", zh: "唔好意思／借過。" },
+    note: "呢個係未發生事先講"
+  },
+  {
+    id: "qa_sorry",
+    category: "polite",
+    context: "你踩咗人隻腳",
+    prompt: { en: "(你做錯咗)", zh: "你撞到人／做錯" },
+    answer: { en: "Sorry!", zh: "對唔住！" },
+    note: "已經發生事，道歉"
+  },
+
+  // ============ GOODBYES (Lesson 3 responses) ============
+  {
+    id: "qa_bye1",
+    category: "goodbye",
+    context: "對方話「再見」",
+    prompt: { en: "Goodbye!", zh: "再見！" },
+    answer: { en: "Goodbye! / See you!", zh: "再見！" },
+    note: "回應同一句"
+  },
+  {
+    id: "qa_bye2",
+    category: "goodbye",
+    context: "對方話「陣間見」",
+    prompt: { en: "See you later!", zh: "陣間見！" },
+    answer: { en: "See you later! / Bye!", zh: "陣間見！" },
+    note: "同樣答"
+  },
+  {
+    id: "qa_bye3",
+    category: "goodbye",
+    context: "今日再見聽日",
+    prompt: { en: "See you tomorrow!", zh: "聽日見！" },
+    answer: { en: "See you tomorrow!", zh: "聽日見！" },
+    note: "回應同一句"
+  },
+];
+
+const CATEGORIES = [
+  { id: "all", label: "全部", icon: "" },
+  { id: "howareyou", label: "How are you", icon: "⭐" },
+  { id: "greetings", label: "打招呼", icon: "" },
+  { id: "intro", label: "自我介紹", icon: "" },
+  { id: "polite", label: "禮貌對答", icon: "" },
+  { id: "goodbye", label: "告別", icon: "" },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+
+const STORAGE_KEY = 'hannah_qa_drill_v1';
+const SESSION_SIZE = 10;
+const COUNTDOWN_SECONDS = 5;
+
+let selectedMode = 'passive';
+let selectedCategory = 'all';
+let currentSpeed = 0.3;
+let englishVoice = null;
+
+let progress = loadProgress();
+let currentSession = null; // { queue: [], idx: 0, phase: 'prompt'|'countdown'|'your-turn'|'answer', stats: {good, ok, again} }
+
+function defaultProgress() {
+  return {
+    streak: 0,
+    lastDate: null,
+    today: 0,
+    total: 0,
+    cardStats: {}, // qa_id -> { seen, good, ok, again }
+  };
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultProgress();
+    return { ...defaultProgress(), ...JSON.parse(raw) };
+  } catch (e) {
+    return defaultProgress();
+  }
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch (e) {}
+}
+
+function updateStreak() {
+  const today = new Date().toISOString().split('T')[0];
+  if (progress.lastDate === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  if (progress.lastDate === yesterday) {
+    progress.streak = (progress.streak || 0) + 1;
+  } else if (progress.lastDate !== today) {
+    progress.streak = 1;
+  }
+  progress.lastDate = today;
+  progress.today = 0;
+  saveProgress();
+}
+
+function resetProgress() {
+  if (!confirm('確定要清除所有記錄嗎？')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  progress = defaultProgress();
+  renderStats();
+}
+
+function renderStats() {
+  document.getElementById('stat-streak').textContent = progress.streak || 0;
+  document.getElementById('stat-today').textContent = progress.today || 0;
+  document.getElementById('stat-total').textContent = progress.total || 0;
+  // Mobile mini stats
+  const mStreak = document.getElementById('mobile-stat-streak');
+  const mToday = document.getElementById('mobile-stat-today');
+  if (mStreak) mStreak.textContent = progress.streak || 0;
+  if (mToday) mToday.textContent = progress.today || 0;
+}
+
+// ============================================================
+// MOBILE SIDEBAR
+// ============================================================
+
+function openMobileSidebar() {
+  document.querySelector('.sidebar').classList.add('open');
+  document.getElementById('sidebar-backdrop').classList.add('show');
+}
+function closeMobileSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebar-backdrop').classList.remove('show');
+}
+
+function updateMobileSelectionMeta() {
+  const meta = document.getElementById('mobile-selection-meta');
+  if (!meta) return;
+  const catLabel = CATEGORIES.find(c => c.id === selectedCategory)?.label || '全部';
+  const modeLabel = selectedMode === 'passive' ? '被動' : '主動';
+  meta.textContent = `${catLabel} · ${modeLabel}`;
+}
+
+// ============================================================
+// SPEECH
+// ============================================================
+
+function loadVoice() {
+  const voices = speechSynthesis.getVoices();
+  englishVoice = voices.find(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-GB')
+              || voices.find(v => v.lang === 'en-US' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-US')
+              || voices.find(v => v.lang.startsWith('en'))
+              || voices[0];
+}
+if ('speechSynthesis' in window) {
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
+function speak(text, rate, onEnd) {
+  if (!('speechSynthesis' in window)) {
+    if (onEnd) setTimeout(onEnd, 500);
+    return;
+  }
+  // Strip parenthetical stage directions for cleaner TTS
+  const cleanText = text.replace(/\([^)]*\)/g, '').trim();
+  if (!cleanText) {
+    if (onEnd) setTimeout(onEnd, 100);
+    return;
+  }
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(cleanText);
+  utter.lang = 'en-GB';
+  utter.rate = rate || currentSpeed;
+  if (englishVoice) utter.voice = englishVoice;
+  if (onEnd) {
+    utter.onend = onEnd;
+    // Safety fallback in case onend doesn't fire (some browsers)
+    const fallback = setTimeout(onEnd, 10000);
+    utter.addEventListener('end', () => clearTimeout(fallback));
+  }
+  speechSynthesis.speak(utter);
+}
+function setSpeed(speed, btn) {
+  currentSpeed = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ============================================================
+// CATEGORY CHIPS
+// ============================================================
+
+function renderCategoryChips() {
+  const container = document.getElementById('category-chips');
+  container.innerHTML = CATEGORIES.map(cat => {
+    const count = cat.id === 'all' ? QA_PAIRS.length : QA_PAIRS.filter(p => p.category === cat.id).length;
+    return `
+      <button class="cat-chip ${selectedCategory === cat.id ? 'selected' : ''}"
+              data-cat="${cat.id}"
+              onclick="selectCategory('${cat.id}', this)">
+        <span class="lbl">${cat.icon} ${cat.label}</span>
+        <span class="count">${count} 對</span>
+      </button>
+    `;
+  }).join('');
+}
+
+function selectCategory(catId, btn) {
+  selectedCategory = catId;
+  document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateMobileSelectionMeta();
+}
+
+function selectMode(mode, btn) {
+  selectedMode = mode;
+  document.querySelectorAll('.mode-card').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateMobileSelectionMeta();
+}
+
+// ============================================================
+// SESSION LOGIC
+// ============================================================
+
+function startSession() {
+  updateStreak();
+  closeMobileSidebar();
+
+  // Hide the floating start button when in drill
+  const fab = document.getElementById('mobile-fab-start');
+  if (fab) fab.classList.add('in-drill');
+
+  // Build pool by category
+  let pool = selectedCategory === 'all'
+    ? QA_PAIRS.slice()
+    : QA_PAIRS.filter(p => p.category === selectedCategory);
+
+  if (pool.length === 0) {
+    alert('呢個類別冇題目！');
+    return;
+  }
+
+  // Prioritize weak cards (those marked 'again' or 'ok' previously)
+  const weighted = pool.map(card => {
+    const st = progress.cardStats[card.id] || { seen: 0, good: 0, ok: 0, again: 0 };
+    let weight = 1;
+    if (st.again > 0) weight += 3 * st.again;
+    if (st.ok > 0) weight += 1.5 * st.ok;
+    if (st.good > 0) weight -= 0.3 * st.good;
+    if (weight < 0.3) weight = 0.3;
+    return { card, weight };
+  });
+
+  // Shuffle with weight bias (pick using weighted random, no replacement)
+  const queue = [];
+  const poolCopy = weighted.slice();
+  while (queue.length < Math.min(SESSION_SIZE, pool.length) && poolCopy.length > 0) {
+    const totalWeight = poolCopy.reduce((s, x) => s + x.weight, 0);
+    let r = Math.random() * totalWeight;
+    for (let i = 0; i < poolCopy.length; i++) {
+      r -= poolCopy[i].weight;
+      if (r <= 0) {
+        queue.push(poolCopy[i].card);
+        poolCopy.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  currentSession = {
+    queue,
+    idx: 0,
+    phase: 'prompt',
+    stats: { good: 0, ok: 0, again: 0 },
+    startedAt: Date.now(),
+  };
+
+  document.getElementById('home-screen').classList.add('hidden');
+  document.getElementById('summary-screen').classList.remove('active');
+  document.getElementById('drill-screen').classList.add('active');
+
+  renderDrill();
+}
+
+function exitDrill() {
+  if (currentSession && currentSession.idx < currentSession.queue.length) {
+    if (!confirm('確定要退出？未完成嘅會唔記錄。')) return;
+  }
+  clearTimeouts();
+  currentSession = null;
+  document.getElementById('drill-screen').classList.remove('active');
+  document.getElementById('summary-screen').classList.remove('active');
+  document.getElementById('home-screen').classList.remove('hidden');
+  // Restore mobile FAB
+  const fab = document.getElementById('mobile-fab-start');
+  if (fab) fab.classList.remove('in-drill');
+}
+
+let activeTimeouts = [];
+function clearTimeouts() {
+  activeTimeouts.forEach(t => clearTimeout(t));
+  activeTimeouts = [];
+  speechSynthesis.cancel();
+}
+
+function renderDrill() {
+  if (!currentSession) return;
+  if (currentSession.idx >= currentSession.queue.length) {
+    showSummary();
+    return;
+  }
+
+  const card = currentSession.queue[currentSession.idx];
+  const progress_pct = ((currentSession.idx) / currentSession.queue.length) * 100;
+
+  document.getElementById('drill-counter').textContent = `${currentSession.idx + 1} / ${currentSession.queue.length}`;
+  document.getElementById('drill-progbar-fill').style.width = progress_pct + '%';
+  document.getElementById('drill-mode-badge').innerHTML =
+    selectedMode === 'passive' ? '🎧 被動 Drill' : '🎤 主動 Drill';
+
+  const stage = document.getElementById('drill-stage');
+  const escEn = (s) => s.replace(/'/g, "\\'").replace(/"/g, '\\"');
+
+  // Phase 1: Show the prompt
+  stage.innerHTML = `
+    <div class="scenario-ctx">
+      <strong>情境：</strong>${card.context}
+    </div>
+
+    <div class="prompt-box">
+      <div class="prompt-tag">👂 聽到</div>
+      <div class="prompt-en">${card.prompt.en}</div>
+      <div class="prompt-zh">${card.prompt.zh}</div>
+      <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+        <button class="prompt-audio" onclick="playPrompt()">🔊 播放</button>
+        <button class="prompt-audio repeat" onclick="playPrompt(true)">🔁 慢啲再聽</button>
+      </div>
+    </div>
+
+    <div class="response-area" id="response-area"></div>
+  `;
+
+  currentSession.phase = 'prompt';
+
+  // Auto-play the prompt once, transition after speech ends
+  const t1 = setTimeout(() => {
+    speak(card.prompt.en, null, () => {
+      // Small pause after speech, then advance to response phase
+      const t2 = setTimeout(() => {
+        if (!currentSession) return;
+        if (selectedMode === 'passive') {
+          startCountdown();
+        } else {
+          showYourTurn();
+        }
+      }, 600);
+      activeTimeouts.push(t2);
+    });
+  }, 500);
+  activeTimeouts.push(t1);
+}
+
+function playPrompt(slower) {
+  const card = currentSession.queue[currentSession.idx];
+  const rate = slower ? Math.max(0.2, currentSpeed - 0.1) : currentSpeed;
+  speak(card.prompt.en, rate);
+}
+
+function startCountdown() {
+  if (!currentSession) return;
+  currentSession.phase = 'countdown';
+  const responseArea = document.getElementById('response-area');
+
+  let remaining = COUNTDOWN_SECONDS;
+
+  const renderCountdown = () => {
+    responseArea.innerHTML = `
+      <div class="countdown-wrap">
+        <div class="countdown-label">🧠 喺腦裏諗答案...</div>
+        <div class="countdown-number">${remaining}</div>
+        <div class="countdown-hint">聽到呢條問題，<strong>心裏要答乜嘢？</strong></div>
+      </div>
+    `;
+  };
+  renderCountdown();
+
+  const interval = setInterval(() => {
+    remaining--;
+    if (remaining <= 0) {
+      clearInterval(interval);
+      showAnswer();
+    } else {
+      renderCountdown();
+    }
+  }, 1000);
+  activeTimeouts.push(interval);
+}
+
+function showYourTurn() {
+  if (!currentSession) return;
+  currentSession.phase = 'your-turn';
+  const responseArea = document.getElementById('response-area');
+  responseArea.innerHTML = `
+    <div class="your-turn-wrap">
+      <div class="your-turn-label">🎤 你嘅反應時間</div>
+      <div class="your-turn-mic">🗣️</div>
+      <div class="your-turn-text">
+        而家 <strong>大聲講出</strong> 你嘅答案！<br>
+        <span style="font-size: 14px; color: var(--ink-soft);">講完先㩒掣睇標準答案</span>
+      </div>
+      <button class="btn-done" onclick="showAnswer()">✓ 我講咗 → 睇答案</button>
+    </div>
+  `;
+}
+
+function showAnswer() {
+  if (!currentSession) return;
+  clearTimeouts();
+  currentSession.phase = 'answer';
+  const card = currentSession.queue[currentSession.idx];
+  const responseArea = document.getElementById('response-area');
+
+  const escEn = (s) => s.replace(/'/g, "\\'").replace(/"/g, '\\"');
+
+  responseArea.innerHTML = `
+    <div class="answer-wrap">
+      <div class="answer-label">✓ 標準答案</div>
+      <div class="answer-en">${card.answer.en}</div>
+      <div class="answer-zh">${card.answer.zh}</div>
+      <div class="answer-actions">
+        <button class="answer-play" onclick="speak('${escEn(card.answer.en)}')">🔊 聽答案</button>
+        <button class="answer-play both" onclick="playBoth()">🔁 問 + 答</button>
+      </div>
+      ${card.note ? `
+        <div style="font-size: 13px; color: var(--ink-soft); font-style: italic; padding-top: 8px; border-top: 1px dashed var(--cream-dark); margin-bottom: 10px;">
+          💡 ${card.note}
+        </div>
+      ` : ''}
+      <div class="self-rate">
+        <button class="rate-btn again" onclick="rateCard('again')">
+          <span class="big">🔴</span>
+          <span class="lbl">再練</span>
+          <span class="sub">諗唔出</span>
+        </button>
+        <button class="rate-btn ok" onclick="rateCard('ok')">
+          <span class="big">🟡</span>
+          <span class="lbl">有啲難</span>
+          <span class="sub">停咗一下</span>
+        </button>
+        <button class="rate-btn good" onclick="rateCard('good')">
+          <span class="big">🟢</span>
+          <span class="lbl">識</span>
+          <span class="sub">即刻答到</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Auto-play the answer
+  const t = setTimeout(() => speak(card.answer.en), 400);
+  activeTimeouts.push(t);
+}
+
+function playBoth() {
+  const card = currentSession.queue[currentSession.idx];
+  speechSynthesis.cancel();
+  speak(card.prompt.en, null, () => {
+    const t = setTimeout(() => {
+      speak(card.answer.en);
+    }, 700);
+    activeTimeouts.push(t);
+  });
+}
+
+function rateCard(rating) {
+  const card = currentSession.queue[currentSession.idx];
+
+  // Update stats
+  if (!progress.cardStats[card.id]) {
+    progress.cardStats[card.id] = { seen: 0, good: 0, ok: 0, again: 0 };
+  }
+  progress.cardStats[card.id].seen++;
+  progress.cardStats[card.id][rating]++;
+  currentSession.stats[rating]++;
+  progress.total++;
+  progress.today++;
+
+  // If rating is 'again', re-insert the card near the end for more practice
+  if (rating === 'again' && currentSession.idx < currentSession.queue.length - 1) {
+    // Insert 2-3 cards later
+    const insertAt = Math.min(currentSession.queue.length, currentSession.idx + 3);
+    currentSession.queue.splice(insertAt, 0, card);
+  }
+
+  saveProgress();
+  renderStats();
+
+  currentSession.idx++;
+  renderDrill();
+}
+
+function showSummary() {
+  document.getElementById('drill-screen').classList.remove('active');
+  document.getElementById('summary-screen').classList.add('active');
+
+  const stats = currentSession.stats;
+  const total = stats.good + stats.ok + stats.again;
+  const pct = total > 0 ? Math.round((stats.good / total) * 100) : 0;
+
+  let icon, title, msg;
+  if (pct >= 80) {
+    icon = '🏆';
+    title = '反應超快！';
+    msg = '你大部分問題都即刻有反應，建議試下「主動 Drill」開口講出嚟。';
+  } else if (pct >= 60) {
+    icon = '✨';
+    title = '有進步！';
+    msg = '已經開始形成反應。多做幾次同一個類別，自動化會越嚟越強。';
+  } else if (pct >= 40) {
+    icon = '🌱';
+    title = '穩步建立';
+    msg = '需要再多練。呢啲問題唔熟係正常嘅，反應嘅形成需要重複。';
+  } else {
+    icon = '💪';
+    title = '繼續！';
+    msg = '頭幾次做呢啲 drill 會覺得好難，係正常。建議今日再做一次，或者揀細啲嘅類別。';
+  }
+
+  document.getElementById('summary-content').innerHTML = `
+    <div class="summary-icon">${icon}</div>
+    <div class="summary-title">${title}</div>
+    <div class="summary-sub">${msg}</div>
+
+    <div class="summary-stats">
+      <div class="summary-stat good">
+        <div class="num">${stats.good}</div>
+        <div class="lbl">🟢 即刻識</div>
+      </div>
+      <div class="summary-stat ok">
+        <div class="num">${stats.ok}</div>
+        <div class="lbl">🟡 有啲難</div>
+      </div>
+      <div class="summary-stat again">
+        <div class="num">${stats.again}</div>
+        <div class="lbl">🔴 要再練</div>
+      </div>
+    </div>
+
+    <div class="summary-actions">
+      <button class="btn-start" style="width: auto; padding: 12px 30px;" onclick="startSession()">再練一輪 →</button>
+      <button class="btn-reset" style="width: auto; padding: 10px 24px;" onclick="exitDrill()">返主頁</button>
+    </div>
+  `;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+renderCategoryChips();
+updateStreak();
+renderStats();
+updateMobileSelectionMeta();
+</script>
+
+</body>
+</html>

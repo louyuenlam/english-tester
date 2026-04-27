@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf6ef">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23faf6ef'/><text x='50' y='70' text-anchor='middle' font-size='58'>🔤</text></svg>">
+<title>Week 1 Bonus：縮寫聽明白 · Contractions</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --burgundy: #8b3a3a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --sidebar-w: 300px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Noto Sans HK', 'Lora', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 1;
+  }
+
+  .app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid var(--cream-dark);
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sidebar-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .sidebar-header .ornament { font-family: 'Fraunces', serif; font-size: 14px; color: var(--gold); letter-spacing: 6px; margin-bottom: 4px; }
+  .sidebar-header .lesson-num { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--terra-dark); margin-bottom: 2px; }
+  .sidebar-header h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 22px; color: var(--ink); }
+  .sidebar-header .subtitle { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--ink-soft); }
+
+  .progress-compact { padding: 12px 14px; background: var(--cream); border-radius: 10px; }
+  .progress-compact .label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 5px; }
+  .progress-compact .value { font-family: 'Fraunces', serif; color: var(--ink); font-weight: 500; }
+  .progress-bar { height: 6px; background: var(--cream-dark); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--terra), var(--gold)); border-radius: 4px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+  .steps-nav { display: flex; flex-direction: column; gap: 4px; }
+  .steps-label { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 2px; padding: 4px 0; }
+  .step-btn { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: transparent; border: none; border-radius: 8px; text-align: left; cursor: pointer; font-family: 'Noto Sans HK', serif; font-size: 13px; color: var(--ink-soft); transition: all 0.2s ease; }
+  .step-btn:hover { background: var(--cream); color: var(--ink); }
+  .step-btn .step-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--cream-dark); color: var(--ink-soft); border-radius: 50%; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .step-btn.active { background: linear-gradient(90deg, var(--terra), var(--gold)); color: white; font-weight: 600; }
+  .step-btn.active .step-num { background: rgba(255,255,255,0.25); color: white; }
+  .step-btn.completed .step-num { background: var(--sage); color: white; font-size: 0; }
+  .step-btn.completed .step-num::after { content: '✓'; font-size: 12px; }
+
+  .speed-panel { background: var(--cream); border-radius: 10px; padding: 12px; }
+  .speed-label { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--terra-dark); margin-bottom: 8px; }
+  .speed-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .speed-btn { padding: 6px 2px; background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 6px; cursor: pointer; font-family: 'Noto Sans HK', serif; display: flex; flex-direction: column; align-items: center; gap: 1px; transition: all 0.15s ease; }
+  .speed-btn:hover { border-color: var(--terra); }
+  .speed-btn.active { background: var(--terra); border-color: var(--terra); color: white; }
+  .speed-btn .rate { font-size: 12px; font-weight: 700; }
+  .speed-btn .rate-label { font-size: 9px; opacity: 0.8; }
+
+  .main-area { overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
+  .main-inner { flex: 1; overflow-y: auto; padding: 20px 28px; }
+
+  .section-label { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--terra-dark); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+
+  .step-content { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .step-content h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; color: var(--ink); margin-bottom: 6px; line-height: 1.2; }
+  .card-sub { font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 16px; }
+
+  .instruction { background: var(--paper); border-left: 3px solid var(--gold); padding: 12px 16px; border-radius: 6px; font-size: 14px; line-height: 1.55; margin-bottom: 16px; color: var(--ink-soft); }
+  .instruction strong { color: var(--ink); font-weight: 600; }
+
+  .callback { background: rgba(122, 132, 113, 0.1); border-left: 3px solid var(--sage); padding: 10px 14px; border-radius: 6px; font-size: 13px; line-height: 1.5; margin-bottom: 14px; color: var(--ink-soft); }
+
+  .teacher-note { background: rgba(200, 107, 74, 0.07); border-left: 3px solid var(--terra); padding: 10px 14px; border-radius: 6px; font-size: 13px; line-height: 1.5; color: var(--ink-soft); margin-top: 12px; }
+  .teacher-note strong { color: var(--terra-dark); }
+
+  .scene-card { background: linear-gradient(135deg, var(--paper), var(--cream)); border-radius: 14px; padding: 18px; margin-bottom: 14px; border: 1px solid var(--cream-dark); }
+  .scene-card .scene-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--ink); margin-bottom: 6px; }
+  .scene-card .scene-text { font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+
+  .goals-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .goal-card { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+  .goal-num { background: var(--gold); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 14px; }
+  .goal-text { font-size: 15px; line-height: 1.4; }
+  .goal-text strong { color: var(--terra-dark); }
+
+  .subsection-title { font-family: 'Fraunces', serif; font-size: 18px; color: var(--ink); margin: 14px 0 8px; font-weight: 600; }
+
+  .dialogue-card { background: var(--paper); border-radius: 14px; padding: 16px; border: 1px solid var(--cream-dark); margin-bottom: 12px; }
+  .dialogue-line { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+  .dialogue-line:last-child { margin-bottom: 0; }
+  .dialogue-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .dialogue-avatar.shop { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; }
+  .dialogue-avatar.you { background: linear-gradient(135deg, var(--terra), var(--gold)); color: white; }
+  .dialogue-bubble { flex: 1; background: var(--cream); padding: 10px 12px; border-radius: 10px; }
+  .dialogue-bubble.you { background: rgba(200, 107, 74, 0.08); }
+  .dialogue-text { font-size: 16px; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
+  .dialogue-zh { font-size: 13px; color: var(--ink-soft); }
+
+  .play-btn { background: var(--terra); color: white; border: none; padding: 9px 14px; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .play-btn:hover { background: var(--terra-dark); }
+  .play-btn.blue { background: var(--blue); }
+  .play-btn.blue:hover { background: var(--blue-dark); }
+  .play-btn.small { padding: 6px 10px; font-size: 12px; }
+
+  .phrases-list { display: flex; flex-direction: column; gap: 12px; }
+  .phrase-card { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 12px; padding: 14px; }
+  .phrase-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--terra); color: white; border-radius: 50%; font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .phrase-en { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 4px; line-height: 1.25; }
+  .phrase-zh { font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
+  .phrase-context { font-size: 12px; color: var(--terra-dark); font-style: italic; margin-bottom: 8px; }
+  .phrase-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .money-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .money-card { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 12px; text-align: center; }
+  .money-card .price { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: var(--terra-dark); margin-bottom: 4px; }
+  .money-card .price-en { font-size: 14px; color: var(--ink); margin-bottom: 6px; }
+  .money-card .price-zh { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; }
+
+  .roleplay-card { background: linear-gradient(135deg, rgba(200, 107, 74, 0.06), rgba(201, 168, 76, 0.06)); border: 1px solid var(--cream-dark); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+  .roleplay-prompt { background: var(--paper); border-left: 3px solid var(--blue); padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; }
+  .roleplay-prompt .who { font-size: 11px; color: var(--blue-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; font-weight: 600; }
+  .roleplay-prompt .what { font-size: 15px; color: var(--ink); line-height: 1.35; }
+  .roleplay-prompt .what-zh { font-size: 12px; color: var(--ink-soft); margin-top: 3px; }
+  .roleplay-your-turn { background: rgba(200, 107, 74, 0.08); border: 2px dashed var(--terra); padding: 12px; border-radius: 8px; text-align: center; }
+  .roleplay-your-turn .label { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--terra-dark); margin-bottom: 6px; }
+  .roleplay-your-turn .hint { font-size: 14px; color: var(--ink); margin-bottom: 8px; }
+
+  .complete-screen { text-align: center; padding: 20px 0; }
+  .complete-trophy { font-size: 56px; margin-bottom: 10px; }
+  .complete-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; color: var(--ink); margin-bottom: 6px; }
+  .complete-sub { font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-soft); font-size: 15px; margin-bottom: 18px; }
+  .summary-box { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 12px; padding: 16px; text-align: left; margin-bottom: 14px; }
+  .summary-box h3 { font-family: 'Fraunces', serif; font-size: 16px; color: var(--terra-dark); margin-bottom: 8px; }
+  .summary-list { list-style: none; padding: 0; font-size: 14px; line-height: 1.7; color: var(--ink-soft); }
+  .summary-list li::before { content: "✓ "; color: var(--sage); font-weight: 700; }
+  .homework-card { background: rgba(201, 168, 76, 0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 14px; text-align: left; }
+  .homework-card h3 { font-family: 'Fraunces', serif; color: var(--gold-dark); font-size: 16px; margin-bottom: 8px; }
+  .homework-item { display: flex; gap: 10px; margin-bottom: 8px; font-size: 14px; color: var(--ink-soft); line-height: 1.4; }
+  .homework-num { color: var(--gold-dark); font-weight: 700; flex-shrink: 0; }
+
+  .footer-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 28px; background: var(--paper); border-top: 1px solid var(--cream-dark); flex-shrink: 0; }
+  .btn-primary { background: var(--terra); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-family: 'Noto Sans HK', serif; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+  .btn-primary:hover { background: var(--terra-dark); }
+  .btn-secondary { background: transparent; color: var(--ink-soft); border: 1px solid var(--cream-dark); padding: 10px 20px; border-radius: 8px; font-family: inherit; font-size: 14px; cursor: pointer; transition: all 0.2s ease; }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--ink); }
+
+  .hidden { display: none !important; }
+
+  .mobile-top-bar { display: none; }
+  .mobile-progress { display: none; }
+  .mobile-nav-bar { display: none; }
+  .sidebar-backdrop { display: none; }
+
+  @media (max-width: 768px) {
+    :root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+    html, body { overflow: hidden; height: 100%; position: fixed; width: 100%; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+    body { font-size: 15px; }
+
+    .app-layout { display: flex; flex-direction: column; height: 100vh; height: 100dvh; grid-template-columns: none; }
+
+    .sidebar { position: fixed; top: 0; right: 0; bottom: 0; width: 86%; max-width: 360px; z-index: 100; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.3, 0.85, 0.4, 1); padding: calc(16px + var(--safe-top)) 18px calc(16px + var(--safe-bottom)); box-shadow: -4px 0 20px rgba(0,0,0,0.15); overflow-y: auto; -webkit-overflow-scrolling: touch; border-right: none; border-left: 1px solid var(--cream-dark); }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-backdrop { display: block; position: fixed; inset: 0; background: rgba(42, 36, 32, 0.4); z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .sidebar-backdrop.show { opacity: 1; pointer-events: auto; }
+    .sidebar::before { content: "⚙️ 設定"; display: block; font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--ink); padding-bottom: 12px; border-bottom: 1px solid var(--cream-dark); margin-bottom: 14px; }
+    .sidebar .sidebar-header { display: none; }
+    .sidebar .progress-compact { display: none; }
+    .sidebar .step-btn { padding: 12px 14px; font-size: 14px; min-height: 50px; }
+    .sidebar .speed-btn { padding: 9px 4px; min-height: 48px; }
+
+    .mobile-top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: calc(10px + var(--safe-top)) 14px 8px; background: var(--paper); border-bottom: 1px solid var(--cream-dark); flex-shrink: 0; z-index: 10; position: relative; }
+    .mobile-top-bar .lesson-info { flex: 1; min-width: 0; }
+    .mobile-top-bar .lesson-tag { font-family: 'Fraunces', serif; font-style: italic; font-size: 11px; color: var(--terra-dark); line-height: 1; margin-bottom: 2px; }
+    .mobile-top-bar h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; color: var(--ink); line-height: 1.1; margin: 0; }
+    .mobile-top-bar .step-indicator { background: var(--cream); border-radius: 14px; padding: 5px 11px; font-family: 'Fraunces', serif; font-size: 12px; color: var(--ink); font-weight: 600; flex-shrink: 0; }
+    .mobile-top-bar .step-indicator .total { color: var(--ink-soft); font-weight: 500; }
+    .mobile-top-bar .menu-btn { background: var(--cream); border: none; width: 42px; height: 42px; border-radius: 12px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--ink); }
+    .mobile-top-bar .menu-btn:active { background: var(--cream-dark); }
+
+    .mobile-progress { display: block; height: 4px; background: var(--cream-dark); flex-shrink: 0; }
+    .mobile-progress .fill { height: 100%; background: linear-gradient(90deg, var(--terra), var(--gold)); transition: width 0.4s ease; }
+
+    .main-area { flex: 1; padding: 0; overflow: hidden; display: flex; flex-direction: column; gap: 0; }
+    .main-inner { padding: 14px 16px; padding-bottom: 14px; }
+
+    .footer-nav { display: none; }
+
+    .mobile-nav-bar { display: flex; background: var(--paper); border-top: 1px solid var(--cream-dark); padding: 8px 14px calc(8px + var(--safe-bottom)); gap: 10px; flex-shrink: 0; }
+    .mobile-nav-bar .nav-btn { flex: 1; padding: 13px 10px; border-radius: 12px; font-family: 'Noto Sans HK', serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; min-height: 48px; border: none; }
+    .mobile-nav-bar .nav-btn.prev { background: var(--cream); color: var(--ink); flex: 0 0 34%; }
+    .mobile-nav-bar .nav-btn.prev:active { background: var(--cream-dark); }
+    .mobile-nav-bar .nav-btn.next { background: var(--terra); color: white; }
+    .mobile-nav-bar .nav-btn.next:active { background: var(--terra-dark); }
+    .mobile-nav-bar .nav-btn.prev.disabled { opacity: 0.35; pointer-events: none; }
+
+    .step-content h2 { font-size: 22px !important; }
+    .money-grid { grid-template-columns: 1fr 1fr !important; }
+    .phrase-en { font-size: 17px; }
+  }
+
+  @media (min-width: 769px) {
+    .mobile-top-bar { display: none !important; }
+    .mobile-progress { display: none !important; }
+    .mobile-nav-bar { display: none !important; }
+    .sidebar-backdrop { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="ornament">· · ·</div>
+      <div class="lesson-num">Week 1 · Bonus 補充課</div>
+      <h1>縮寫聽明白 🔤</h1>
+      <div class="subtitle">Understanding Contractions</div>
+    </div>
+
+    <div class="progress-compact">
+      <div class="label">
+        <span id="progress-text">第 1 部分 / 共 6 部分</span>
+        <span class="value" id="progress-time">2 分鐘</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 16.7%;"></div>
+      </div>
+    </div>
+
+    <nav class="steps-nav">
+      <div class="steps-label">學習步驟</div>
+      <button class="step-btn active" data-step="1" onclick="goToStep(1)"><span class="step-num">1</span><span>熱身 & 點解要學</span></button>
+      <button class="step-btn" data-step="2" onclick="goToStep(2)"><span class="step-num">2</span><span>👂 聽力對比</span></button>
+      <button class="step-btn" data-step="3" onclick="goToStep(3)"><span class="step-num">3</span><span>10 個重要縮寫</span></button>
+      <button class="step-btn" data-step="4" onclick="goToStep(4)"><span class="step-num">4</span><span>🎧 聽音訓練</span></button>
+      <button class="step-btn" data-step="5" onclick="goToStep(5)"><span class="step-num">5</span><span>情境練習</span></button>
+      <button class="step-btn" data-step="6" onclick="goToStep(6)"><span class="step-num">6</span><span>🏆 完成</span></button>
+    </nav>
+
+    <div class="speed-panel">
+      <div class="speed-label">🐢 聲音速度</div>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="0.5" onclick="setSpeed(0.5, this)"><span class="rate">0.5x</span><span class="rate-label">極慢</span></button>
+        <button class="speed-btn active" data-speed="0.7" onclick="setSpeed(0.7, this)"><span class="rate">0.7x</span><span class="rate-label">好慢</span></button>
+        <button class="speed-btn" data-speed="0.4" onclick="setSpeed(0.4, this)"><span class="rate">0.4x</span><span class="rate-label">慢</span></button>
+        <button class="speed-btn" data-speed="0.6" onclick="setSpeed(0.6, this)"><span class="rate">0.6x</span><span class="rate-label">正常</span></button>
+        <button class="speed-btn" data-speed="0.7" onclick="setSpeed(0.7, this)"><span class="rate">0.7x</span><span class="rate-label">稍快</span></button>
+        <button class="speed-btn" data-speed="0.9" onclick="setSpeed(0.9, this)"><span class="rate">0.9x</span><span class="rate-label">較快</span></button>
+        <button class="speed-btn" data-speed="1.0" onclick="setSpeed(1.0, this)"><span class="rate">1.0x</span><span class="rate-label">原速</span></button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-area">
+
+    <div class="mobile-top-bar">
+      <div class="lesson-info">
+        <div class="lesson-tag">Week 1 Bonus</div>
+        <h1>縮寫聽明白 🔤</h1>
+      </div>
+      <div class="step-indicator" id="mobile-step-indicator">1 <span class="total">/ 6</span></div>
+      <button class="menu-btn" onclick="openMobileSidebar()" aria-label="設定">☰</button>
+    </div>
+
+    <div class="mobile-progress">
+      <div class="fill" id="mobile-progress-fill" style="width: 16.7%;"></div>
+    </div>
+
+    <div class="main-inner">
+
+      <!-- STEP 1 -->
+      <div class="step-content" data-step="1">
+        <div class="section-label">Part 1 · 熱身 & 點解要學 (2 分鐘)</div>
+        <h2>點解成日聽唔明？🤔</h2>
+        <div class="card-sub">因為英國人成日用「縮寫」！</div>
+
+        <div class="scene-card">
+          <div class="scene-title">📍 今日嘅問題</div>
+          <div class="scene-text">你係咪成日聽人講：<strong>"I'm fine"</strong>、<strong>"It's raining"</strong>、<strong>"I'll take this"</strong>... 聽到啲 <strong>'s、'm、'll</strong> 唔知係乜？唔緊要，呢啲叫做<strong>「縮寫」（contractions）</strong>—— 今日教你全部聽明白 ✨</div>
+        </div>
+
+        <div class="subsection-title">🎯 你今日會學到</div>
+        <div class="goals-grid">
+          <div class="goal-card"><div class="goal-num">1</div><div class="goal-text">明白 <strong>'s / 'm / 'll</strong> 即係咩</div></div>
+          <div class="goal-card"><div class="goal-num">2</div><div class="goal-text">識 <strong>10 個最常用</strong>嘅縮寫</div></div>
+          <div class="goal-card"><div class="goal-num">3</div><div class="goal-text">聽得出縮寫 vs 全寫</div></div>
+          <div class="goal-card"><div class="goal-num">4</div><div class="goal-text">用 Lesson 1-5 學過嘅句做練習</div></div>
+        </div>
+
+        <div class="callback">💡 <strong>點解英國人成日用縮寫？</strong>因為<strong>快</strong>！講得快、聽得快、寫得短。英國人日常 99% 都用縮寫，唔用縮寫反而覺得奇怪／太正式。</div>
+
+        <div class="teacher-note"><strong>👩‍🏫 老師 tips：</strong>縮寫其實好簡單 — 就係將兩個字<strong>黐埋</strong>一齊，用「'」代替啲字。學識咗 Hannah 你聽嘢就會完全唔同！</div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-content hidden" data-step="2">
+        <div class="section-label">Part 2 · 👂 聽力對比 (4 分鐘)</div>
+        <h2>聽下個分別 🔊</h2>
+        <div class="card-sub">全寫 vs 縮寫 — 意思一樣，聲音唔同</div>
+
+        <div class="instruction"><strong>🎧 點玩：</strong>每對句子，先聽全寫（清楚），再聽縮寫（英國人講法）。兩個意思<strong>完全一樣</strong>！</div>
+
+        <div class="dialogue-card" style="margin-top: 14px;">
+          <div class="dialogue-line"><div class="dialogue-avatar shop">📖</div><div class="dialogue-bubble"><div class="dialogue-text">I am Hannah.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我係 Hannah。</div><div class="dialogue-zh" style="color: var(--blue-dark); font-size: 12px;">【全寫】I am = I + am</div><button class="play-btn small" onclick="speak('I am Hannah.')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('I am Hannah.', 0.5)">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">⚡</div><div class="dialogue-bubble you"><div class="dialogue-text">I'm Hannah.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我係 Hannah。</div><div class="dialogue-zh" style="color: var(--terra-dark); font-size: 12px;">【縮寫】I'm = I + am（日常講法）</div><button class="play-btn small" onclick="speak(`I'm Hannah.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'm Hannah.`, 0.5)">🐢 極慢</button></div></div>
+        </div>
+
+        <div class="dialogue-card" style="margin-top: 14px;">
+          <div class="dialogue-line"><div class="dialogue-avatar shop">📖</div><div class="dialogue-bubble"><div class="dialogue-text">My name is Hannah.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我叫 Hannah。</div><div class="dialogue-zh" style="color: var(--blue-dark); font-size: 12px;">【全寫】name is = name + is</div><button class="play-btn small" onclick="speak('My name is Hannah.')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('My name is Hannah.', 0.5)">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">⚡</div><div class="dialogue-bubble you"><div class="dialogue-text">My name's Hannah.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我叫 Hannah。</div><div class="dialogue-zh" style="color: var(--terra-dark); font-size: 12px;">【縮寫】name's = name + is（日常講法）</div><button class="play-btn small" onclick="speak(`My name's Hannah.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`My name's Hannah.`, 0.5)">🐢 極慢</button></div></div>
+        </div>
+
+        <div class="dialogue-card" style="margin-top: 14px;">
+          <div class="dialogue-line"><div class="dialogue-avatar shop">📖</div><div class="dialogue-bubble"><div class="dialogue-text">I will take this.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我要呢個。</div><div class="dialogue-zh" style="color: var(--blue-dark); font-size: 12px;">【全寫】I will = I + will</div><button class="play-btn small" onclick="speak('I will take this.')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('I will take this.', 0.5)">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">⚡</div><div class="dialogue-bubble you"><div class="dialogue-text">I'll take this.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我要呢個。</div><div class="dialogue-zh" style="color: var(--terra-dark); font-size: 12px;">【縮寫】I'll = I + will（日常講法）</div><button class="play-btn small" onclick="speak(`I'll take this.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'll take this.`, 0.5)">🐢 極慢</button></div></div>
+        </div>
+
+        <div class="dialogue-card" style="margin-top: 14px;">
+          <div class="dialogue-line"><div class="dialogue-avatar shop">📖</div><div class="dialogue-bubble"><div class="dialogue-text">I am fine, thanks.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我幾好，多謝。</div><div class="dialogue-zh" style="color: var(--blue-dark); font-size: 12px;">【全寫】I am = I + am</div><button class="play-btn small" onclick="speak('I am fine, thanks.')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('I am fine, thanks.', 0.5)">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">⚡</div><div class="dialogue-bubble you"><div class="dialogue-text">I'm fine, thanks.</div><div class="dialogue-zh" style="color: var(--ink); font-size: 14px; font-style: normal; font-weight: 500; margin-bottom: 4px;">我幾好，多謝。</div><div class="dialogue-zh" style="color: var(--terra-dark); font-size: 12px;">【縮寫】I'm = I + am（日常講法）</div><button class="play-btn small" onclick="speak(`I'm fine, thanks.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'm fine, thanks.`, 0.5)">🐢 極慢</button></div></div>
+        </div>
+
+        <div class="teacher-note"><strong>👩‍🏫 聽出唔同？</strong>縮寫短啲、快啲，但意思一樣。一開始唔習慣好正常，多聽幾次就會識分辨 👂</div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-content hidden" data-step="3">
+        <div class="section-label">Part 3 · 10 個重要縮寫 (5 分鐘)</div>
+        <h2>10 個最常用縮寫 🔤</h2>
+        <div class="card-sub">識呢 10 個就夠用！</div>
+
+        <div class="phrases-list">
+          <div class="phrase-card"><div class="phrase-num">1</div><div class="phrase-en">I'm = I am</div><div class="phrase-zh">我係</div><div class="phrase-context">📍 例：I'm Hannah.（我係 Hannah）/ I'm fine.（我好好）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`I'm fine.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`I'm fine.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">2</div><div class="phrase-en">I'll = I will</div><div class="phrase-zh">我會</div><div class="phrase-context">📍 例：I'll see you later.（遲啲見）/ I'll take this.（我要呢個）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`I'll see you later.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`I'll see you later.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">3</div><div class="phrase-en">It's = It is</div><div class="phrase-zh">佢係</div><div class="phrase-context">📍 例：It's Hannah.（係 Hannah）/ It's £5.（五鎊）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`It's Hannah.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`It's Hannah.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">4</div><div class="phrase-en">That's = That is</div><div class="phrase-zh">嗰個係</div><div class="phrase-context">📍 例：That's Hannah.（嗰位係 Hannah）/ That's fine.（咁就得）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`That's fine.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`That's fine.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">5</div><div class="phrase-en">You're = You are</div><div class="phrase-zh">你係</div><div class="phrase-context">📍 例：You're welcome.（唔使客氣）/ You're Hannah.（你係 Hannah）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`You're welcome.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`You're welcome.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">6</div><div class="phrase-en">We're = We are</div><div class="phrase-zh">我哋係</div><div class="phrase-context">📍 例：We're from Hong Kong.（我哋嚟自香港）/ We're fine.（我哋好好）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`We're fine.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`We're fine.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">7</div><div class="phrase-en">What's = What is</div><div class="phrase-zh">咩 / 咩係</div><div class="phrase-context">📍 例：What's your name?（你叫咩名？）/ What's this?（呢個係咩？）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`What's your name?`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`What's your name?`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">8</div><div class="phrase-en">Don't = Do not</div><div class="phrase-zh">唔（否定）</div><div class="phrase-context">📍 例：Don't worry.（唔使擔心）/ I don't know.（我唔知）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`Don't worry.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`Don't worry.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">9</div><div class="phrase-en">Can't = Cannot</div><div class="phrase-zh">唔可以</div><div class="phrase-context">📍 例：I can't speak English.（我唔識講英文）/ Sorry, I can't.（唔好意思，我唔得）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`Sorry, I can't.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`Sorry, I can't.`, 0.5)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">10</div><div class="phrase-en">Won't = Will not</div><div class="phrase-zh">唔會</div><div class="phrase-context">📍 例：I won't forget.（我唔會忘記）/ I won't be late.（我唔會遲到）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`I won't forget.`)">▶️ 聽例句</button> <button class="play-btn small blue" onclick="speak(`I won't forget.`, 0.5)">🐢 極慢</button></div></div>
+        </div>
+
+        <div class="teacher-note"><strong>👩‍🏫 記憶小 tips：</strong><br>• <strong>'s</strong> 通常係 "is"（例：It's / That's / What's）<br>• <strong>'m</strong> 一定係 "am"（只有 I'm）<br>• <strong>'ll</strong> 一定係 "will"（例：I'll / We'll / You'll）<br>• <strong>n't</strong> 係 "not"（例：don't / can't / won't）</div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-content hidden" data-step="4">
+        <div class="section-label">Part 4 · 🎧 聽音訓練 (4 分鐘)</div>
+        <h2>聽下點樣分辨 👂</h2>
+        <div class="card-sub">縮寫聽落快啲、黏埋一齊</div>
+
+        <div class="instruction"><strong>🎧 點玩：</strong>每個縮寫有兩個速度 —— 慢速（聽清楚每個音）+ 正常（英國人日常講法）。對比下感受差別。</div>
+
+        <div class="subsection-title">🔊 'm 嘅聲音（I'm）</div>
+        <div class="money-grid">
+          <div class="money-card"><div class="price">I'm</div><div class="price-en">sounds like "ime"</div><div class="price-zh">讀 "aim"（一個音）</div><button class="play-btn small" onclick="speak(`I'm`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'm`, 0.5)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">I'm 55.</div><div class="price-en">我 55 歲</div><div class="price-zh">完整句子</div><button class="play-btn small" onclick="speak(`I'm 55.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'm 55.`, 0.5)">🐢 極慢</button></div>
+        </div>
+
+        <div class="subsection-title">🔊 's 嘅聲音（It's / That's / What's）</div>
+        <div class="money-grid">
+          <div class="money-card"><div class="price">It's</div><div class="price-en">sounds like "its"</div><div class="price-zh">一個快音</div><button class="play-btn small" onclick="speak(`It's`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`It's`, 0.5)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">What's</div><div class="price-en">sounds like "wots"</div><div class="price-zh">一個快音</div><button class="play-btn small" onclick="speak(`What's`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`What's`, 0.5)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">That's</div><div class="price-en">sounds like "thats"</div><div class="price-zh">一個快音</div><button class="play-btn small" onclick="speak(`That's`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`That's`, 0.5)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">She's</div><div class="price-en">sounds like "sheez"</div><div class="price-zh">一個快音</div><button class="play-btn small" onclick="speak(`She's`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`She's`, 0.5)">🐢 極慢</button></div>
+        </div>
+
+        <div class="subsection-title">🔊 'll 嘅聲音（I'll / You'll）</div>
+        <div class="money-grid">
+          <div class="money-card"><div class="price">I'll</div><div class="price-en">sounds like "ile"</div><div class="price-zh">讀 "aisle"</div><button class="play-btn small" onclick="speak(`I'll`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'll`, 0.5)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">You'll</div><div class="price-en">sounds like "yool"</div><div class="price-zh">一個快音</div><button class="play-btn small" onclick="speak(`You'll`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`You'll`, 0.5)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">We'll</div><div class="price-en">sounds like "weal"</div><div class="price-zh">一個快音</div><button class="play-btn small" onclick="speak(`We'll`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`We'll`, 0.5)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">He'll</div><div class="price-en">sounds like "heel"</div><div class="price-zh">一個快音</div><button class="play-btn small" onclick="speak(`He'll`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`He'll`, 0.5)">🐢 極慢</button></div>
+        </div>
+
+        <div class="callback">💡 <strong>Hannah 小秘訣：</strong>聽到一個「短而快」嘅聲音，又唔似正常英文嘅字？好大機會係縮寫！例如 "imfine" 其實係 "I'm fine"（我好好），"itshannah" 其實係 "It's Hannah"（係 Hannah）。</div>
+
+        <div class="teacher-note"><strong>👩‍🏫 記住：</strong>英國人講嘢唔會逐隻字分開，佢哋會將成句話 flow 埋一齊。縮寫令呢個 flow 更加順暢 ✨</div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-content hidden" data-step="5">
+        <div class="section-label">Part 5 · 情境練習 (4 分鐘)</div>
+        <h2>用 Week 1 句子練習 🎭</h2>
+        <div class="card-sub">聽熟悉嘅句 — 但用縮寫！</div>
+
+        <div class="instruction"><strong>📋 點玩：</strong>每個場景先聽<strong>縮寫版</strong>（日常講法），再 㩒 "💡 全寫" 睇返全寫嘅解釋。確定自己聽得明。</div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">👋 Lesson 1 · 自我介紹</div><div class="what">I'm Hannah. My name's Hannah.</div><div class="what-zh">我係 Hannah。我叫 Hannah。</div><button class="play-btn small blue" onclick="speak(`I'm Hannah. My name's Hannah.`)">▶️ 聽縮寫</button> <button class="play-btn small" onclick="speak(`I'm Hannah. My name's Hannah.`, 0.5)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 全寫係?</div><div class="hint" id="hint1">諗下 'm 同 's 係咩...</div><button class="play-btn small" onclick="showHint(1, 'I am Hannah. My name is Hannah.', `'m = am, 's = is`)">💡 全寫</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">👋 Lesson 2 · 問候語</div><div class="what">I'm fine, thanks. How are you?</div><div class="what-zh">我幾好，多謝。你點呀？</div><button class="play-btn small blue" onclick="speak(`I'm fine, thanks. How are you?`)">▶️ 聽縮寫</button> <button class="play-btn small" onclick="speak(`I'm fine, thanks. How are you?`, 0.5)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 全寫係?</div><div class="hint" id="hint2">諗下 'm 係咩...</div><button class="play-btn small" onclick="showHint(2, 'I am fine, thanks. How are you?', `'m = am`)">💡 全寫</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">🙏 Lesson 3 · 禮貌</div><div class="what">You're welcome! I'm sorry.</div><div class="what-zh">唔使客氣！對唔住。</div><button class="play-btn small blue" onclick="speak(`You're welcome! I'm sorry.`)">▶️ 聽縮寫</button> <button class="play-btn small" onclick="speak(`You're welcome! I'm sorry.`, 0.5)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 全寫係?</div><div class="hint" id="hint3">諗下 're 同 'm 係咩...</div><button class="play-btn small" onclick="showHint(3, 'You are welcome! I am sorry.', `'re = are, 'm = am`)">💡 全寫</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">❓ Lesson 4 · 問題</div><div class="what">What's your name? Where's the shop?</div><div class="what-zh">你叫咩名？間舖喺邊？</div><button class="play-btn small blue" onclick="speak(`What's your name? Where's the shop?`)">▶️ 聽縮寫</button> <button class="play-btn small" onclick="speak(`What's your name? Where's the shop?`, 0.5)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 全寫係?</div><div class="hint" id="hint4">諗下 's 係咩...</div><button class="play-btn small" onclick="showHint(4, 'What is your name? Where is the shop?', `'s 兩個都係 = is`)">💡 全寫</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">🛍️ 買嘢</div><div class="what">I'll take this, please. It's £3.</div><div class="what-zh">我要呢個，唔該。三鎊。</div><button class="play-btn small blue" onclick="speak(`I'll take this, please. It's 3 pounds.`)">▶️ 聽縮寫</button> <button class="play-btn small" onclick="speak(`I'll take this, please. It's 3 pounds.`, 0.5)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 全寫係?</div><div class="hint" id="hint5">諗下 'll 同 's 係咩...</div><button class="play-btn small" onclick="showHint(5, 'I will take this, please. It is 3 pounds.', `'ll = will, 's = is`)">💡 全寫</button></div>
+        </div>
+
+        <div class="teacher-note"><strong>👩‍🏫 練多次！</strong>識分辨縮寫係學英文嘅大跳級 🚀 多聽英國人講嘢，慢慢會習慣。</div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-content hidden" data-step="6">
+        <div class="section-label">Part 6 · 完成 (1 分鐘)</div>
+        <div class="complete-screen">
+          <div class="complete-trophy">🏆</div>
+          <div class="complete-title">完成縮寫課！</div>
+          <div class="complete-sub">而家聽嘢會清晰好多 🎧</div>
+        </div>
+
+        <div class="summary-box">
+          <h3>✏️ 今日學咗</h3>
+          <ul class="summary-list">
+            <li>I'm = I am — 我係</li>
+            <li>I'll = I will — 我會／我要</li>
+            <li>It's = It is — 佢係</li>
+            <li>That's = That is — 嗰個係</li>
+            <li>You're = You are — 你係</li>
+            <li>We're = We are — 我哋係</li>
+            <li>What's = What is — 咩／咩係</li>
+            <li>Don't = Do not — 唔（否定）</li>
+            <li>Can't = Cannot — 唔可以</li>
+            <li>Won't = Will not — 唔會</li>
+            <li>聽得出縮寫 vs 全寫</li>
+          </ul>
+        </div>
+
+        <div class="homework-card">
+          <h3>📝 今星期嘅 homework</h3>
+          <div class="homework-item"><div class="homework-num">1.</div><div>聽人講嘢嗰陣，<strong>留意</strong>佢哋用縮寫嘅位置（電視、radio、鄰居、店員...）</div></div>
+          <div class="homework-item"><div class="homework-num">2.</div><div>試下自己用縮寫講嘢：<strong>"I'm fine"</strong> 代替 "I am fine"，講得更自然。</div></div>
+          <div class="homework-item"><div class="homework-num">3.</div><div>返去聽 Lesson 1-5 嘅對話，聽下入面有幾多縮寫！</div></div>
+        </div>
+
+        <div class="teacher-note" style="margin-top: 14px;"><strong>👩‍🏫 great job！</strong>識得聽縮寫嘅人唔代表識得每一個字嘅發音，而係<strong>識分辨 flow</strong>。Hannah 你做到啦 👍</div>
+      </div>
+
+    </div>
+
+    <div class="footer-nav">
+      <button class="btn-secondary" id="prev-btn" onclick="goPrev()">← 上一步</button>
+      <div style="font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-soft); font-size: 13px;" id="step-indicator">Step 1 of 6</div>
+      <button class="btn-primary" id="next-btn" onclick="goNext()"><span id="next-btn-text">開始學習</span><span>→</span></button>
+    </div>
+
+    <div class="mobile-nav-bar">
+      <button class="nav-btn prev disabled" id="mobile-prev-btn" onclick="goPrev()">← 返</button>
+      <button class="nav-btn next" id="mobile-next-btn" onclick="goNext()"><span id="mobile-next-btn-text">開始學習 →</span></button>
+    </div>
+  </main>
+</div>
+
+<script>
+let currentStep = 1;
+let currentSpeed = 0.7;
+let englishVoice = null;
+const completedSteps = new Set();
+const TOTAL_STEPS = 6;
+
+const FULL_DIALOGUE = [
+  "Hello! Can I help you?",
+  "Hello! How much is this hot chocolate?",
+  "It's two pounds fifty.",
+  "OK, I'll take this, please. And one biscuit.",
+  "That's four pounds. Do you take cards?",
+  "Yes. Can I have a bag, please?",
+  "Sure. Here you are. Have a nice day!",
+  "Thank you! You too!"
+];
+
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+
+  // Known female voice names across iOS / Android / Chrome / macOS / Windows
+  const FEMALE_NAMES = [
+    // iOS / macOS
+    'Samantha', 'Karen', 'Moira', 'Kate', 'Serena', 'Victoria', 'Tessa',
+    'Fiona', 'Veena', 'Allison', 'Ava', 'Susan', 'Zoe',
+    // Google / Android
+    'Google UK English Female', 'Google US English',
+    // Microsoft Windows
+    'Hazel', 'Susan', 'Zira', 'Eva', 'Catherine',
+    // Generic flags
+    'Female', 'female'
+  ];
+
+  function isFemale(voice) {
+    if (!voice || !voice.name) return false;
+    const n = voice.name;
+    return FEMALE_NAMES.some(name => n.includes(name));
+  }
+
+  // Priority search (UK female first, then AU/IE close accent, then US, then fallback)
+  // Note: iOS default en-GB voice is often Daniel (male). We prefer en-AU Karen / en-IE Moira
+  // which sound closer to British than en-US Samantha
+  englishVoice =
+    voices.find(v => v.lang === 'en-GB' && isFemale(v)) ||      // UK female (rare)
+    voices.find(v => v.lang === 'en-AU' && isFemale(v)) ||      // AU female (Karen) - close to UK
+    voices.find(v => v.lang === 'en-IE' && isFemale(v)) ||      // Irish female (Moira)
+    voices.find(v => v.lang === 'en-ZA' && isFemale(v)) ||      // SA female (Tessa)
+    voices.find(v => v.lang.startsWith('en-') && isFemale(v)) || // any English female
+    voices.find(v => v.lang === 'en-GB') ||
+    voices.find(v => v.lang.startsWith('en-')) ||
+    voices[0];
+
+  // Remember whether the selected voice is actually female (for pitch fallback)
+  window._voiceIsFemale = englishVoice ? isFemale(englishVoice) : false;
+
+  // Console log for debugging
+  if (englishVoice) {
+    console.log('[Voice selected]', englishVoice.name, '(' + englishVoice.lang + ')', 'Female:', window._voiceIsFemale);
+  } else {
+    console.log('[Voice selected] No voice available!');
+  }
+}
+if (typeof speechSynthesis !== 'undefined') {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speak(text, speedOverride) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = speedOverride !== undefined ? speedOverride : currentSpeed;
+  // If voice isn't confirmed female, raise pitch to simulate female voice
+  u.pitch = window._voiceIsFemale ? 1.0 : 1.4;
+  u.volume = 1;
+  if (englishVoice) {
+    u.voice = englishVoice;
+    u.lang = englishVoice.lang;  // ← Match voice's native lang (iOS fix)
+  } else {
+    u.lang = 'en-GB';
+  }
+  speechSynthesis.speak(u);
+}
+
+function setSpeed(speed, btn) {
+  currentSpeed = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function playFullDialogue() {
+  speechSynthesis.cancel();
+  let i = 0;
+  function next() {
+    if (i >= FULL_DIALOGUE.length) return;
+    const u = new SpeechSynthesisUtterance(FULL_DIALOGUE[i]);
+    u.rate = currentSpeed;
+    u.pitch = window._voiceIsFemale ? 1.0 : 1.4;
+    u.volume = 1;
+    if (englishVoice) {
+      u.voice = englishVoice;
+      u.lang = englishVoice.lang;  // ← Match voice's native lang (iOS fix)
+    } else {
+      u.lang = 'en-GB';
+    }
+    u.onend = () => { i++; setTimeout(next, 600); };
+    speechSynthesis.speak(u);
+  }
+  next();
+}
+
+function showHint(num, en, zh) {
+  const el = document.getElementById('hint' + num);
+  el.innerHTML = `<div style="font-weight:600;color:var(--ink);font-size:16px;margin-bottom:4px;">${en}</div><div style="color:var(--ink-soft);font-size:13px;">${zh}</div>`;
+  setTimeout(() => speak(en), 200);
+}
+
+function goToStep(step) {
+  speechSynthesis.cancel();
+  if (step > currentStep) completedSteps.add(currentStep);
+  currentStep = step;
+
+  document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+  document.querySelector(`.step-content[data-step="${step}"]`).classList.remove('hidden');
+
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    const btnStep = parseInt(btn.dataset.step);
+    btn.classList.remove('active', 'completed');
+    if (btnStep === step) btn.classList.add('active');
+    else if (completedSteps.has(btnStep)) btn.classList.add('completed');
+  });
+
+  const progress = (step / TOTAL_STEPS) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('progress-text').textContent = `第 ${step} 部分 / 共 6 部分`;
+
+  const mobileProgress = document.getElementById('mobile-progress-fill');
+  if (mobileProgress) mobileProgress.style.width = progress + '%';
+  const mobileIndicator = document.getElementById('mobile-step-indicator');
+  if (mobileIndicator) mobileIndicator.innerHTML = `${step} <span class="total">/ ${TOTAL_STEPS}</span>`;
+
+  const timeMap = { 1: "2 分鐘", 2: "4 分鐘", 3: "5 分鐘", 4: "4 分鐘", 5: "4 分鐘", 6: "1 分鐘" };
+  document.getElementById('progress-time').textContent = timeMap[step] || "";
+
+  document.getElementById('step-indicator').textContent = `Step ${step} of ${TOTAL_STEPS}`;
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const nextText = document.getElementById('next-btn-text');
+
+  prevBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
+  if (step === TOTAL_STEPS) {
+    nextText.textContent = '🎉 完成';
+    nextBtn.onclick = () => alert('恭喜完成縮寫課！而家聽英國人講嘢會清晰好多 🎧');
+  } else if (step === 1) {
+    nextText.textContent = '開始學習';
+    nextBtn.onclick = goNext;
+  } else {
+    nextText.textContent = '下一步';
+    nextBtn.onclick = goNext;
+  }
+
+  const mobilePrev = document.getElementById('mobile-prev-btn');
+  if (mobilePrev) mobilePrev.classList.toggle('disabled', step === 1);
+  const mobileNextText = document.getElementById('mobile-next-btn-text');
+  const mobileNextBtn = document.getElementById('mobile-next-btn');
+  if (mobileNextText && mobileNextBtn) {
+    if (step === TOTAL_STEPS) {
+      mobileNextText.textContent = '🎉 完成';
+      mobileNextBtn.onclick = () => alert('恭喜完成縮寫課！而家聽英國人講嘢會清晰好多 🎧');
+    } else if (step === 1) {
+      mobileNextText.textContent = '開始學習 →';
+      mobileNextBtn.onclick = goNext;
+    } else {
+      mobileNextText.textContent = '下一步 →';
+      mobileNextBtn.onclick = goNext;
+    }
+  }
+
+  document.querySelector('.main-inner').scrollTop = 0;
+}
+
+function goNext() { if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1); }
+function goPrev() { if (currentStep > 1) goToStep(currentStep - 1); }
+
+function openMobileSidebar() {
+  document.querySelector('.sidebar').classList.add('open');
+  document.getElementById('sidebar-backdrop').classList.add('show');
+}
+function closeMobileSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebar-backdrop').classList.remove('show');
+}
+document.querySelectorAll('.step-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 768) setTimeout(closeMobileSidebar, 150);
+  });
+});
+
+goToStep(1);
+</script>
+
+</body>
+</html>

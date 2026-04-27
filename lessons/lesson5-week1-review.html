@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf6ef">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23faf6ef'/><text x='50' y='70' text-anchor='middle' font-size='58'>5</text></svg>">
+<title>Lesson 5：Week 1 綜合評估 · Week 1 Review & Roleplay</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --burgundy: #8b3a3a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --sidebar-w: 300px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Noto Sans HK', 'Lora', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15.3px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 1;
+  }
+
+  .app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid var(--cream-dark);
+    padding: 16px 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sidebar-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .sidebar-header .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 14.7px;
+    color: var(--gold);
+    letter-spacing: 6px;
+    margin-bottom: 4px;
+  }
+  .sidebar-header .lesson-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--terra-dark);
+    margin-bottom: 2px;
+  }
+  .sidebar-header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 19.5px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .sidebar-header .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  .progress-compact {
+    padding: 12px 14px;
+    background: var(--cream);
+    border-radius: 10px;
+  }
+  .progress-compact .label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 5px;
+  }
+  .progress-compact .value {
+    font-family: 'Fraunces', serif;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .progress-bar { height: 6px; background: var(--cream-dark); border-radius: 4px; overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--gold));
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .steps-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .steps-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    padding: 0 6px;
+    margin-bottom: 2px;
+  }
+  .step-btn {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1.5px solid transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+  .step-btn:hover { background: var(--cream); color: var(--ink); }
+  .step-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .step-btn.completed { color: var(--sage-dark); }
+  .step-btn .step-num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .step-btn.active .step-num { background: var(--gold); color: var(--ink); }
+  .step-btn.completed .step-num { background: var(--sage); color: var(--paper); }
+
+  .speed-panel {
+    padding: 11px 12px;
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1px solid var(--cream-dark);
+  }
+  .speed-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .speed-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .speed-btn {
+    padding: 7px 4px;
+    border-radius: 7px;
+    border: 1.5px solid var(--cream-dark);
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.3;
+  }
+  .speed-btn:hover:not(.active) { border-color: var(--gold); color: var(--ink); }
+  .speed-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--paper);
+  }
+  .speed-btn .rate { font-family: 'Fraunces', serif; font-weight: 700; display: block; }
+  .speed-btn .rate-label { font-size: 10.5px; display: block; margin-top: 1px; opacity: 0.85; }
+
+  /* ============ MAIN ============ */
+  .main-area {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 34px;
+  }
+  .main-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 14px;
+    margin-right: -14px;
+  }
+  .main-inner::-webkit-scrollbar, .sidebar::-webkit-scrollbar { width: 8px; }
+  .main-inner::-webkit-scrollbar-track, .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .main-inner::-webkit-scrollbar-thumb, .sidebar::-webkit-scrollbar-thumb {
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+
+  .step-content { animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15.3px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+
+  .step-content h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 25.5px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.15;
+  }
+
+  .card-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15.3px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  .instruction {
+    background: var(--paper);
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .instruction strong { color: var(--ink); }
+
+  .callback {
+    background: #eaf0e4;
+    border-left: 3px solid var(--sage);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 15.3px;
+    color: var(--sage-dark);
+    line-height: 1.45;
+  }
+  .callback strong { color: var(--sage-dark); }
+
+  /* ============ STEP 1: CELEBRATION + OVERVIEW ============ */
+  .celebration-hero {
+    text-align: center;
+    padding: 10px 0;
+    background: linear-gradient(135deg, #fdf4e3 0%, #fff8e8 100%);
+    border-radius: 16px;
+    border: 1px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .celebration-hero .big-icon {
+    font-size: 41.6px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .celebration-hero h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--gold-dark);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .celebration-hero p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15.3px;
+    color: var(--ink-soft);
+  }
+
+  .week-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .stat-card {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 28.5px;
+    font-weight: 700;
+    color: var(--terra-dark);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .today-plan {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .plan-card {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .plan-card-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .plan-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--terra-dark);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .plan-card p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  /* ============ STEP 2: ROLEPLAY SCENE ============ */
+  .roleplay-intro {
+    background: linear-gradient(135deg, var(--cream) 0%, #fdf4e3 100%);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+  }
+  .roleplay-intro-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18.7px;
+    color: var(--gold-dark);
+    margin-bottom: 6px;
+  }
+  .roleplay-intro p {
+    font-size: 15.6px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .roleplay-scene {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border: 1px solid var(--cream-dark);
+  }
+  .roleplay-scene-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15.3px;
+    color: var(--terra-dark);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--cream-dark);
+  }
+
+  .dialogue-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .dialogue-line {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .dialogue-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    color: var(--paper);
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .dialogue-avatar.other { background: var(--blue); }
+  .dialogue-avatar.you { background: var(--terra); }
+  .dialogue-bubble {
+    flex: 1;
+    background: var(--cream);
+    border-radius: 10px 10px 10px 2px;
+    padding: 5px 12px;
+  }
+  .dialogue-line.you .dialogue-bubble {
+    background: #fdf4e3;
+    border-radius: 10px 10px 2px 10px;
+  }
+  .dialogue-text {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .dialogue-zh {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.2;
+  }
+  .dialogue-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .dialogue-btn {
+    background: transparent;
+    border: 1px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    transition: all 0.15s ease;
+  }
+  .dialogue-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue-dark);
+  }
+  .dialogue-btn:active { transform: scale(0.95); }
+  .dialogue-btn.slow {
+    color: var(--gold-dark);
+  }
+  .dialogue-btn.slow:hover {
+    border-color: var(--gold);
+  }
+  /* Active highlight when auto-playing */
+  .dialogue-line.active .dialogue-bubble {
+    box-shadow: 0 0 0 2px var(--gold);
+    background: #fdf4e3;
+    transition: box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .dialogue-line.you.active .dialogue-bubble {
+    box-shadow: 0 0 0 2px var(--terra);
+    background: #faeee8;
+  }
+
+  /* ============ STEP 3: FLASHCARD REVIEW ============ */
+  .fc-review {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .fc-review.rating-mode { padding-top: 16px; padding-bottom: 16px; }
+  .fc-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--gold-dark);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .fc-english {
+    font-family: 'Fraunces', serif;
+    font-size: 28.6px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .fc-chinese {
+    font-size: 20.4px;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .fc-audio-btn {
+    background: var(--terra);
+    color: var(--paper);
+    border: none;
+    padding: 10px 22px;
+    border-radius: 22px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 0 var(--terra-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .fc-audio-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 0 var(--terra-dark); }
+
+  .fc-rating {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+    width: 100%;
+    max-width: 540px;
+  }
+  .rating-btn {
+    padding: 12px 8px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .rating-btn .big-icon { font-size: 18.7px; }
+  .rating-btn .label {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .rating-btn .sub { font-size: 11px; opacity: 0.75; }
+  .rating-btn.again { background: #f5dcd0; color: var(--terra-dark); }
+  .rating-btn.again:hover { background: var(--terra); color: var(--paper); }
+  .rating-btn.ok { background: #fdf4d9; color: var(--gold-dark); }
+  .rating-btn.ok:hover { background: var(--gold); color: var(--paper); }
+  .rating-btn.good { background: #e8f0e2; color: var(--sage-dark); }
+  .rating-btn.good:hover { background: var(--sage); color: var(--paper); }
+
+  .fc-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .fc-progress-text {
+    font-family: 'Fraunces', serif;
+    font-size: 14.7px;
+    color: var(--ink);
+    font-weight: 600;
+    min-width: 80px;
+  }
+  .fc-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .fc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--gold));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  .fc-summary {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 18px 22px;
+    text-align: center;
+  }
+  .fc-summary-title {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .fc-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .fc-summary-item {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 10px 6px;
+  }
+  .fc-summary-num {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-weight: 700;
+  }
+  .fc-summary-num.good { color: var(--sage-dark); }
+  .fc-summary-num.ok { color: var(--gold-dark); }
+  .fc-summary-num.again { color: var(--terra-dark); }
+  .fc-summary-label { font-size: 13px; color: var(--ink-soft); margin-top: 3px; }
+
+  /* ============ STEP 4: FULL ROLEPLAY EVAL ============ */
+  .eval-intro {
+    background: linear-gradient(135deg, #fdf4e3 0%, var(--cream) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 14px 20px;
+    margin-bottom: 12px;
+  }
+  .eval-intro h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20.4px;
+    color: var(--gold-dark);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .eval-intro p {
+    font-size: 15.6px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .eval-scenarios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .scenario-card {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 14px 16px;
+    transition: all 0.2s ease;
+  }
+  .scenario-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+  .scenario-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .scenario-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .scenario-place {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .scenario-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .scenario-goal {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .scenario-goal strong { color: var(--terra-dark); }
+
+  /* ============ STEP 5: SELF-ASSESSMENT ============ */
+  .self-assess {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .assess-card {
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 14px 18px;
+  }
+  .assess-question {
+    font-family: 'Fraunces', serif;
+    font-size: 15.3px;
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .assess-scale {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .scale-btn {
+    flex: 1;
+    background: var(--cream);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 8px 4px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14.7px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .scale-btn:hover:not(.selected) {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+  .scale-btn.selected {
+    background: var(--terra);
+    border-color: var(--terra);
+    color: var(--paper);
+  }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* ============ STEP 6: CERTIFICATE ============ */
+  .cert-layout {
+    text-align: center;
+    padding: 0;
+  }
+  .cert-frame {
+    background: linear-gradient(135deg, #fff8e8 0%, #fdf4e3 100%);
+    border: 3px double var(--gold);
+    border-radius: 16px;
+    padding: 24px 28px;
+    max-width: 620px;
+    margin: 0 auto 14px;
+    position: relative;
+  }
+  .cert-ornament-top {
+    font-family: 'Fraunces', serif;
+    color: var(--gold);
+    letter-spacing: 10px;
+    font-size: 18pt;
+    margin-bottom: 6px;
+  }
+  .cert-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 14.7px;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .cert-title {
+    font-family: 'Fraunces', serif;
+    font-size: 27px;
+    color: var(--ink);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .cert-divider {
+    width: 40mm;
+    height: 1pt;
+    background: var(--gold);
+    margin: 10px auto;
+    border: none;
+  }
+  .cert-awarded {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .cert-name {
+    font-family: 'Fraunces', serif;
+    font-size: 28.5px;
+    color: var(--burgundy);
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  .cert-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .cert-stats-inline {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  .cert-stat-mini {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .cert-stat-mini .num {
+    font-family: 'Fraunces', serif;
+    font-size: 19.5px;
+    font-weight: 700;
+    color: var(--terra-dark);
+    line-height: 1;
+  }
+  .cert-stat-mini .lbl {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  .week2-preview {
+    background: var(--paper);
+    border-left: 3px solid var(--sage);
+    border-radius: 10px;
+    padding: 12px 18px;
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .week2-preview .tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--sage-dark);
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+  .week2-preview h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 15.3px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .week2-preview p { font-size: 14px; color: var(--ink-soft); line-height: 1.4; }
+
+  /* ============ FOOTER NAV ============ */
+  .footer-nav {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0 0;
+    margin-top: 14px;
+    border-top: 1px dashed var(--cream-dark);
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 14.7px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2.5px 0 #000, 0 4px 10px var(--shadow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.5px 0 #000, 0 6px 14px var(--shadow);
+    background: var(--terra-dark);
+  }
+  .btn-primary:active { transform: translateY(1px); box-shadow: 0 1.5px 0 #000; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1.5px solid var(--cream-dark);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--ink); }
+
+  .hidden { display: none !important; }
+
+  /* ============================================================ */
+  /* MOBILE ELEMENTS - hidden on desktop, shown on mobile          */
+  /* ============================================================ */
+  .mobile-top-bar { display: none; }
+  .mobile-progress { display: none; }
+  .mobile-nav-bar { display: none; }
+  .sidebar-backdrop { display: none; }
+
+  /* ============================================================ */
+  /* MOBILE LAYOUT (≤ 768px, iPhone & similar)                    */
+  /* ============================================================ */
+  @media (max-width: 768px) {
+    :root {
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    html, body {
+      overflow: hidden;
+      height: 100%;
+      position: fixed;
+      width: 100%;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+
+    body { font-size: 14.7px; }
+
+    /* ===== LAYOUT ===== */
+    .app-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      grid-template-columns: none;
+    }
+
+    /* Sidebar becomes right drawer */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 86%;
+      max-width: 360px;
+      z-index: 100;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.3, 0.85, 0.4, 1);
+      padding: calc(16px + var(--safe-top)) 18px calc(16px + var(--safe-bottom));
+      box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border-right: none;
+      border-bottom: none;
+      border-left: 1px solid var(--cream-dark);
+    }
+    .sidebar.open { transform: translateX(0); }
+
+    /* Backdrop */
+    .sidebar-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 36, 32, 0.4);
+      z-index: 99;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Sidebar drawer header */
+    .sidebar::before {
+      content: "⚙️ 設定";
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 18.7px;
+      color: var(--ink);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--cream-dark);
+      margin-bottom: 14px;
+    }
+
+    /* Hide desktop sidebar header in mobile */
+    .sidebar .sidebar-header { display: none; }
+    .sidebar .progress-compact { display: none; }
+    .sidebar .steps-nav { margin-bottom: 14px; }
+    .sidebar .steps-label {
+      font-size: 13px;
+      color: var(--terra-dark);
+    }
+    .sidebar .step-btn {
+      padding: 12px 14px;
+      font-size: 14px;
+      min-height: 50px;
+    }
+
+    .sidebar .speed-panel { padding: 14px; }
+    .sidebar .speed-buttons { gap: 6px; }
+    .sidebar .speed-btn {
+      padding: 10px 4px;
+      min-height: 50px;
+      font-size: 13px;
+    }
+    .sidebar .speed-btn .rate { font-size: 14px; }
+    .sidebar .speed-btn .rate-label { font-size: 11px; }
+
+    /* ===== MOBILE TOP BAR ===== */
+    .mobile-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: calc(10px + var(--safe-top)) 14px 8px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--cream-dark);
+      flex-shrink: 0;
+      z-index: 10;
+      position: relative;
+    }
+    .mobile-top-bar .lesson-info { flex: 1; min-width: 0; }
+    .mobile-top-bar .lesson-tag {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 11.5px;
+      color: var(--terra-dark);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .mobile-top-bar h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 15.3px;
+      color: var(--ink);
+      line-height: 1.1;
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    .mobile-top-bar .step-indicator {
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 5px 11px;
+      font-family: 'Fraunces', serif;
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .mobile-top-bar .step-indicator .total {
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+    .mobile-top-bar .menu-btn {
+      background: var(--cream);
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ink);
+    }
+    .mobile-top-bar .menu-btn:active { background: var(--cream-dark); }
+
+    /* Mobile progress bar */
+    .mobile-progress {
+      display: block;
+      height: 4px;
+      background: var(--cream-dark);
+      flex-shrink: 0;
+    }
+    .mobile-progress .fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--terra), var(--gold));
+      transition: width 0.4s ease;
+    }
+
+    /* ===== MAIN AREA ===== */
+    .main-area {
+      flex: 1;
+      padding: 14px 16px 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .main-inner {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-right: 0;
+      margin-right: 0;
+      padding-bottom: 14px;
+    }
+
+    /* ===== FOOTER NAV - hide on mobile (replaced by mobile-nav-bar) ===== */
+    .footer-nav { display: none; }
+
+    /* ===== MOBILE BOTTOM NAV BAR ===== */
+    .mobile-nav-bar {
+      display: flex;
+      background: var(--paper);
+      border-top: 1px solid var(--cream-dark);
+      padding: 8px 14px calc(8px + var(--safe-bottom));
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .mobile-nav-bar .nav-btn {
+      flex: 1;
+      padding: 13px 10px;
+      border-radius: 12px;
+      font-family: 'Noto Sans HK', serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 48px;
+      border: none;
+    }
+    .mobile-nav-bar .nav-btn.prev {
+      background: var(--cream);
+      color: var(--ink);
+      flex: 0 0 34%;
+    }
+    .mobile-nav-bar .nav-btn.prev:active { background: var(--cream-dark); }
+    .mobile-nav-bar .nav-btn.next {
+      background: var(--terra);
+      color: white;
+    }
+    .mobile-nav-bar .nav-btn.next:active {
+      background: var(--terra-dark);
+    }
+    .mobile-nav-bar .nav-btn.prev.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* ===== STEP CONTENT - mobile layout adjustments ===== */
+    .section-label {
+      font-size: 13px;
+      margin-bottom: 4px;
+      letter-spacing: 0.03em;
+    }
+    .step-content h2 {
+      font-size: 19.5px !important;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      font-size: 14px !important;
+      margin-bottom: 12px;
+    }
+    .instruction {
+      padding: 10px 14px;
+      font-size: 14px !important;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    /* ===== LESSON 5 SPECIFIC: Grids → Single column ===== */
+    .week-stats { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+    .today-plan { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .eval-scenarios { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .self-assess { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .dialogue-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .fc-summary-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px !important; }
+    .fc-rating { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px !important; }
+    .assess-scale { gap: 6px !important; }
+    .cert-stats-inline { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px !important; }
+
+    /* Dialogue lines – more compact */
+    .dialogue-line { padding: 10px 12px !important; }
+    .dialogue-bubble { padding: 10px 12px !important; }
+    
+    /* Scenario cards */
+    .scenario-card { padding: 14px !important; }
+    
+    /* Flashcard review */
+    .fc-review { padding: 16px !important; }
+    .rating-btn { padding: 12px 6px !important; min-height: 72px !important; }
+    
+    /* Self-assessment */
+    .assess-card { padding: 14px !important; }
+    .scale-btn { min-height: 44px !important; min-width: 40px !important; }
+    
+    /* Certificate */
+    .cert-frame { padding: 18px 16px !important; }
+    .cert-layout { padding: 0 !important; }
+  }
+
+  /* ============================================================ */
+  /* DESKTOP (≥ 769px) - hide mobile-only elements                */
+  /* ============================================================ */
+  @media (min-width: 769px) {
+    .mobile-top-bar { display: none !important; }
+    .mobile-progress { display: none !important; }
+    .mobile-nav-bar { display: none !important; }
+    .sidebar-backdrop { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Mobile sidebar backdrop -->
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="ornament">· · ·</div>
+      <div class="lesson-num">Lesson 5 · 第五堂</div>
+      <h1>Week 1 綜合評估</h1>
+      <div class="subtitle">Week 1 Review & Roleplay</div>
+    </div>
+
+    <div class="progress-compact">
+      <div class="label">
+        <span id="progress-text">第 1 部分 / 共 6 部分</span>
+        <span class="value" id="progress-time">3 分鐘</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 16.7%;"></div>
+      </div>
+    </div>
+
+    <nav class="steps-nav">
+      <div class="steps-label">評估步驟</div>
+      <button class="step-btn active" data-step="1" onclick="goToStep(1)">
+        <span class="step-num">1</span><span>Week 1 總覽</span>
+      </button>
+      <button class="step-btn" data-step="2" onclick="goToStep(2)">
+        <span class="step-num">2</span><span>目標對話</span>
+      </button>
+      <button class="step-btn" data-step="3" onclick="goToStep(3)">
+        <span class="step-num">3</span><span>Flashcard 溫習</span>
+      </button>
+      <button class="step-btn" data-step="4" onclick="goToStep(4)">
+        <span class="step-num">4</span><span>Roleplay 評估</span>
+      </button>
+      <button class="step-btn" data-step="5" onclick="goToStep(5)">
+        <span class="step-num">5</span><span>自我評估</span>
+      </button>
+      <button class="step-btn" data-step="6" onclick="goToStep(6)">
+        <span class="step-num">6</span><span>🏆 Week 1 完成</span>
+      </button>
+    </nav>
+
+    <div class="speed-panel">
+      <div class="speed-label">🐢 聲音速度</div>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="0.2" onclick="setSpeed(0.2, this)">
+          <span class="rate">0.2x</span><span class="rate-label">極慢</span>
+        </button>
+        <button class="speed-btn active" data-speed="0.3" onclick="setSpeed(0.3, this)">
+          <span class="rate">0.3x</span><span class="rate-label">好慢</span>
+        </button>
+        <button class="speed-btn" data-speed="0.4" onclick="setSpeed(0.4, this)">
+          <span class="rate">0.4x</span><span class="rate-label">慢</span>
+        </button>
+        <button class="speed-btn" data-speed="0.6" onclick="setSpeed(0.6, this)">
+          <span class="rate">0.6x</span><span class="rate-label">正常</span>
+        </button>
+        <button class="speed-btn" data-speed="0.7" onclick="setSpeed(0.7, this)">
+          <span class="rate">0.7x</span><span class="rate-label">稍快</span>
+        </button>
+        <button class="speed-btn" data-speed="0.9" onclick="setSpeed(0.9, this)">
+          <span class="rate">0.9x</span><span class="rate-label">較快</span>
+        </button>
+        <button class="speed-btn" data-speed="1.0" onclick="setSpeed(1.0, this)">
+          <span class="rate">1.0x</span><span class="rate-label">原速</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-area">
+
+    <!-- Mobile Top Bar -->
+    <div class="mobile-top-bar">
+      <div class="lesson-info">
+        <div class="lesson-tag">Lesson 5</div>
+        <h1>Week 1 綜合評估</h1>
+      </div>
+      <div class="step-indicator" id="mobile-step-indicator">1 <span class="total">/ 6</span></div>
+      <button class="menu-btn" onclick="openMobileSidebar()" aria-label="設定">☰</button>
+    </div>
+
+    <!-- Mobile Progress Bar -->
+    <div class="mobile-progress">
+      <div class="fill" id="mobile-progress-fill" style="width: 16.7%;"></div>
+    </div>
+
+    <div class="main-inner">
+
+      <!-- STEP 1: WEEK OVERVIEW + CELEBRATION -->
+      <div class="step-content" data-step="1">
+        <div class="section-label">Part 1 · Week 1 總覽 (3 分鐘) · 你做到咗！</div>
+        <h2 style="margin-bottom: 4px;">Week 1 第 5 堂 🎊</h2>
+        <p class="card-sub" style="margin-bottom: 10px;">今日冇新內容 — 係慶祝同鞏固你學過嘅嘢</p>
+
+        <div class="celebration-hero">
+          <div class="big-icon">🏆</div>
+          <h3>你完成咗 Week 1 學習！</h3>
+          <p>由 Lesson 1 到 Lesson 4，你學咗 29 個日常套語</p>
+        </div>
+
+        <div class="week-stats">
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">新內容嘅堂</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">29</div>
+            <div class="stat-label">識嘅套語</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2.5</div>
+            <div class="stat-label">總學習小時</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">堅持日數</div>
+          </div>
+        </div>
+
+        <div class="today-plan">
+          <div class="plan-card">
+            <div class="plan-card-icon">💬</div>
+            <h4>目標對話</h4>
+            <p>睇下 Week 1 結束後你可以做到嘅對話樣例</p>
+          </div>
+          <div class="plan-card">
+            <div class="plan-card-icon">🃏</div>
+            <h4>Flashcard 溫習</h4>
+            <p>10 張卡片自評：識／OK／再練</p>
+          </div>
+          <div class="plan-card">
+            <div class="plan-card-icon">🎤</div>
+            <h4>Roleplay 評估</h4>
+            <p>同老師做完整對話，3 個場景揀一個</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: TARGET DIALOGUE -->
+      <div class="step-content hidden" data-step="2">
+        <div class="section-label">Part 2 · Week 1 目標對話 (5 分鐘) · 場景：社區中心遇到 Emma</div>
+        <h2 style="margin-bottom: 4px;">你嘅 Week 1 成就 ✨</h2>
+        <p class="card-sub" style="margin-bottom: 8px;">呢個就係你今日可以自信做嘅對話 — 融合 Lesson 1-4 所有套語</p>
+
+        <div class="roleplay-scene" style="padding: 10px 16px;">
+          <div class="dialogue-grid" id="full-dialogue">
+            <div class="dialogue-line" data-line-idx="0">
+              <div class="dialogue-avatar other">E</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-text">Hello! Good afternoon!</div>
+                <div class="dialogue-zh">你好！下午好！</div>
+                <div class="dialogue-actions">
+                  <button class="dialogue-btn" onclick="playLine(0)">▶️ 聽</button>
+                  <button class="dialogue-btn slow" onclick="playLine(0, 0.2)">🐢 極慢</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="dialogue-line you" data-line-idx="1">
+              <div class="dialogue-avatar you">你</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-text">Hi! Good afternoon.</div>
+                <div class="dialogue-zh">你好！下午好。</div>
+                <div class="dialogue-actions">
+                  <button class="dialogue-btn" onclick="playLine(1)">▶️ 聽</button>
+                  <button class="dialogue-btn slow" onclick="playLine(1, 0.2)">🐢 極慢</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="dialogue-line" data-line-idx="2">
+              <div class="dialogue-avatar other">E</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-text">How are you?</div>
+                <div class="dialogue-zh">你點呀？</div>
+                <div class="dialogue-actions">
+                  <button class="dialogue-btn" onclick="playLine(2)">▶️ 聽</button>
+                  <button class="dialogue-btn slow" onclick="playLine(2, 0.2)">🐢 極慢</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="dialogue-line you" data-line-idx="3">
+              <div class="dialogue-avatar you">你</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-text">I'm good, thanks. And you? What's your name?</div>
+                <div class="dialogue-zh">好好，唔該。你呢？你叫咩名？</div>
+                <div class="dialogue-actions">
+                  <button class="dialogue-btn" onclick="playLine(3)">▶️ 聽</button>
+                  <button class="dialogue-btn slow" onclick="playLine(3, 0.2)">🐢 極慢</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="dialogue-line" data-line-idx="4">
+              <div class="dialogue-avatar other">E</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-text">I'm fine. My name is Emma. Where are you from?</div>
+                <div class="dialogue-zh">我幾好。我叫 Emma。你嚟自邊度？</div>
+                <div class="dialogue-actions">
+                  <button class="dialogue-btn" onclick="playLine(4)">▶️ 聽</button>
+                  <button class="dialogue-btn slow" onclick="playLine(4, 0.2)">🐢 極慢</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="dialogue-line you" data-line-idx="5">
+              <div class="dialogue-avatar you">你</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-text">I'm from Hong Kong. Nice to meet you!</div>
+                <div class="dialogue-zh">我嚟自香港。好開心識到你！</div>
+                <div class="dialogue-actions">
+                  <button class="dialogue-btn" onclick="playLine(5)">▶️ 聽</button>
+                  <button class="dialogue-btn slow" onclick="playLine(5, 0.2)">🐢 極慢</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="dialogue-line" data-line-idx="6">
+              <div class="dialogue-avatar other">E</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-text">Nice to meet you too! See you later!</div>
+                <div class="dialogue-zh">我都好開心！陣間見！</div>
+                <div class="dialogue-actions">
+                  <button class="dialogue-btn" onclick="playLine(6)">▶️ 聽</button>
+                  <button class="dialogue-btn slow" onclick="playLine(6, 0.2)">🐢 極慢</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 8px;">
+          <button class="btn-primary" id="dialogue-play-btn" onclick="toggleFullDialogue()" style="padding: 11px 30px;">
+            🔊 <span id="dialogue-play-label">聽成段對話</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: FLASHCARD REVIEW -->
+      <div class="step-content hidden" data-step="3">
+        <div class="section-label">Part 3 · Flashcard 溫習 (8 分鐘) · 10 張精選卡</div>
+        <h2 style="margin-bottom: 4px;" id="fc-heading">溫習 Week 1 套語</h2>
+        <p class="card-sub" style="margin-bottom: 10px;" id="fc-subheading">睇英文 → 諗中文 → 自評熟悉度</p>
+
+        <div class="fc-progress">
+          <div class="fc-progress-text" id="fc-progress-text">卡 1 / 10</div>
+          <div class="fc-progress-bar"><div class="fc-progress-fill" id="fc-progress-fill" style="width: 10%;"></div></div>
+        </div>
+
+        <div id="fc-container"></div>
+      </div>
+
+      <!-- STEP 4: ROLEPLAY EVALUATION -->
+      <div class="step-content hidden" data-step="4">
+        <div class="section-label">Part 4 · Roleplay 評估 (8 分鐘) · 揀一個場景</div>
+        <h2 style="margin-bottom: 4px;">同老師做 30 秒對話</h2>
+        <p class="card-sub" style="margin-bottom: 10px;">老師扮陌生人，你用 Week 1 學過嘅所有嘢</p>
+
+        <div class="eval-intro">
+          <h3>🎤 點做</h3>
+          <p>揀一個場景，老師會扮對方。你用英文打招呼、自我介紹、問 1-2 條問題、禮貌告別。目標：<strong>做一個 30 秒嘅自然對話，冇需要 perfect</strong>。</p>
+        </div>
+
+        <div class="eval-scenarios">
+          <div class="scenario-card">
+            <div class="scenario-num">1</div>
+            <div class="scenario-place">簡單版</div>
+            <div class="scenario-title">社區中心</div>
+            <div class="scenario-desc">你去社區中心做義工，遇到另一個義工</div>
+            <div class="scenario-goal">
+              <strong>目標：</strong>打招呼 → 自我介紹 → 問對方名 → 禮貌告別
+            </div>
+          </div>
+
+          <div class="scenario-card">
+            <div class="scenario-num">2</div>
+            <div class="scenario-place">中等版</div>
+            <div class="scenario-title">超市偶遇</div>
+            <div class="scenario-desc">喺超市排隊時，隔離人友好咁同你傾</div>
+            <div class="scenario-goal">
+              <strong>目標：</strong>打招呼 → 傾 2-3 句 → 問住邊 → 用 Excuse me / Thank you → 告別
+            </div>
+          </div>
+
+          <div class="scenario-card">
+            <div class="scenario-num">3</div>
+            <div class="scenario-place">挑戰版</div>
+            <div class="scenario-title">朋友屋企派對</div>
+            <div class="scenario-desc">朋友介紹新朋友你識</div>
+            <div class="scenario-goal">
+              <strong>目標：</strong>完整對話 — 主動問 3 條以上問題，答返自己資料，禮貌結尾
+            </div>
+          </div>
+        </div>
+
+        <div class="instruction" style="margin-top: 10px; font-size: 14.7px; padding: 8px 12px;">
+          <strong>✨ 老師提示：</strong>做完之後，老師會畀你 <strong>3 個長處</strong> 同 <strong>1 個可以加強嘅地方</strong>。唔會批評，只會鼓勵。
+        </div>
+      </div>
+
+      <!-- STEP 5: SELF-ASSESSMENT -->
+      <div class="step-content hidden" data-step="5">
+        <div class="section-label">Part 5 · 自我評估 (3 分鐘) · 你覺得自己點</div>
+        <h2 style="margin-bottom: 4px;">Hannah，你點諗？</h2>
+        <p class="card-sub" style="margin-bottom: 10px;">1 = 好唔舒服／5 = 好自信。冇對錯答案。</p>
+
+        <div class="self-assess" id="assess-container"></div>
+
+        <div class="instruction" style="margin-top: 10px; font-size: 14.7px; padding: 8px 12px;">
+          <strong>💡 Tip：</strong>老師會記低你嘅答案，用嚟調整 Week 2 嘅節奏。例如你覺得聽力難，Week 2 會多啲慢速練習。
+        </div>
+      </div>
+
+      <!-- STEP 6: CERTIFICATE + WEEK 2 PREVIEW -->
+      <div class="step-content hidden" data-step="6">
+        <div class="cert-layout">
+          <div class="cert-frame">
+            <div class="cert-ornament-top">· · ·</div>
+            <div class="cert-label">CERTIFICATE OF COMPLETION</div>
+            <div class="cert-title">Week 1 完成</div>
+            <hr class="cert-divider">
+            <div class="cert-awarded">恭喜頒發給</div>
+            <div class="cert-name">Hannah</div>
+            <div class="cert-desc">
+              完成 Month 1 · Week 1<br>
+              <em>Activation &amp; Foundations · 激活基礎</em>
+            </div>
+            <div class="cert-stats-inline">
+              <div class="cert-stat-mini">
+                <div class="num">29</div>
+                <div class="lbl">套語</div>
+              </div>
+              <div class="cert-stat-mini">
+                <div class="num">5</div>
+                <div class="lbl">堂</div>
+              </div>
+              <div class="cert-stat-mini">
+                <div class="num">2.5hr</div>
+                <div class="lbl">時數</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week2-preview">
+            <div class="tag">📅 下週預告</div>
+            <h3>Week 2：家庭 & 身邊嘅人</h3>
+            <p>學介紹屋企人、講佢哋嘅職業、簡單形容人。Lessons 6-10 幫你擴展到「家庭故事」嘅對話能力。</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-nav">
+      <button class="btn-secondary" id="prev-btn" onclick="goPrev()">← 上一步</button>
+      <div style="font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-soft); font-size: 14px;" id="step-indicator">
+        Step 1 of 6
+      </div>
+      <button class="btn-primary" id="next-btn" onclick="goNext()"><span id="next-btn-text">開始評估</span><span>→</span></button>
+    </div>
+
+    <!-- Mobile Bottom Nav Bar -->
+    <div class="mobile-nav-bar">
+      <button class="nav-btn prev disabled" id="mobile-prev-btn" onclick="goPrev()">← 返</button>
+      <button class="nav-btn next" id="mobile-next-btn" onclick="goNext()">
+        <span id="mobile-next-btn-text">開始評估</span>
+      </button>
+    </div>
+  </main>
+</div>
+
+<script>
+let currentStep = 1;
+let currentSpeed = 0.3;
+let emmaVoice = null;   // 對方聲（Emma）
+let hannahVoice = null; // 你嘅聲（Hannah）
+let englishVoice = null; // Fallback / 單人讀（flashcard 等）
+const completedSteps = new Set();
+const TOTAL_STEPS = 6;
+
+// Full dialogue
+const TARGET_DIALOGUE = [
+  "Hello! Good afternoon!",
+  "Hi! Good afternoon.",
+  "How are you?",
+  "I'm good, thanks. And you? What's your name?",
+  "I'm fine. My name is Emma. Where are you from?",
+  "I'm from Hong Kong. Nice to meet you!",
+  "Nice to meet you too! See you later!"
+];
+
+// 10 cards selected from Week 1 - representative + challenging
+const REVIEW_CARDS = [
+  { en: "My name is Hannah.", zh: "我叫 Hannah。", lesson: 1 },
+  { en: "I'm from Hong Kong.", zh: "我嚟自香港。", lesson: 1 },
+  { en: "Nice to meet you.", zh: "好開心識到你。", lesson: 1 },
+  { en: "Good afternoon!", zh: "下午好！", lesson: 2 },
+  { en: "How are you?", zh: "你點呀？", lesson: 2 },
+  { en: "I'm good, thanks. And you?", zh: "我好好，唔該。你呢？", lesson: 2 },
+  { en: "See you later!", zh: "陣間見！", lesson: 3 },
+  { en: "You're welcome.", zh: "唔使客氣。", lesson: 3 },
+  { en: "What's your name?", zh: "你叫咩名？", lesson: 4 },
+  { en: "Where are you from?", zh: "你嚟自邊度？", lesson: 4 },
+];
+
+const ASSESSMENT_QUESTIONS = [
+  { q: "你覺得自我介紹（我叫...、我嚟自...）有幾順？", key: "intro" },
+  { q: "聽老師嘅英文，你明白幾多？", key: "listening" },
+  { q: "主動開口問人嘅自信？", key: "asking" },
+  { q: "用禮貌詞（thank you / sorry）嘅熟悉度？", key: "politeness" },
+  { q: "每日 30 分鐘學英文，你覺得適合？", key: "pace" },
+  { q: "繼續 Week 2 嘅動力？", key: "motivation" },
+];
+
+let fcIndex = 0;
+let fcStats = { good: 0, ok: 0, again: 0 };
+let assessAnswers = {};
+
+// ============ SPEECH ============
+function loadVoice() {
+  const voices = speechSynthesis.getVoices();
+
+  // Find all UK / English female voices
+  const ukFemale = voices.filter(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female'));
+  const ukAny = voices.filter(v => v.lang === 'en-GB');
+  const enFemale = voices.filter(v => v.lang.startsWith('en-') && v.name.toLowerCase().includes('female'));
+  const enAny = voices.filter(v => v.lang.startsWith('en-'));
+
+  // Build a prioritised pool of female-sounding voices
+  const femalePool = [...ukFemale, ...enFemale];
+  // All English voices as fallback pool
+  const generalPool = [...ukAny, ...enAny, ...voices];
+
+  // Deduplicate while preserving order
+  const seen = new Set();
+  const uniqueFemale = femalePool.filter(v => !seen.has(v.name) && seen.add(v.name));
+  const seen2 = new Set();
+  const uniqueGeneral = generalPool.filter(v => !seen2.has(v.name) && seen2.add(v.name));
+
+  // Pick Emma (對方) — prefer first female UK voice
+  emmaVoice = uniqueFemale[0] || uniqueGeneral[0] || voices[0];
+
+  // Pick Hannah (你) — prefer DIFFERENT female voice
+  hannahVoice = uniqueFemale.find(v => v !== emmaVoice)
+             || uniqueGeneral.find(v => v !== emmaVoice)
+             || emmaVoice;
+
+  // Fallback for single-voice speak() calls (flashcard, review cards)
+  englishVoice = emmaVoice;
+}
+if ('speechSynthesis' in window) {
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
+function speak(text, rate, voice) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-GB';
+  utter.rate = rate || currentSpeed;
+  // 如果指定 voice 就用佢，否則用 default (englishVoice)
+  utter.voice = voice || englishVoice;
+  speechSynthesis.speak(utter);
+}
+function setSpeed(speed, btn) {
+  currentSpeed = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ============ STEP 2: FULL DIALOGUE (2 voices alternating) ============
+// State for toggle play
+let dialogueTimers = [];        // setTimeout IDs
+let dialoguePlaying = false;
+
+// Play ONE line (from button click)
+function playLine(idx, rate) {
+  stopFullDialogue();  // stop any auto-playback first
+  const line = TARGET_DIALOGUE[idx];
+  if (!line) return;
+  // Emma at even index, Hannah at odd
+  const voice = (idx % 2 === 0) ? emmaVoice : hannahVoice;
+  speak(line, rate || currentSpeed, voice);
+  // Highlight this line briefly
+  highlightLine(idx);
+  setTimeout(() => unhighlightLine(idx), 2500);
+}
+
+function highlightLine(idx) {
+  const el = document.querySelector(`.dialogue-line[data-line-idx="${idx}"]`);
+  if (el) el.classList.add('active');
+}
+function unhighlightLine(idx) {
+  const el = document.querySelector(`.dialogue-line[data-line-idx="${idx}"]`);
+  if (el) el.classList.remove('active');
+}
+function clearAllHighlights() {
+  document.querySelectorAll('.dialogue-line.active').forEach(el => el.classList.remove('active'));
+}
+
+// Toggle (Play / Stop)
+function toggleFullDialogue() {
+  if (dialoguePlaying) {
+    stopFullDialogue();
+  } else {
+    playFullDialogue();
+  }
+}
+
+function playFullDialogue() {
+  speechSynthesis.cancel();
+  clearAllHighlights();
+  dialogueTimers.forEach(t => clearTimeout(t));
+  dialogueTimers = [];
+  dialoguePlaying = true;
+  updateDialogueButton(true);
+
+  const rate = Math.max(currentSpeed, 0.4);
+  const gap = Math.max(3500, 3500 / currentSpeed);
+
+  TARGET_DIALOGUE.forEach((line, i) => {
+    const voice = (i % 2 === 0) ? emmaVoice : hannahVoice;
+    const t = setTimeout(() => {
+      // Unhighlight previous
+      if (i > 0) unhighlightLine(i - 1);
+      // Highlight current
+      highlightLine(i);
+      speak(line, rate, voice);
+    }, i * gap);
+    dialogueTimers.push(t);
+  });
+
+  // Auto-end: clear highlight + reset button after last line
+  const totalMs = TARGET_DIALOGUE.length * gap;
+  const endTimer = setTimeout(() => {
+    clearAllHighlights();
+    dialoguePlaying = false;
+    updateDialogueButton(false);
+  }, totalMs + 1500);
+  dialogueTimers.push(endTimer);
+}
+
+function stopFullDialogue() {
+  speechSynthesis.cancel();
+  dialogueTimers.forEach(t => clearTimeout(t));
+  dialogueTimers = [];
+  clearAllHighlights();
+  dialoguePlaying = false;
+  updateDialogueButton(false);
+}
+
+function updateDialogueButton(isPlaying) {
+  const label = document.getElementById('dialogue-play-label');
+  const btn = document.getElementById('dialogue-play-btn');
+  if (!label || !btn) return;
+  if (isPlaying) {
+    label.textContent = '停止';
+    // Replace 🔊 icon with ⏹️
+    btn.innerHTML = '⏹️ <span id="dialogue-play-label">停止</span>';
+    btn.setAttribute('onclick', 'toggleFullDialogue()');
+  } else {
+    btn.innerHTML = '🔊 <span id="dialogue-play-label">聽成段對話</span>';
+    btn.setAttribute('onclick', 'toggleFullDialogue()');
+  }
+}
+
+// ============ STEP 3: FLASHCARD REVIEW ============
+function renderFlashcard() {
+  const container = document.getElementById('fc-container');
+
+  if (fcIndex >= REVIEW_CARDS.length) {
+    // Summary
+    container.innerHTML = `
+      <div class="fc-summary">
+        <div style="font-size: 31.2px; margin-bottom: 6px;">${fcStats.good >= 7 ? '🏆' : fcStats.good >= 4 ? '✨' : '🌱'}</div>
+        <div class="fc-summary-title">溫習完成！</div>
+        <p style="font-size: 14.7px; color: var(--ink-soft); line-height: 1.5;">
+          ${fcStats.good >= 7 ? 'Week 1 套語你已經好熟，繼續保持！' :
+            fcStats.good >= 4 ? '大部分都熟，繼續日日溫有成效。' :
+            '呢週新內容多，而家唔熟好正常。每日 5 分鐘溫就會熟。'}
+        </p>
+        <div class="fc-summary-grid">
+          <div class="fc-summary-item">
+            <div class="fc-summary-num good">${fcStats.good}</div>
+            <div class="fc-summary-label">✓ 好熟</div>
+          </div>
+          <div class="fc-summary-item">
+            <div class="fc-summary-num ok">${fcStats.ok}</div>
+            <div class="fc-summary-label">🤔 OK</div>
+          </div>
+          <div class="fc-summary-item">
+            <div class="fc-summary-num again">${fcStats.again}</div>
+            <div class="fc-summary-label">🔁 再練</div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="resetFlashcards()" style="margin-top: 8px; padding: 10px 26px;">↻ 再溫一次</button>
+      </div>
+    `;
+    document.getElementById('fc-progress-text').textContent = `完成 ${REVIEW_CARDS.length} / ${REVIEW_CARDS.length}`;
+    document.getElementById('fc-progress-fill').style.width = '100%';
+    return;
+  }
+
+  const card = REVIEW_CARDS[fcIndex];
+  document.getElementById('fc-progress-text').textContent = `卡 ${fcIndex + 1} / ${REVIEW_CARDS.length}`;
+  document.getElementById('fc-progress-fill').style.width = ((fcIndex + 1) / REVIEW_CARDS.length * 100) + '%';
+
+  container.innerHTML = `
+    <div class="fc-review rating-mode">
+      <div class="fc-tag">Lesson ${card.lesson}</div>
+      <div class="fc-english">${card.en}</div>
+      <div class="fc-chinese">${card.zh}</div>
+      <button class="fc-audio-btn" onclick="speak('${card.en.replace(/'/g, "\\'")}')">🔊 <span>再聽一次</span></button>
+
+      <div class="fc-rating">
+        <button class="rating-btn again" onclick="rateCard('again')">
+          <span class="big-icon">🔁</span>
+          <span class="label">再練</span>
+          <span class="sub">未熟</span>
+        </button>
+        <button class="rating-btn ok" onclick="rateCard('ok')">
+          <span class="big-icon">🤔</span>
+          <span class="label">OK</span>
+          <span class="sub">識但要諗</span>
+        </button>
+        <button class="rating-btn good" onclick="rateCard('good')">
+          <span class="big-icon">✓</span>
+          <span class="label">好熟</span>
+          <span class="sub">即刻識</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Auto-play the card
+  setTimeout(() => speak(card.en), 300);
+}
+
+function rateCard(rating) {
+  fcStats[rating]++;
+  fcIndex++;
+  renderFlashcard();
+}
+
+function resetFlashcards() {
+  fcIndex = 0;
+  fcStats = { good: 0, ok: 0, again: 0 };
+  renderFlashcard();
+}
+
+// ============ STEP 5: SELF-ASSESSMENT ============
+function renderAssessment() {
+  const container = document.getElementById('assess-container');
+  container.innerHTML = ASSESSMENT_QUESTIONS.map(q => `
+    <div class="assess-card">
+      <div class="assess-question">${q.q}</div>
+      <div class="assess-scale">
+        ${[1, 2, 3, 4, 5].map(n => `
+          <button class="scale-btn ${assessAnswers[q.key] === n ? 'selected' : ''}"
+                  onclick="setAssess('${q.key}', ${n}, this)">${n}</button>
+        `).join('')}
+      </div>
+      <div class="scale-labels">
+        <span>唔舒服</span>
+        <span>好自信</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setAssess(key, value, btn) {
+  assessAnswers[key] = value;
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ============ NAVIGATION ============
+function goToStep(step) {
+  speechSynthesis.cancel();
+  if (step > currentStep) completedSteps.add(currentStep);
+  currentStep = step;
+
+  document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+  document.querySelector(`.step-content[data-step="${step}"]`).classList.remove('hidden');
+
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    const btnStep = parseInt(btn.dataset.step);
+    btn.classList.remove('active', 'completed');
+    if (btnStep === step) btn.classList.add('active');
+    else if (completedSteps.has(btnStep)) btn.classList.add('completed');
+  });
+
+  const progress = (step / TOTAL_STEPS) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('progress-text').textContent = `第 ${step} 部分 / 共 6 部分`;
+
+  // Mobile progress bar sync
+  const mobileProgress = document.getElementById('mobile-progress-fill');
+  if (mobileProgress) mobileProgress.style.width = progress + '%';
+
+  // Mobile step indicator sync
+  const mobileIndicator = document.getElementById('mobile-step-indicator');
+  if (mobileIndicator) mobileIndicator.innerHTML = `${step} <span class="total">/ ${TOTAL_STEPS}</span>`;
+
+  const timeMap = { 1: "3 分鐘", 2: "5 分鐘", 3: "8 分鐘", 4: "8 分鐘", 5: "3 分鐘", 6: "3 分鐘" };
+  document.getElementById('progress-time').textContent = timeMap[step] || "";
+
+  document.getElementById('step-indicator').textContent = `Step ${step} of ${TOTAL_STEPS}`;
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const nextText = document.getElementById('next-btn-text');
+
+  prevBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
+  if (step === TOTAL_STEPS) {
+    nextText.textContent = '🖨 列印證書';
+    nextBtn.onclick = () => window.print();
+  } else if (step === 1) {
+    nextText.textContent = '開始評估';
+    nextBtn.onclick = goNext;
+  } else {
+    nextText.textContent = '下一步';
+    nextBtn.onclick = goNext;
+  }
+
+  // Mobile nav buttons sync
+  const mobilePrev = document.getElementById('mobile-prev-btn');
+  if (mobilePrev) mobilePrev.classList.toggle('disabled', step === 1);
+
+  const mobileNext = document.getElementById('mobile-next-btn');
+  const mobileNextText = document.getElementById('mobile-next-btn-text');
+  if (mobileNext && mobileNextText) {
+    if (step === TOTAL_STEPS) {
+      mobileNextText.textContent = '🖨 列印';
+      mobileNext.onclick = () => window.print();
+    } else if (step === 1) {
+      mobileNextText.textContent = '開始評估 →';
+      mobileNext.onclick = goNext;
+    } else {
+      mobileNextText.textContent = '下一步 →';
+      mobileNext.onclick = goNext;
+    }
+  }
+
+  document.querySelector('.main-inner').scrollTop = 0;
+
+  if (step === 3 && !document.getElementById('fc-container').innerHTML) {
+    renderFlashcard();
+  }
+  if (step === 5 && !document.getElementById('assess-container').innerHTML) {
+    renderAssessment();
+  }
+}
+
+function goNext() {
+  if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
+}
+function goPrev() {
+  if (currentStep > 1) goToStep(currentStep - 1);
+}
+
+// ============ MOBILE SIDEBAR DRAWER ============
+function openMobileSidebar() {
+  document.querySelector('.sidebar').classList.add('open');
+  document.getElementById('sidebar-backdrop').classList.add('show');
+}
+function closeMobileSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebar-backdrop').classList.remove('show');
+}
+// Close drawer when user taps a step button (mobile)
+document.querySelectorAll('.step-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 768) setTimeout(closeMobileSidebar, 150);
+  });
+});
+
+goToStep(1);
+</script>
+
+</body>
+</html>

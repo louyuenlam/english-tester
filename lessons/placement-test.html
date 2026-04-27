@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英文程度評估測試 | English Placement Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --burgundy: #8b3a3a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --shadow-strong: rgba(58, 40, 28, 0.25);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    min-height: 100%;
+  }
+
+  body {
+    font-family: 'Noto Sans HK', 'Lora', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    background-attachment: fixed;
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 18px;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+
+  /* Subtle paper texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============ HEADER ============ */
+  .header {
+    text-align: center;
+    padding: 20px 0 32px;
+  }
+
+  .header .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 42px);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .header .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--terra-dark);
+    font-weight: 400;
+  }
+
+  .header .divider {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 20px auto 0;
+  }
+
+  /* ============ PROGRESS ============ */
+  .progress-wrap {
+    margin-bottom: 28px;
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .progress-header .score-badge {
+    background: var(--gold);
+    color: var(--paper);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .progress-bar {
+    height: 10px;
+    background: var(--cream-dark);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--gold));
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%;
+  }
+
+  /* ============ CARD ============ */
+  .card {
+    background: var(--paper);
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow:
+      0 4px 24px var(--shadow),
+      0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    border: 1px solid var(--cream-dark);
+    position: relative;
+    animation: fadeInUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--terra-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .card h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--ink);
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .instruction {
+    background: var(--cream);
+    border-left: 4px solid var(--gold);
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+
+  .instruction strong {
+    color: var(--ink);
+  }
+
+  /* ============ INTRO SCREEN ============ */
+  .intro-content {
+    text-align: center;
+  }
+
+  .intro-content h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  .intro-description {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+    line-height: 1.8;
+  }
+
+  .intro-info {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .intro-info h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    color: var(--terra-dark);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .intro-info ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .intro-info li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+    color: var(--ink-soft);
+  }
+
+  .intro-info li::before {
+    content: '✦';
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    color: var(--gold);
+    font-size: 14px;
+  }
+
+  /* ============ QUESTION TEXT ============ */
+  .question-text {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 24px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .question-sub {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: -16px;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  .english-prompt {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    color: var(--terra-dark);
+    text-align: center;
+    padding: 24px;
+    background: var(--cream);
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============ LETTER / NUMBER GRID ============ */
+  .letter-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .letter-card {
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 20px 10px;
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+  }
+
+  .letter-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--gold);
+    background: var(--paper);
+  }
+
+  .letter-card.known {
+    background: var(--sage);
+    color: var(--paper);
+    border-color: var(--sage-dark);
+  }
+
+  .letter-card.unknown {
+    background: #e8d5c5;
+    color: var(--ink-soft);
+    opacity: 0.7;
+  }
+
+  .toggle-hint {
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  /* ============ MULTIPLE CHOICE ============ */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .choice {
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-size: 18px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .choice:hover:not(.disabled) {
+    border-color: var(--gold);
+    transform: translateX(4px);
+    background: var(--paper);
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .choice-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--terra-dark);
+    font-weight: 700;
+    font-family: 'Fraunces', serif;
+    border: 2px solid var(--cream-dark);
+    flex-shrink: 0;
+  }
+
+  .choice-text {
+    flex: 1;
+    font-family: 'Lora', serif;
+  }
+
+  .choice.correct {
+    background: #e8f0e2;
+    border-color: var(--sage);
+    animation: bounceIn 0.4s ease;
+  }
+  .choice.correct .choice-letter {
+    background: var(--sage);
+    color: var(--paper);
+    border-color: var(--sage-dark);
+  }
+
+  .choice.incorrect {
+    background: #f5dcd0;
+    border-color: var(--terra);
+    animation: shake 0.4s ease;
+  }
+  .choice.incorrect .choice-letter {
+    background: var(--terra);
+    color: var(--paper);
+    border-color: var(--terra-dark);
+  }
+
+  .choice.disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .choice.disabled.correct,
+  .choice.disabled.incorrect {
+    opacity: 1;
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* ============ PICTURE MATCHING ============ */
+  .picture-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .picture-card {
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 16px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .picture-card:hover:not(.disabled) {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+    background: var(--paper);
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  .picture-icon {
+    font-size: 48px;
+    line-height: 1;
+  }
+
+  .picture-label {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+
+  .picture-card.correct {
+    background: #e8f0e2;
+    border-color: var(--sage);
+  }
+
+  .picture-card.incorrect {
+    background: #f5dcd0;
+    border-color: var(--terra);
+  }
+
+  .picture-card.disabled {
+    cursor: default;
+  }
+
+  /* ============ TEXT INPUT ============ */
+  .text-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 20px;
+    font-family: 'Fraunces', serif;
+    border: 2px solid var(--cream-dark);
+    border-radius: 12px;
+    background: var(--cream);
+    color: var(--ink);
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+  }
+
+  .text-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: var(--paper);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+  }
+
+  .text-input.correct {
+    border-color: var(--sage);
+    background: #e8f0e2;
+  }
+
+  .text-input.incorrect {
+    border-color: var(--terra);
+    background: #f5dcd0;
+  }
+
+  /* ============ SELF-ASSESSMENT BUTTONS ============ */
+  .self-assess {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .self-btn {
+    padding: 16px 12px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .self-btn .emoji {
+    font-size: 28px;
+  }
+
+  .self-btn.easy {
+    background: #e8f0e2;
+    color: var(--sage-dark);
+  }
+  .self-btn.easy:hover {
+    background: var(--sage);
+    color: var(--paper);
+    transform: translateY(-2px);
+  }
+
+  .self-btn.ok {
+    background: #fdf4d9;
+    color: var(--gold-dark);
+  }
+  .self-btn.ok:hover {
+    background: var(--gold);
+    color: var(--paper);
+    transform: translateY(-2px);
+  }
+
+  .self-btn.hard {
+    background: #f5dcd0;
+    color: var(--terra-dark);
+  }
+  .self-btn.hard:hover {
+    background: var(--terra);
+    color: var(--paper);
+    transform: translateY(-2px);
+  }
+
+  /* ============ AUDIO BUTTON ============ */
+  .audio-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--terra);
+    color: var(--paper);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 17px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 auto 24px;
+    box-shadow: 0 3px 0 var(--terra-dark), 0 4px 12px var(--shadow);
+  }
+
+  .audio-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 var(--terra-dark), 0 6px 16px var(--shadow);
+  }
+
+  .audio-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--terra-dark), 0 2px 6px var(--shadow);
+  }
+
+  .audio-btn-wrap {
+    text-align: center;
+  }
+
+  .audio-icon {
+    font-size: 22px;
+  }
+
+  /* ============ PRIMARY BUTTON ============ */
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 16px 40px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 3px 0 #000, 0 4px 12px var(--shadow);
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 #000, 0 6px 16px var(--shadow);
+    background: var(--terra-dark);
+  }
+
+  .btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #000;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 0 3px 0 #000;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 2px solid var(--cream-dark);
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  /* ============ FEEDBACK ============ */
+  .feedback {
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    animation: fadeInUp 0.3s ease;
+  }
+
+  .feedback.good {
+    background: #e8f0e2;
+    color: var(--sage-dark);
+    border-left: 4px solid var(--sage);
+  }
+
+  .feedback.oops {
+    background: #f5dcd0;
+    color: var(--terra-dark);
+    border-left: 4px solid var(--terra);
+  }
+
+  .feedback .feedback-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    margin-bottom: 4px;
+  }
+
+  /* ============ RESULTS SCREEN ============ */
+  .results-header {
+    text-align: center;
+    padding: 30px 20px 20px;
+  }
+
+  .results-trophy {
+    font-size: 80px;
+    margin-bottom: 10px;
+    display: inline-block;
+    animation: popIn 0.6s cubic-bezier(0.2, 1.5, 0.5, 1);
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .results-title {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .results-subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--terra-dark);
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  .score-display {
+    background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+    border-radius: 18px;
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 28px;
+    border: 1px solid var(--cream-dark);
+  }
+
+  .score-number {
+    font-family: 'Fraunces', serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--terra-dark);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .score-out-of {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--ink-soft);
+    margin-left: 6px;
+  }
+
+  .score-label {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+
+  .level-badge {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 16px;
+    box-shadow: 0 4px 12px var(--shadow-strong);
+  }
+
+  .breakdown {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--cream-dark);
+  }
+
+  .breakdown h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--cream-dark);
+  }
+
+  .breakdown-row:last-child {
+    border-bottom: none;
+  }
+
+  .breakdown-section {
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+
+  .breakdown-score {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--terra-dark);
+    font-size: 18px;
+  }
+
+  .recommendation {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 28px;
+    border-left: 4px solid var(--gold);
+  }
+
+  .recommendation h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .recommendation p {
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .recommendation p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 600px) {
+    body {
+      padding: 12px 8px 60px;
+      font-size: 17px;
+    }
+    .card {
+      padding: 24px 18px;
+      border-radius: 16px;
+    }
+    .header h1 {
+      font-size: 26px;
+    }
+    .header .subtitle {
+      font-size: 17px;
+    }
+    .english-prompt {
+      font-size: 26px;
+      padding: 20px 12px;
+    }
+    .letter-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .letter-card {
+      font-size: 26px;
+      padding: 16px 4px;
+    }
+    .picture-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .picture-icon {
+      font-size: 38px;
+    }
+    .self-assess {
+      grid-template-columns: 1fr;
+    }
+    .choice {
+      padding: 14px 16px;
+      font-size: 16px;
+    }
+    .btn-row {
+      flex-direction: column-reverse;
+      gap: 10px;
+    }
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+    .question-text {
+      font-size: 19px;
+    }
+    .score-number {
+      font-size: 60px;
+    }
+    .results-title {
+      font-size: 28px;
+    }
+  }
+
+  /* ============ UTILITIES ============ */
+  .hidden { display: none !important; }
+  .center { text-align: center; }
+
+  .dialog-box {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--ink);
+    border: 1px solid var(--cream-dark);
+  }
+
+  .dialog-line {
+    margin-bottom: 8px;
+  }
+
+  .dialog-speaker {
+    color: var(--terra-dark);
+    font-weight: 600;
+    font-style: italic;
+    margin-right: 8px;
+  }
+
+  .audio-count {
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: -12px;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="ornament">· · ·</div>
+    <h1>英文程度評估測試</h1>
+    <div class="subtitle">English Placement Test</div>
+    <div class="divider"></div>
+  </header>
+
+  <!-- ============ PROGRESS BAR ============ -->
+  <div id="progress-wrap" class="progress-wrap hidden">
+    <div class="progress-header">
+      <span id="progress-text">第 1 題 / 共 20 題</span>
+      <span class="score-badge" id="progress-section">Part 1</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- ============ MAIN CARD ============ -->
+  <main class="card" id="main-card">
+
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="intro-content">
+      <h2>歡迎嚟到呢個測試 🌿</h2>
+      <p class="intro-description">
+        呢個係一個輕鬆嘅評估測試，<br>
+        目的係幫你老師了解你而家嘅英文程度，<br>
+        之後可以為你度身設計合適嘅課程。
+      </p>
+
+      <div class="intro-info">
+        <h3>做測試之前，請你留意：</h3>
+        <ul>
+          <li>全程大約 <strong>20–30 分鐘</strong>，唔使趕</li>
+          <li>共有 <strong>4 個部分、20 題</strong></li>
+          <li>唔識嘅就跳過或者揀「唔識」，<strong>唔會扣分</strong></li>
+          <li>測試會用到<strong>聲音</strong>，請確保你嘅喇叭開咗</li>
+          <li>做錯咗<strong>完全唔緊要</strong>，盡力就得 ✦</li>
+        </ul>
+      </div>
+
+      <div class="center">
+        <button class="btn-primary" onclick="startTest()">
+          <span>開始測試</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Question Container (dynamic) -->
+    <div id="question-container" class="hidden"></div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="hidden"></div>
+
+  </main>
+
+</div>
+
+<script>
+// ============================================================
+// TEST DATA
+// ============================================================
+
+const TEST_DATA = [
+  // ======================================
+  // PART 1: 字母、數字、發音 (Letters, Numbers, Pronunciation)
+  // ======================================
+  {
+    section: "Part 1：字母 · Letters",
+    type: "letter-recognition",
+    question: "你識讀呢啲英文字母嗎？",
+    instruction: "㩒每個字母，播放聲音之後：識讀嘅㩒「識」，唔識嘅㩒「唔識」。盡量誠實評估自己。",
+    letters: [
+      { letter: "A", sound: "ei" },
+      { letter: "E", sound: "ii" },
+      { letter: "I", sound: "ai" },
+      { letter: "O", sound: "oh" },
+      { letter: "U", sound: "you" },
+      { letter: "B", sound: "bee" },
+      { letter: "D", sound: "dee" },
+      { letter: "G", sound: "jee" },
+      { letter: "P", sound: "pee" },
+      { letter: "T", sound: "tee" },
+    ],
+    maxScore: 10,
+  },
+  {
+    section: "Part 1：數字 · Numbers",
+    type: "multiple-choice",
+    question: "以下邊個係「15」嘅英文？",
+    choices: [
+      { text: "fifty", correct: false },
+      { text: "fifteen", correct: true },
+      { text: "five", correct: false },
+      { text: "fourteen", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 1：數字 · Numbers",
+    type: "multiple-choice",
+    question: "「forty-two」係幾多？",
+    choices: [
+      { text: "14", correct: false },
+      { text: "24", correct: false },
+      { text: "42", correct: true },
+      { text: "402", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 1：數字 · Numbers",
+    type: "audio-choice",
+    question: "聽下老師讀嘅數字，揀出正確答案",
+    audioText: "seventy-three",
+    choices: [
+      { text: "17", correct: false },
+      { text: "37", correct: false },
+      { text: "73", correct: true },
+      { text: "703", correct: false },
+    ],
+    maxScore: 1,
+  },
+
+  // ======================================
+  // PART 2: 基本詞彙 (Basic Vocabulary)
+  // ======================================
+  {
+    section: "Part 2：詞彙 · Vocabulary",
+    type: "picture-choice",
+    question: "邊幅圖係「apple」？",
+    pictures: [
+      { emoji: "🍎", label: "圖 A", correct: true },
+      { emoji: "🍌", label: "圖 B", correct: false },
+      { emoji: "🍊", label: "圖 C", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 2：詞彙 · Vocabulary",
+    type: "picture-choice",
+    question: "邊幅圖係「book」？",
+    pictures: [
+      { emoji: "🪑", label: "圖 A", correct: false },
+      { emoji: "📚", label: "圖 B", correct: true },
+      { emoji: "🛏️", label: "圖 C", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 2：詞彙 · Vocabulary",
+    type: "picture-choice",
+    question: "邊幅圖係「family」？",
+    pictures: [
+      { emoji: "🐱", label: "圖 A", correct: false },
+      { emoji: "🌳", label: "圖 B", correct: false },
+      { emoji: "👨‍👩‍👧‍👦", label: "圖 C", correct: true },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 2：詞彙 · Vocabulary",
+    type: "multiple-choice",
+    question: "「water」嘅中文意思係？",
+    choices: [
+      { text: "空氣", correct: false },
+      { text: "水", correct: true },
+      { text: "火", correct: false },
+      { text: "土", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 2：詞彙 · Vocabulary",
+    type: "multiple-choice",
+    question: "「morning」嘅中文意思係？",
+    choices: [
+      { text: "夜晚", correct: false },
+      { text: "下晝", correct: false },
+      { text: "早晨", correct: true },
+      { text: "中午", correct: false },
+    ],
+    maxScore: 1,
+  },
+
+  // ======================================
+  // PART 3: 基本句子 (Basic Sentences)
+  // ======================================
+  {
+    section: "Part 3：句子 · Sentences",
+    type: "multiple-choice",
+    question: "「我叫陳大文」嘅英文係？",
+    choices: [
+      { text: "My name Tai Man.", correct: false },
+      { text: "I name is Tai Man.", correct: false },
+      { text: "My name is Tai Man.", correct: true },
+      { text: "I am name Tai Man.", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 3：句子 · Sentences",
+    type: "multiple-choice",
+    question: "「佢係我阿媽」嘅英文係？",
+    choices: [
+      { text: "She my mother.", correct: false },
+      { text: "She is my mother.", correct: true },
+      { text: "She are mother.", correct: false },
+      { text: "Her is my mother.", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 3：句子 · Sentences",
+    type: "multiple-choice",
+    question: '「I have two children.」嘅意思係？',
+    choices: [
+      { text: "我有兩個朋友", correct: false },
+      { text: "我有兩個仔女", correct: true },
+      { text: "我有兩隻狗", correct: false },
+      { text: "我住喺二樓", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 3：句子 · Sentences",
+    type: "multiple-choice",
+    question: '「The cat is on the table.」嘅意思係？',
+    choices: [
+      { text: "隻貓喺張枱下面", correct: false },
+      { text: "隻貓喺張枱隔離", correct: false },
+      { text: "隻貓喺張枱上面", correct: true },
+      { text: "隻貓喺張枱裏面", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 3：句子 · Sentences",
+    type: "multiple-choice",
+    question: '邊句係「我鍾意飲茶」？',
+    choices: [
+      { text: "I like drink tea.", correct: false },
+      { text: "I am like tea.", correct: false },
+      { text: "I like to drink tea.", correct: true },
+      { text: "I tea drink like.", correct: false },
+    ],
+    maxScore: 1,
+  },
+
+  // ======================================
+  // PART 4: 聽力 (Listening)
+  // ======================================
+  {
+    section: "Part 4：聽力 · Listening",
+    type: "audio-choice",
+    question: "聽下呢句，揀出正確嘅意思：",
+    audioText: "Please open the book.",
+    choices: [
+      { text: "請關上本書", correct: false },
+      { text: "請打開本書", correct: true },
+      { text: "請買本書", correct: false },
+      { text: "請睇本書", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 4：聽力 · Listening",
+    type: "audio-choice",
+    question: "聽下呢句對話，A 對 B 講咩？",
+    audioText: "Good morning! How are you today?",
+    choices: [
+      { text: "早晨！你今日點呀？", correct: true },
+      { text: "晚安！你食咗飯未？", correct: false },
+      { text: "再見！聽日見！", correct: false },
+      { text: "對唔住，你叫咩名？", correct: false },
+    ],
+    maxScore: 1,
+  },
+  {
+    section: "Part 4：聽力 · Listening",
+    type: "audio-dialog",
+    question: "聽下呢段對話，然後答問題：",
+    audioText: "A: Hello! What's your name? ... B: My name is Mary. ... A: How old are you, Mary? ... B: I'm sixty years old.",
+    dialogDisplay: [
+      { speaker: "A", text: "Hello! What's your name?" },
+      { speaker: "B", text: "My name is Mary." },
+      { speaker: "A", text: "How old are you, Mary?" },
+      { speaker: "B", text: "I'm sixty years old." },
+    ],
+    subQuestion: "B 嘅名係咩？佢幾多歲？",
+    choices: [
+      { text: "叫 Mary，60歲", correct: true },
+      { text: "叫 Mary，16歲", correct: false },
+      { text: "叫 Marry，60歲", correct: false },
+      { text: "叫 Mary，70歲", correct: false },
+    ],
+    maxScore: 2,
+  },
+
+  // ======================================
+  // PART 5: 自我評估口語 (Self-assessment: Speaking)
+  // ======================================
+  {
+    section: "Part 5：口語自評 · Self-Assessment",
+    type: "self-assess",
+    question: "如果有人用英文問你：「What's your name?」，你識點答？",
+    selfHint: "試下用英文諗一個答案，再選擇你嘅信心程度。",
+    maxScore: 2,
+  },
+  {
+    section: "Part 5：口語自評 · Self-Assessment",
+    type: "self-assess",
+    question: "如果有人問你：「Where do you live?」，你識點答？",
+    selfHint: "試下用英文諗一個答案（例如講你住嘅地方），再選擇你嘅信心程度。",
+    maxScore: 2,
+  },
+  {
+    section: "Part 5：口語自評 · Self-Assessment",
+    type: "self-assess",
+    question: "你可唔可以用英文介紹自己（名、年齡、家庭），講到 3 句以上？",
+    selfHint: "喺腦海入面試一試，再選擇你嘅信心程度。",
+    maxScore: 2,
+  },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+
+let currentQuestion = 0;
+let totalScore = 0;
+const sectionScores = {
+  "Part 1": { earned: 0, max: 0 },
+  "Part 2": { earned: 0, max: 0 },
+  "Part 3": { earned: 0, max: 0 },
+  "Part 4": { earned: 0, max: 0 },
+  "Part 5": { earned: 0, max: 0 },
+};
+let answered = false;
+
+// Letter recognition state
+let letterStates = {};
+
+// ============================================================
+// SPEECH SYNTHESIS
+// ============================================================
+
+let englishVoice = null;
+
+function loadVoice() {
+  const voices = speechSynthesis.getVoices();
+  // Prefer female en-GB or en-US voices
+  englishVoice = voices.find(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-GB')
+              || voices.find(v => v.lang === 'en-US' && v.name.toLowerCase().includes('female'))
+              || voices.find(v => v.lang === 'en-US')
+              || voices.find(v => v.lang.startsWith('en'))
+              || voices[0];
+}
+
+if ('speechSynthesis' in window) {
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
+
+function speak(text, rate = 0.85) {
+  if (!('speechSynthesis' in window)) {
+    alert("你嘅瀏覽器唔支援聲音播放，請換一個瀏覽器（例如 Chrome 或 Safari）。");
+    return;
+  }
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-GB';
+  utter.rate = rate;
+  utter.pitch = 1;
+  if (englishVoice) utter.voice = englishVoice;
+  speechSynthesis.speak(utter);
+}
+
+// ============================================================
+// TEST FLOW
+// ============================================================
+
+function startTest() {
+  document.getElementById('intro-screen').classList.add('hidden');
+  document.getElementById('progress-wrap').classList.remove('hidden');
+  document.getElementById('question-container').classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = TEST_DATA[currentQuestion];
+  const container = document.getElementById('question-container');
+
+  // Update progress
+  const progress = ((currentQuestion) / TEST_DATA.length) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('progress-text').textContent = `第 ${currentQuestion + 1} 題 / 共 ${TEST_DATA.length} 題`;
+  document.getElementById('progress-section').textContent = q.section.split('：')[0];
+
+  // Track max score
+  const sectionKey = q.section.split('：')[0];
+  if (sectionScores[sectionKey]) {
+    // max added only once per question render
+  }
+
+  // Dispatch by type
+  let html = `<div class="section-label">${q.section}</div>`;
+  html += `<h2>${q.question}</h2>`;
+
+  if (q.instruction) {
+    html += `<div class="instruction">${q.instruction}</div>`;
+  }
+
+  if (q.type === 'letter-recognition') {
+    html += renderLetterRecognition(q);
+  } else if (q.type === 'multiple-choice') {
+    html += renderMultipleChoice(q);
+  } else if (q.type === 'audio-choice') {
+    html += renderAudioChoice(q);
+  } else if (q.type === 'picture-choice') {
+    html += renderPictureChoice(q);
+  } else if (q.type === 'audio-dialog') {
+    html += renderAudioDialog(q);
+  } else if (q.type === 'self-assess') {
+    html += renderSelfAssess(q);
+  }
+
+  html += `<div id="feedback-area"></div>`;
+  html += `
+    <div class="btn-row">
+      <div></div>
+      <button class="btn-primary" id="next-btn" onclick="nextQuestion()" disabled>
+        <span>${currentQuestion === TEST_DATA.length - 1 ? '查看結果' : '下一題'}</span>
+        <span>→</span>
+      </button>
+    </div>
+  `;
+
+  container.innerHTML = html;
+  container.style.animation = 'none';
+  container.offsetHeight;
+  container.style.animation = 'fadeInUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)';
+
+  // Scroll to top for long pages
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// QUESTION TYPE: LETTER RECOGNITION
+// ============================================================
+
+function renderLetterRecognition(q) {
+  letterStates = {};
+  q.letters.forEach(l => letterStates[l.letter] = null);
+
+  let html = '<div class="toggle-hint">㩒一下字母聽聲音，再㩒多一次切換「識 / 唔識」</div>';
+  html += '<div class="letter-grid">';
+  q.letters.forEach(l => {
+    html += `<div class="letter-card" data-letter="${l.letter}" onclick="handleLetterClick('${l.letter}')">${l.letter}</div>`;
+  });
+  html += '</div>';
+  html += '<div class="audio-btn-wrap"><button class="btn-secondary" onclick="confirmLetters()">✓ 我評估完成</button></div>';
+  return html;
+}
+
+function handleLetterClick(letter) {
+  speak(letter);
+  const card = document.querySelector(`[data-letter="${letter}"]`);
+  const currentState = letterStates[letter];
+
+  // Cycle through: null -> known -> unknown -> known -> unknown ...
+  if (currentState === null) {
+    letterStates[letter] = 'known';
+    card.classList.remove('unknown');
+    card.classList.add('known');
+  } else if (currentState === 'known') {
+    letterStates[letter] = 'unknown';
+    card.classList.remove('known');
+    card.classList.add('unknown');
+  } else {
+    letterStates[letter] = 'known';
+    card.classList.remove('unknown');
+    card.classList.add('known');
+  }
+}
+
+function confirmLetters() {
+  if (answered) return;
+  answered = true;
+
+  const knownCount = Object.values(letterStates).filter(s => s === 'known').length;
+  const totalCount = Object.keys(letterStates).length;
+
+  // Score = known count
+  totalScore += knownCount;
+  const sectionKey = TEST_DATA[currentQuestion].section.split('：')[0];
+  sectionScores[sectionKey].earned += knownCount;
+  sectionScores[sectionKey].max += totalCount;
+
+  const feedback = document.getElementById('feedback-area');
+  let msg = '';
+  if (knownCount >= 8) {
+    msg = `<div class="feedback good"><div class="feedback-title">✦ 好叻呀！</div>你識咗 ${knownCount} / ${totalCount} 個字母，好好嘅基礎！</div>`;
+  } else if (knownCount >= 4) {
+    msg = `<div class="feedback good"><div class="feedback-title">✦ 不錯！</div>你識咗 ${knownCount} / ${totalCount} 個字母，我哋會從呢度繼續建立基礎。</div>`;
+  } else {
+    msg = `<div class="feedback good"><div class="feedback-title">✦ 謝謝你嘅誠實評估</div>你識咗 ${knownCount} / ${totalCount} 個字母。完全唔使擔心 — 我哋會一齊由頭學起！</div>`;
+  }
+  feedback.innerHTML = msg;
+  document.getElementById('next-btn').disabled = false;
+}
+
+// ============================================================
+// QUESTION TYPE: MULTIPLE CHOICE
+// ============================================================
+
+function renderMultipleChoice(q) {
+  let html = '<div class="choices">';
+  q.choices.forEach((c, i) => {
+    const letter = String.fromCharCode(65 + i);
+    html += `<button class="choice" onclick="handleChoiceClick(this, ${c.correct}, ${q.maxScore})">
+      <span class="choice-letter">${letter}</span>
+      <span class="choice-text">${c.text}</span>
+    </button>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function handleChoiceClick(btn, isCorrect, maxScore) {
+  if (answered) return;
+  answered = true;
+
+  const allChoices = btn.parentElement.querySelectorAll('.choice');
+  allChoices.forEach(c => c.classList.add('disabled'));
+
+  const sectionKey = TEST_DATA[currentQuestion].section.split('：')[0];
+  sectionScores[sectionKey].max += maxScore;
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    totalScore += maxScore;
+    sectionScores[sectionKey].earned += maxScore;
+    showFeedback(true);
+  } else {
+    btn.classList.add('incorrect');
+    // Highlight correct answer
+    allChoices.forEach(c => {
+      if (c.getAttribute('onclick').includes('true')) {
+        c.classList.add('correct');
+      }
+    });
+    showFeedback(false);
+  }
+
+  document.getElementById('next-btn').disabled = false;
+}
+
+function showFeedback(correct) {
+  const feedback = document.getElementById('feedback-area');
+  if (correct) {
+    const messages = [
+      '✦ 答啱喇！做得好！',
+      '✦ 正確！繼續加油！',
+      '✦ 好叻呀！',
+      '✦ 答得啱！',
+    ];
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    feedback.innerHTML = `<div class="feedback good"><div class="feedback-title">${msg}</div></div>`;
+  } else {
+    feedback.innerHTML = `<div class="feedback oops"><div class="feedback-title">冇問題！</div>綠色就係正確答案。錯誤係學習嘅一部分，記住咗就得 ✦</div>`;
+  }
+}
+
+// ============================================================
+// QUESTION TYPE: AUDIO CHOICE
+// ============================================================
+
+function renderAudioChoice(q) {
+  let html = `<div class="audio-btn-wrap">
+    <button class="audio-btn" onclick="speak('${q.audioText.replace(/'/g, "\\'")}', 0.8)">
+      <span class="audio-icon">🔊</span>
+      <span>㩒我聽聲音</span>
+    </button>
+  </div>
+  <div class="audio-count">可以㩒幾多次都得</div>`;
+
+  html += '<div class="choices">';
+  q.choices.forEach((c, i) => {
+    const letter = String.fromCharCode(65 + i);
+    html += `<button class="choice" onclick="handleChoiceClick(this, ${c.correct}, ${q.maxScore})">
+      <span class="choice-letter">${letter}</span>
+      <span class="choice-text">${c.text}</span>
+    </button>`;
+  });
+  html += '</div>';
+
+  // Auto-play on render
+  setTimeout(() => speak(q.audioText, 0.8), 500);
+  return html;
+}
+
+// ============================================================
+// QUESTION TYPE: PICTURE CHOICE
+// ============================================================
+
+function renderPictureChoice(q) {
+  let html = '<div class="picture-grid">';
+  q.pictures.forEach((p, i) => {
+    html += `<div class="picture-card" onclick="handlePictureClick(this, ${p.correct}, ${q.maxScore})">
+      <div class="picture-icon">${p.emoji}</div>
+      <div class="picture-label">${p.label}</div>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function handlePictureClick(card, isCorrect, maxScore) {
+  if (answered) return;
+  answered = true;
+
+  const allCards = card.parentElement.querySelectorAll('.picture-card');
+  allCards.forEach(c => c.classList.add('disabled'));
+
+  const sectionKey = TEST_DATA[currentQuestion].section.split('：')[0];
+  sectionScores[sectionKey].max += maxScore;
+
+  if (isCorrect) {
+    card.classList.add('correct');
+    totalScore += maxScore;
+    sectionScores[sectionKey].earned += maxScore;
+    showFeedback(true);
+  } else {
+    card.classList.add('incorrect');
+    allCards.forEach(c => {
+      if (c.getAttribute('onclick').includes('true')) {
+        c.classList.add('correct');
+      }
+    });
+    showFeedback(false);
+  }
+
+  document.getElementById('next-btn').disabled = false;
+}
+
+// ============================================================
+// QUESTION TYPE: AUDIO DIALOG
+// ============================================================
+
+function renderAudioDialog(q) {
+  let html = `<div class="audio-btn-wrap">
+    <button class="audio-btn" onclick="speakDialog()">
+      <span class="audio-icon">🔊</span>
+      <span>㩒我聽對話</span>
+    </button>
+  </div>
+  <div class="audio-count">可以㩒幾多次都得</div>`;
+
+  html += '<div class="dialog-box">';
+  q.dialogDisplay.forEach(line => {
+    html += `<div class="dialog-line"><span class="dialog-speaker">${line.speaker}:</span>${line.text}</div>`;
+  });
+  html += '</div>';
+
+  html += `<p class="question-text" style="font-size: 19px; margin-top: 20px;">${q.subQuestion}</p>`;
+
+  html += '<div class="choices">';
+  q.choices.forEach((c, i) => {
+    const letter = String.fromCharCode(65 + i);
+    html += `<button class="choice" onclick="handleChoiceClick(this, ${c.correct}, ${q.maxScore})">
+      <span class="choice-letter">${letter}</span>
+      <span class="choice-text">${c.text}</span>
+    </button>`;
+  });
+  html += '</div>';
+
+  return html;
+}
+
+function speakDialog() {
+  const q = TEST_DATA[currentQuestion];
+  // Speak each line with pauses
+  speechSynthesis.cancel();
+  q.dialogDisplay.forEach((line, i) => {
+    const utter = new SpeechSynthesisUtterance(line.text);
+    utter.lang = 'en-GB';
+    utter.rate = 0.8;
+    if (englishVoice) utter.voice = englishVoice;
+    // Add delay between lines using a dummy pause utterance
+    if (i > 0) {
+      const pause = new SpeechSynthesisUtterance(' ');
+      pause.rate = 0.1;
+      pause.volume = 0;
+      speechSynthesis.speak(pause);
+    }
+    speechSynthesis.speak(utter);
+  });
+}
+
+// ============================================================
+// QUESTION TYPE: SELF-ASSESS
+// ============================================================
+
+function renderSelfAssess(q) {
+  let html = `<div class="instruction">${q.selfHint}</div>`;
+  html += `<div class="self-assess">
+    <button class="self-btn easy" onclick="handleSelfAssess(this, 2)">
+      <span class="emoji">😊</span>
+      <span>好容易<br>我識答</span>
+    </button>
+    <button class="self-btn ok" onclick="handleSelfAssess(this, 1)">
+      <span class="emoji">🤔</span>
+      <span>一般<br>識少少</span>
+    </button>
+    <button class="self-btn hard" onclick="handleSelfAssess(this, 0)">
+      <span class="emoji">😅</span>
+      <span>好難<br>唔識</span>
+    </button>
+  </div>`;
+  return html;
+}
+
+function handleSelfAssess(btn, score) {
+  if (answered) return;
+  answered = true;
+
+  const allBtns = btn.parentElement.querySelectorAll('.self-btn');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b !== btn) b.style.opacity = '0.4';
+  });
+  btn.style.transform = 'scale(1.05)';
+  btn.style.boxShadow = '0 4px 12px var(--shadow-strong)';
+
+  const maxScore = TEST_DATA[currentQuestion].maxScore;
+  totalScore += score;
+  const sectionKey = TEST_DATA[currentQuestion].section.split('：')[0];
+  sectionScores[sectionKey].earned += score;
+  sectionScores[sectionKey].max += maxScore;
+
+  const feedback = document.getElementById('feedback-area');
+  if (score === 2) {
+    feedback.innerHTML = `<div class="feedback good"><div class="feedback-title">✦ 太好啦！</div>你對呢個情境好有信心，會係我哋嘅優勢。</div>`;
+  } else if (score === 1) {
+    feedback.innerHTML = `<div class="feedback good"><div class="feedback-title">✦ 唔錯啊！</div>有基礎就得，我哋會喺課程入面加強。</div>`;
+  } else {
+    feedback.innerHTML = `<div class="feedback good"><div class="feedback-title">✦ 多謝你嘅誠實</div>呢個會係我哋課程嘅重點之一，唔使擔心！</div>`;
+  }
+
+  document.getElementById('next-btn').disabled = false;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+function nextQuestion() {
+  speechSynthesis.cancel(); // Stop any audio
+  currentQuestion++;
+  if (currentQuestion >= TEST_DATA.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+
+function showResults() {
+  document.getElementById('question-container').classList.add('hidden');
+  document.getElementById('progress-wrap').classList.add('hidden');
+  const results = document.getElementById('results-screen');
+  results.classList.remove('hidden');
+
+  // Calculate max total
+  const maxTotal = Object.values(sectionScores).reduce((sum, s) => sum + s.max, 0);
+  const percentage = (totalScore / maxTotal) * 100;
+
+  // Determine level
+  let level, levelDesc, recommendation, trophy, subtitle;
+  if (percentage < 25) {
+    level = "Pre-A1";
+    subtitle = "Absolute Beginner · 入門起步";
+    trophy = "🌱";
+    levelDesc = "入門級 — 完全新手";
+    recommendation = `
+      <h3>為你推薦嘅學習路線</h3>
+      <p><strong>由最基本開始：</strong>字母、數字、基本問候語。唔使有任何壓力，呢個係每個語言學習者都必經嘅階段。</p>
+      <p><strong>首3個月重點：</strong>26個字母 (讀音 + 寫法)、0–100數字、星期、月份、簡單自我介紹句式 (My name is... / I am...)。</p>
+      <p><strong>預期時間表：</strong>按照每日 30 分鐘計算，4 年達到 B1 完全可行，重點在於恆心而唔係快慢。</p>
+    `;
+  } else if (percentage < 50) {
+    level = "A1 初";
+    subtitle = "Early Beginner · 初學階段";
+    trophy = "🌿";
+    levelDesc = "初級 — 已有基礎";
+    recommendation = `
+      <h3>為你推薦嘅學習路線</h3>
+      <p><strong>你已經有少少基礎：</strong>識一啲常用字同簡單句型。可以由鞏固現在式 (Present Simple) 同基本問答開始。</p>
+      <p><strong>首3個月重點：</strong>be動詞 (am/is/are)、代名詞、常用動詞 (eat, go, have, like)、日常生活詞彙。</p>
+      <p><strong>預期時間表：</strong>按照每日 30 分鐘計算，4 年達到 B1 非常合理，第一年內應該可以穩固 A1。</p>
+    `;
+  } else if (percentage < 75) {
+    level = "A1 中-後";
+    subtitle = "Confident Beginner · 有基礎學習者";
+    trophy = "🌳";
+    levelDesc = "中級初 — 有穩固基礎";
+    recommendation = `
+      <h3>為你推薦嘅學習路線</h3>
+      <p><strong>你嘅基礎比預期好：</strong>識做簡單自我介紹同理解基本句子。可以直接進入 A2 銜接內容。</p>
+      <p><strong>首3個月重點：</strong>鞏固現在式、引入過去式 (Past Simple)、擴展詞彙量（尤其動詞同形容詞）、開始做短對話。</p>
+      <p><strong>預期時間表：</strong>你有潛力喺 3 年內達到 B1。4 年計劃可以用更輕鬆嘅節奏進行，有足夠時間深化理解。</p>
+    `;
+  } else {
+    level = "A1後 → A2";
+    subtitle = "Advanced Beginner · 接近 A2";
+    trophy = "🏆";
+    levelDesc = "中級 — 接近 A2";
+    recommendation = `
+      <h3>為你推薦嘅學習路線</h3>
+      <p><strong>你嘅基礎相當唔錯！</strong>建議直接跳到第二年課程，由過去式同將來式開始。</p>
+      <p><strong>首3個月重點：</strong>Past Simple (規則 + 不規則動詞)、going to / will、擴展詞彙到 1,000 字以上、開始睇簡單英文故事。</p>
+      <p><strong>預期時間表：</strong>你有潛力喺 2–3 年內達到 B1，4 年計劃可以讓你有時間推到 B1+ 甚至接近 B2 初期。</p>
+    `;
+  }
+
+  // Build results HTML
+  let html = `
+    <div class="results-header">
+      <div class="results-trophy">${trophy}</div>
+      <h1 class="results-title">測試完成！</h1>
+      <div class="results-subtitle">Test Complete · 恭喜你完成咗呢個測試</div>
+    </div>
+
+    <div class="score-display">
+      <div>
+        <span class="score-number">${totalScore}</span>
+        <span class="score-out-of">/ ${maxTotal}</span>
+      </div>
+      <div class="score-label">${Math.round(percentage)}% 正確</div>
+      <div class="level-badge">${level}</div>
+      <div style="margin-top: 10px; font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-soft);">${subtitle}</div>
+    </div>
+
+    <div class="breakdown">
+      <h3>各部分表現</h3>
+  `;
+
+  const partNames = {
+    "Part 1": "字母 · 數字",
+    "Part 2": "基本詞彙",
+    "Part 3": "句子結構",
+    "Part 4": "聽力理解",
+    "Part 5": "口語自評",
+  };
+
+  Object.keys(sectionScores).forEach(key => {
+    const s = sectionScores[key];
+    if (s.max > 0) {
+      const pct = Math.round((s.earned / s.max) * 100);
+      html += `
+        <div class="breakdown-row">
+          <span class="breakdown-section">${partNames[key]}</span>
+          <span class="breakdown-score">${s.earned} / ${s.max} <span style="color:var(--ink-soft); font-size:14px; margin-left:6px;">(${pct}%)</span></span>
+        </div>
+      `;
+    }
+  });
+
+  html += `</div>`;
+
+  html += `<div class="recommendation">${recommendation}</div>`;
+
+  html += `
+    <div class="btn-row" style="margin-top: 32px;">
+      <button class="btn-secondary" onclick="location.reload()">↻ 重新測試</button>
+      <button class="btn-primary" onclick="window.print()">
+        <span>🖨</span>
+        <span>列印報告</span>
+      </button>
+    </div>
+  `;
+
+  results.innerHTML = html;
+
+  // Smooth scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+</script>
+
+</body>
+</html>

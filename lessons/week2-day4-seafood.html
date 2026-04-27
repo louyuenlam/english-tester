@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf6ef">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23faf6ef'/><text x='50' y='68' text-anchor='middle' font-size='42'>D4</text></svg>">
+<title>Week 2 · Day 4：海鮮 · Seafood</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --burgundy: #8b3a3a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --sidebar-w: 300px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Noto Sans HK', 'Lora', serif;
+    background:
+      radial-gradient(ellipse at top left, rgba(200, 107, 74, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(122, 132, 113, 0.08), transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 1;
+  }
+
+  .app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid var(--cream-dark);
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sidebar-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .sidebar-header .ornament { font-family: 'Fraunces', serif; font-size: 14px; color: var(--gold); letter-spacing: 6px; margin-bottom: 4px; }
+  .sidebar-header .lesson-num { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--terra-dark); margin-bottom: 2px; }
+  .sidebar-header h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 22px; color: var(--ink); }
+  .sidebar-header .subtitle { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--ink-soft); }
+
+  .progress-compact { padding: 12px 14px; background: var(--cream); border-radius: 10px; }
+  .progress-compact .label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 5px; }
+  .progress-compact .value { font-family: 'Fraunces', serif; color: var(--ink); font-weight: 500; }
+  .progress-bar { height: 6px; background: var(--cream-dark); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--terra), var(--gold)); border-radius: 4px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+  .steps-nav { display: flex; flex-direction: column; gap: 4px; }
+  .steps-label { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 2px; padding: 4px 0; }
+  .step-btn { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: transparent; border: none; border-radius: 8px; text-align: left; cursor: pointer; font-family: 'Noto Sans HK', serif; font-size: 13px; color: var(--ink-soft); transition: all 0.2s ease; }
+  .step-btn:hover { background: var(--cream); color: var(--ink); }
+  .step-btn .step-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--cream-dark); color: var(--ink-soft); border-radius: 50%; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .step-btn.active { background: linear-gradient(90deg, var(--terra), var(--gold)); color: white; font-weight: 600; }
+  .step-btn.active .step-num { background: rgba(255,255,255,0.25); color: white; }
+  .step-btn.completed .step-num { background: var(--sage); color: white; font-size: 0; }
+  .step-btn.completed .step-num::after { content: '✓'; font-size: 12px; }
+
+  .speed-panel { background: var(--cream); border-radius: 10px; padding: 12px; }
+  .speed-label { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--terra-dark); margin-bottom: 8px; }
+  .speed-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .speed-btn { padding: 6px 2px; background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 6px; cursor: pointer; font-family: 'Noto Sans HK', serif; display: flex; flex-direction: column; align-items: center; gap: 1px; transition: all 0.15s ease; }
+  .speed-btn:hover { border-color: var(--terra); }
+  .speed-btn.active { background: var(--terra); border-color: var(--terra); color: white; }
+  .speed-btn .rate { font-size: 12px; font-weight: 700; }
+  .speed-btn .rate-label { font-size: 9px; opacity: 0.8; }
+
+  .main-area { overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
+  .main-inner { flex: 1; overflow-y: auto; padding: 20px 28px; }
+
+  .section-label { font-family: 'Fraunces', serif; font-style: italic; font-size: 12px; color: var(--terra-dark); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+
+  .step-content { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .step-content h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; color: var(--ink); margin-bottom: 6px; line-height: 1.2; }
+  .card-sub { font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 16px; }
+
+  .instruction { background: var(--paper); border-left: 3px solid var(--gold); padding: 12px 16px; border-radius: 6px; font-size: 14px; line-height: 1.55; margin-bottom: 16px; color: var(--ink-soft); }
+  .instruction strong { color: var(--ink); font-weight: 600; }
+
+  .callback { background: rgba(122, 132, 113, 0.1); border-left: 3px solid var(--sage); padding: 10px 14px; border-radius: 6px; font-size: 13px; line-height: 1.5; margin-bottom: 14px; color: var(--ink-soft); }
+
+  .teacher-note { background: rgba(200, 107, 74, 0.07); border-left: 3px solid var(--terra); padding: 10px 14px; border-radius: 6px; font-size: 13px; line-height: 1.5; color: var(--ink-soft); margin-top: 12px; }
+  .teacher-note strong { color: var(--terra-dark); }
+
+  .scene-card { background: linear-gradient(135deg, var(--paper), var(--cream)); border-radius: 14px; padding: 18px; margin-bottom: 14px; border: 1px solid var(--cream-dark); }
+  .scene-card .scene-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--ink); margin-bottom: 6px; }
+  .scene-card .scene-text { font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+
+  .goals-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .goal-card { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+  .goal-num { background: var(--gold); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 14px; }
+  .goal-text { font-size: 15px; line-height: 1.4; }
+  .goal-text strong { color: var(--terra-dark); }
+
+  .subsection-title { font-family: 'Fraunces', serif; font-size: 18px; color: var(--ink); margin: 14px 0 8px; font-weight: 600; }
+
+  .dialogue-card { background: var(--paper); border-radius: 14px; padding: 16px; border: 1px solid var(--cream-dark); margin-bottom: 12px; }
+  .dialogue-line { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+  .dialogue-line:last-child { margin-bottom: 0; }
+  .dialogue-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .dialogue-avatar.shop { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; }
+  .dialogue-avatar.you { background: linear-gradient(135deg, var(--terra), var(--gold)); color: white; }
+  .dialogue-bubble { flex: 1; background: var(--cream); padding: 10px 12px; border-radius: 10px; }
+  .dialogue-bubble.you { background: rgba(200, 107, 74, 0.08); }
+  .dialogue-text { font-size: 16px; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
+  .dialogue-zh { font-size: 13px; color: var(--ink-soft); }
+
+  .play-btn { background: var(--terra); color: white; border: none; padding: 9px 14px; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .play-btn:hover { background: var(--terra-dark); }
+  .play-btn.blue { background: var(--blue); }
+  .play-btn.blue:hover { background: var(--blue-dark); }
+  .play-btn.small { padding: 6px 10px; font-size: 12px; }
+
+  .phrases-list { display: flex; flex-direction: column; gap: 12px; }
+  .phrase-card { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 12px; padding: 14px; }
+  .phrase-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--terra); color: white; border-radius: 50%; font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .phrase-en { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 4px; line-height: 1.25; }
+  .phrase-zh { font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
+  .phrase-context { font-size: 12px; color: var(--terra-dark); font-style: italic; margin-bottom: 8px; }
+  .phrase-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .money-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .money-card { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 12px; text-align: center; }
+  .money-card .price { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: var(--terra-dark); margin-bottom: 4px; }
+  .money-card .price-en { font-size: 14px; color: var(--ink); margin-bottom: 6px; }
+  .money-card .price-zh { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; }
+
+  .roleplay-card { background: linear-gradient(135deg, rgba(200, 107, 74, 0.06), rgba(201, 168, 76, 0.06)); border: 1px solid var(--cream-dark); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+  .roleplay-prompt { background: var(--paper); border-left: 3px solid var(--blue); padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; }
+  .roleplay-prompt .who { font-size: 11px; color: var(--blue-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; font-weight: 600; }
+  .roleplay-prompt .what { font-size: 15px; color: var(--ink); line-height: 1.35; }
+  .roleplay-prompt .what-zh { font-size: 12px; color: var(--ink-soft); margin-top: 3px; }
+  .roleplay-your-turn { background: rgba(200, 107, 74, 0.08); border: 2px dashed var(--terra); padding: 12px; border-radius: 8px; text-align: center; }
+  .roleplay-your-turn .label { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--terra-dark); margin-bottom: 6px; }
+  .roleplay-your-turn .hint { font-size: 14px; color: var(--ink); margin-bottom: 8px; }
+
+  .complete-screen { text-align: center; padding: 20px 0; }
+  .complete-trophy { font-size: 56px; margin-bottom: 10px; }
+  .complete-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; color: var(--ink); margin-bottom: 6px; }
+  .complete-sub { font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-soft); font-size: 15px; margin-bottom: 18px; }
+  .summary-box { background: var(--paper); border: 1px solid var(--cream-dark); border-radius: 12px; padding: 16px; text-align: left; margin-bottom: 14px; }
+  .summary-box h3 { font-family: 'Fraunces', serif; font-size: 16px; color: var(--terra-dark); margin-bottom: 8px; }
+  .summary-list { list-style: none; padding: 0; font-size: 14px; line-height: 1.7; color: var(--ink-soft); }
+  .summary-list li::before { content: "✓ "; color: var(--sage); font-weight: 700; }
+  .homework-card { background: rgba(201, 168, 76, 0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 14px; text-align: left; }
+  .homework-card h3 { font-family: 'Fraunces', serif; color: var(--gold-dark); font-size: 16px; margin-bottom: 8px; }
+  .homework-item { display: flex; gap: 10px; margin-bottom: 8px; font-size: 14px; color: var(--ink-soft); line-height: 1.4; }
+  .homework-num { color: var(--gold-dark); font-weight: 700; flex-shrink: 0; }
+
+  .footer-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 28px; background: var(--paper); border-top: 1px solid var(--cream-dark); flex-shrink: 0; }
+  .btn-primary { background: var(--terra); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-family: 'Noto Sans HK', serif; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+  .btn-primary:hover { background: var(--terra-dark); }
+  .btn-secondary { background: transparent; color: var(--ink-soft); border: 1px solid var(--cream-dark); padding: 10px 20px; border-radius: 8px; font-family: inherit; font-size: 14px; cursor: pointer; transition: all 0.2s ease; }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--ink); }
+
+  .hidden { display: none !important; }
+
+  .mobile-top-bar { display: none; }
+  .mobile-progress { display: none; }
+  .mobile-nav-bar { display: none; }
+  .sidebar-backdrop { display: none; }
+
+  @media (max-width: 768px) {
+    :root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+    html, body { overflow: hidden; height: 100%; position: fixed; width: 100%; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+    body { font-size: 15px; }
+
+    .app-layout { display: flex; flex-direction: column; height: 100vh; height: 100dvh; grid-template-columns: none; }
+
+    .sidebar { position: fixed; top: 0; right: 0; bottom: 0; width: 86%; max-width: 360px; z-index: 100; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.3, 0.85, 0.4, 1); padding: calc(16px + var(--safe-top)) 18px calc(16px + var(--safe-bottom)); box-shadow: -4px 0 20px rgba(0,0,0,0.15); overflow-y: auto; -webkit-overflow-scrolling: touch; border-right: none; border-left: 1px solid var(--cream-dark); }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-backdrop { display: block; position: fixed; inset: 0; background: rgba(42, 36, 32, 0.4); z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .sidebar-backdrop.show { opacity: 1; pointer-events: auto; }
+    .sidebar::before { content: "⚙️ 設定"; display: block; font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--ink); padding-bottom: 12px; border-bottom: 1px solid var(--cream-dark); margin-bottom: 14px; }
+    .sidebar .sidebar-header { display: none; }
+    .sidebar .progress-compact { display: none; }
+    .sidebar .step-btn { padding: 12px 14px; font-size: 14px; min-height: 50px; }
+    .sidebar .speed-btn { padding: 9px 4px; min-height: 48px; }
+
+    .mobile-top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: calc(10px + var(--safe-top)) 14px 8px; background: var(--paper); border-bottom: 1px solid var(--cream-dark); flex-shrink: 0; z-index: 10; position: relative; }
+    .mobile-top-bar .lesson-info { flex: 1; min-width: 0; }
+    .mobile-top-bar .lesson-tag { font-family: 'Fraunces', serif; font-style: italic; font-size: 11px; color: var(--terra-dark); line-height: 1; margin-bottom: 2px; }
+    .mobile-top-bar h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; color: var(--ink); line-height: 1.1; margin: 0; }
+    .mobile-top-bar .step-indicator { background: var(--cream); border-radius: 14px; padding: 5px 11px; font-family: 'Fraunces', serif; font-size: 12px; color: var(--ink); font-weight: 600; flex-shrink: 0; }
+    .mobile-top-bar .step-indicator .total { color: var(--ink-soft); font-weight: 500; }
+    .mobile-top-bar .menu-btn { background: var(--cream); border: none; width: 42px; height: 42px; border-radius: 12px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--ink); }
+    .mobile-top-bar .menu-btn:active { background: var(--cream-dark); }
+
+    .mobile-progress { display: block; height: 4px; background: var(--cream-dark); flex-shrink: 0; }
+    .mobile-progress .fill { height: 100%; background: linear-gradient(90deg, var(--terra), var(--gold)); transition: width 0.4s ease; }
+
+    .main-area { flex: 1; padding: 0; overflow: hidden; display: flex; flex-direction: column; gap: 0; }
+    .main-inner { padding: 14px 16px; padding-bottom: 14px; }
+
+    .footer-nav { display: none; }
+
+    .mobile-nav-bar { display: flex; background: var(--paper); border-top: 1px solid var(--cream-dark); padding: 8px 14px calc(8px + var(--safe-bottom)); gap: 10px; flex-shrink: 0; }
+    .mobile-nav-bar .nav-btn { flex: 1; padding: 13px 10px; border-radius: 12px; font-family: 'Noto Sans HK', serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; min-height: 48px; border: none; }
+    .mobile-nav-bar .nav-btn.prev { background: var(--cream); color: var(--ink); flex: 0 0 34%; }
+    .mobile-nav-bar .nav-btn.prev:active { background: var(--cream-dark); }
+    .mobile-nav-bar .nav-btn.next { background: var(--terra); color: white; }
+    .mobile-nav-bar .nav-btn.next:active { background: var(--terra-dark); }
+    .mobile-nav-bar .nav-btn.prev.disabled { opacity: 0.35; pointer-events: none; }
+
+    .step-content h2 { font-size: 22px !important; }
+    .money-grid { grid-template-columns: 1fr 1fr !important; }
+    .phrase-en { font-size: 17px; }
+  }
+
+  @media (min-width: 769px) {
+    .mobile-top-bar { display: none !important; }
+    .mobile-progress { display: none !important; }
+    .mobile-nav-bar { display: none !important; }
+    .sidebar-backdrop { display: none !important; }
+  }
+
+  /* Active highlight when auto-playing */
+  .dialogue-line.active .dialogue-bubble {
+    box-shadow: 0 0 0 2px var(--gold);
+    transition: box-shadow 0.2s ease;
+  }
+  .dialogue-line.active .dialogue-bubble.you {
+    box-shadow: 0 0 0 2px var(--terra);
+  }
+
+</style>
+</head>
+<body>
+
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="ornament">· · ·</div>
+      <div class="lesson-num">Week 2 · Day 4</div>
+      <h1>海鮮 🦐</h1>
+      <div class="subtitle">Seafood</div>
+    </div>
+
+    <div class="progress-compact">
+      <div class="label">
+        <span id="progress-text">第 1 部分 / 共 6 部分</span>
+        <span class="value" id="progress-time">2 分鐘</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 16.7%;"></div>
+      </div>
+    </div>
+
+    <nav class="steps-nav">
+      <div class="steps-label">學習步驟</div>
+      <button class="step-btn active" data-step="1" onclick="goToStep(1)"><span class="step-num">1</span><span>熱身 & 場景</span></button>
+      <button class="step-btn" data-step="2" onclick="goToStep(2)"><span class="step-num">2</span><span>聽力 · 完整對話</span></button>
+      <button class="step-btn" data-step="3" onclick="goToStep(3)"><span class="step-num">3</span><span>5 句套語拆解</span></button>
+      <button class="step-btn" data-step="4" onclick="goToStep(4)"><span class="step-num">4</span><span>🦐 海鮮字詞</span></button>
+      <button class="step-btn" data-step="5" onclick="goToStep(5)"><span class="step-num">5</span><span>角色扮演</span></button>
+      <button class="step-btn" data-step="6" onclick="goToStep(6)"><span class="step-num">6</span><span>🏆 完成</span></button>
+    </nav>
+
+    <div class="speed-panel">
+      <div class="speed-label">🐢 聲音速度</div>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="0.2" onclick="setSpeed(0.2, this)"><span class="rate">0.2x</span><span class="rate-label">極慢</span></button>
+        <button class="speed-btn active" data-speed="0.3" onclick="setSpeed(0.3, this)"><span class="rate">0.3x</span><span class="rate-label">好慢</span></button>
+        <button class="speed-btn" data-speed="0.4" onclick="setSpeed(0.4, this)"><span class="rate">0.4x</span><span class="rate-label">慢</span></button>
+        <button class="speed-btn" data-speed="0.6" onclick="setSpeed(0.6, this)"><span class="rate">0.6x</span><span class="rate-label">正常</span></button>
+        <button class="speed-btn" data-speed="0.7" onclick="setSpeed(0.7, this)"><span class="rate">0.7x</span><span class="rate-label">稍快</span></button>
+        <button class="speed-btn" data-speed="0.9" onclick="setSpeed(0.9, this)"><span class="rate">0.9x</span><span class="rate-label">較快</span></button>
+        <button class="speed-btn" data-speed="1.0" onclick="setSpeed(1.0, this)"><span class="rate">1.0x</span><span class="rate-label">原速</span></button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-area">
+
+    <div class="mobile-top-bar">
+      <div class="lesson-info">
+        <div class="lesson-tag">Week 2 · Day 4</div>
+        <h1>海鮮 🦐</h1>
+      </div>
+      <div class="step-indicator" id="mobile-step-indicator">1 <span class="total">/ 6</span></div>
+      <button class="menu-btn" onclick="openMobileSidebar()" aria-label="設定">☰</button>
+    </div>
+
+    <div class="mobile-progress">
+      <div class="fill" id="mobile-progress-fill" style="width: 16.7%;"></div>
+    </div>
+
+    <div class="main-inner">
+
+      <!-- STEP 1 -->
+      <div class="step-content" data-step="1">
+        <div class="section-label">Part 1 · 熱身 & 場景 (2 分鐘)</div>
+        <h2>去海鮮檔買嘢 🦐</h2>
+        <div class="card-sub">salmon, prawns, crab, mussels...</div>
+
+        <div class="scene-card">
+          <div class="scene-title">📍 今日嘅場景</div>
+          <div class="scene-text">想像你去 Tesco / M&S / Waitrose 嘅 <strong>海鮮檔</strong>（fish counter），買啲三文魚同蝦返屋企煮。但 menu 上嘅字都唔識？呢堂教你識海鮮嘅英文 ✨</div>
+        </div>
+
+        <div class="subsection-title">🎯 你今日會學到</div>
+        <div class="goals-grid">
+          <div class="goal-card"><div class="goal-num">1</div><div class="goal-text">識 <strong>常見海鮮</strong>嘅英文名</div></div>
+          <div class="goal-card"><div class="goal-num">2</div><div class="goal-text">識分 <strong>fresh / frozen / cooked</strong></div></div>
+          <div class="goal-card"><div class="goal-num">3</div><div class="goal-text">識問 <strong>「可唔可以幫我劏魚」</strong>等特別要求</div></div>
+          <div class="goal-card"><div class="goal-num">4</div><div class="goal-text">完成<strong>買海鮮</strong> roleplay</div></div>
+        </div>
+
+        <div class="callback">💡 <strong>繼續用已學嘅</strong>：<strong>"Is it fresh?"</strong>（Day 3 學過）喺海鮮更重要 — 海鮮最緊要新鮮！</div>
+
+        <div class="teacher-note"><strong>👩‍🏫 老師 tips：</strong>英國嘅海鮮主要分 <strong>fish（魚類）</strong>同 <strong>shellfish（甲殼類）</strong>。Tesco / M&S 嘅 fish counter 啲員工好 friendly，可以幫你劏魚、去鱗、切片。</div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-content hidden" data-step="2">
+        <div class="section-label">Part 2 · 聽力 · 完整對話 (4 分鐘)</div>
+        <h2>👂 Tesco 海鮮檔 → Hannah 買三文魚同蝦</h2>
+        <div class="card-sub">先聽完整對話，再逐句拆解</div>
+
+        <div class="instruction"><strong>🎧 點樣聽：</strong>先 㩒 "聽全段"，唔使理解曬。再 㩒每句嘅 ▶️ 聽 或 🐢 極慢。聽 2-3 次先。</div>
+
+        <button class="play-btn blue" onclick="toggleFullDialogue()">🔊 聽全段對話</button>
+
+        <div class="dialogue-card" style="margin-top: 14px;">
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🐟</div><div class="dialogue-bubble"><div class="dialogue-text">Hello! What can I get for you today?</div><div class="dialogue-zh">你好！今日想要啲咩？</div><button class="play-btn small" onclick="speak(`Hello! What can I get for you today?`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Hello! What can I get for you today?`, 0.2, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Hi! Do you have fresh salmon?</div><div class="dialogue-zh">你好！有冇新鮮三文魚？</div><button class="play-btn small" onclick="speak(`Hi! Do you have fresh salmon?`, 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Hi! Do you have fresh salmon?`, 0.2, 'you')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🐟</div><div class="dialogue-bubble"><div class="dialogue-text">Yes, we have fresh fillets. How much would you like?</div><div class="dialogue-zh">有，有新鮮魚柳。要幾多？</div><button class="play-btn small" onclick="speak(`Yes, we have fresh fillets. How much would you like?`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Yes, we have fresh fillets. How much would you like?`, 0.2, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Two fillets, please. Are these prawns cooked?</div><div class="dialogue-zh">兩塊，唔該。啲蝦熟咗未？</div><button class="play-btn small" onclick="speak(`Two fillets, please. Are these prawns cooked?`, 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Two fillets, please. Are these prawns cooked?`, 0.2, 'you')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🐟</div><div class="dialogue-bubble"><div class="dialogue-text">Yes, these are cooked. Raw ones are over there.</div><div class="dialogue-zh">熟咗。生嘅喺嗰邊。</div><button class="play-btn small" onclick="speak(`Yes, these are cooked. Raw ones are over there.`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Yes, these are cooked. Raw ones are over there.`, 0.2, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">I'll take cooked ones, please. 200 grams.</div><div class="dialogue-zh">我要熟嘅，唔該。200 克。</div><button class="play-btn small" onclick="speak(`I'll take cooked ones, please. 200 grams.`, 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'll take cooked ones, please. 200 grams.`, 0.2, 'you')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🐟</div><div class="dialogue-bubble"><div class="dialogue-text">Sure! Can I clean the fish for you?</div><div class="dialogue-zh">好！要幫你劏魚嗎？</div><button class="play-btn small" onclick="speak(`Sure! Can I clean the fish for you?`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Sure! Can I clean the fish for you?`, 0.2, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Yes, please. Thank you so much!</div><div class="dialogue-zh">係，唔該。真係好多謝你！</div><button class="play-btn small" onclick="speak(`Yes, please. Thank you so much!`, 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Yes, please. Thank you so much!`, 0.2, 'you')">🐢 極慢</button></div></div>
+        </div>
+
+        <div class="teacher-note"><strong>👩‍🏫 注意：</strong>留意 <strong>"Do you have..."</strong> 係問「有冇」，<strong>"Can I have..."</strong> 係問「可唔可以畀我」— 兩個 pattern 都超好用！</div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-content hidden" data-step="3">
+        <div class="section-label">Part 3 · 5 句套語拆解 (5 分鐘)</div>
+        <h2>逐句學識 ✏️</h2>
+        <div class="card-sub">每句聽 2-3 次，跟住讀</div>
+
+        <div class="phrases-list">
+          <div class="phrase-card"><div class="phrase-num">1</div><div class="phrase-en">Do you have fresh salmon?</div><div class="phrase-zh">有冇新鮮三文魚？</div><div class="phrase-context">📍 用喺：問有冇特定魚類（換 cod、tuna 都得）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`Do you have fresh salmon?`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Do you have fresh salmon?`, 0.2)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">2</div><div class="phrase-en">Are these prawns cooked?</div><div class="phrase-zh">啲蝦熟咗未？</div><div class="phrase-context">📍 用喺：唔識分熟 vs 生嘅蝦</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`Are these prawns cooked?`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Are these prawns cooked?`, 0.2)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">3</div><div class="phrase-en">Can you clean the fish for me?</div><div class="phrase-zh">可唔可以幫我劏魚？</div><div class="phrase-context">📍 用喺：唔識劏魚，請員工幫手</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`Can you clean the fish for me?`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Can you clean the fish for me?`, 0.2)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">4</div><div class="phrase-en">Is this frozen or fresh?</div><div class="phrase-zh">呢個係急凍定新鮮？</div><div class="phrase-context">📍 用喺：分辨凍肉 vs 新鮮嘢</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`Is this frozen or fresh?`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Is this frozen or fresh?`, 0.2)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">5</div><div class="phrase-en">Two hundred grams, please.</div><div class="phrase-zh">兩百克，唔該。</div><div class="phrase-context">📍 用喺：買蝦 / 貝類通常用 grams</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`Two hundred grams, please.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Two hundred grams, please.`, 0.2)">🐢 極慢</button></div></div>
+        </div>
+
+        <div class="teacher-note"><strong>👩‍🏫 <strong>發音 tips：</strong><br>• "Salmon" 嘅 <strong>"l" 唔讀</strong>（讀 "SA-mun"）<br>• "Prawn" 讀 "pron"（rhymes with "corn"）<br>• "Mussels" 讀 "MUS-els"</strong></div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-content hidden" data-step="4">
+        <div class="section-label">Part 4 · 🦐 海鮮字詞 (4 分鐘)</div>
+        <h2>🦐 海鮮字詞</h2>
+        <div class="card-sub">魚類 + 甲殼類</div>
+
+        <div class="instruction"><strong>📖 海鮮分兩大類：</strong><br>• <strong>Fish（魚類）</strong>— salmon, cod, tuna...<br>• <strong>Shellfish（甲殼類）</strong>— prawns, crab, mussels...<br>去 fish counter 可以指住啲嘢買，唔使完全識晒名。</div>
+
+        <div class="subsection-title">🐟 魚類 Fish</div>
+        <div class="money-grid">
+          <div class="money-card"><div class="price">🐟</div><div class="price-en">Salmon</div><div class="price-zh">三文魚（lSAIL-mun）</div><button class="play-btn small" onclick="speak(`Salmon`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Salmon`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🐟</div><div class="price-en">Cod</div><div class="price-zh">鱈魚</div><button class="play-btn small" onclick="speak(`Cod`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Cod`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🐟</div><div class="price-en">Tuna</div><div class="price-zh">吞拿魚</div><button class="play-btn small" onclick="speak(`Tuna`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Tuna`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🐟</div><div class="price-en">Sea bass</div><div class="price-zh">海鱸</div><button class="play-btn small" onclick="speak(`Sea bass`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Sea bass`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🐟</div><div class="price-en">Haddock</div><div class="price-zh">黑線鱈</div><button class="play-btn small" onclick="speak(`Haddock`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Haddock`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🐟</div><div class="price-en">Mackerel</div><div class="price-zh">鯖魚</div><button class="play-btn small" onclick="speak(`Mackerel`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Mackerel`, 0.2)">🐢 極慢</button></div>
+        </div>
+
+        <div class="subsection-title">🦐 甲殼類 Shellfish</div>
+        <div class="money-grid">
+          <div class="money-card"><div class="price">🦐</div><div class="price-en">Prawns</div><div class="price-zh">蝦</div><button class="play-btn small" onclick="speak(`Prawns`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Prawns`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🦞</div><div class="price-en">Lobster</div><div class="price-zh">龍蝦</div><button class="play-btn small" onclick="speak(`Lobster`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Lobster`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🦀</div><div class="price-en">Crab</div><div class="price-zh">蟹</div><button class="play-btn small" onclick="speak(`Crab`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Crab`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🦪</div><div class="price-en">Mussels</div><div class="price-zh">青口</div><button class="play-btn small" onclick="speak(`Mussels`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Mussels`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🦪</div><div class="price-en">Oysters</div><div class="price-zh">生蠔</div><button class="play-btn small" onclick="speak(`Oysters`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Oysters`, 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">🐚</div><div class="price-en">Scallops</div><div class="price-zh">帶子</div><button class="play-btn small" onclick="speak(`Scallops`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`Scallops`, 0.2)">🐢 極慢</button></div>
+        </div>
+
+        <div class="callback">💡 <strong>Hannah 小貼士：</strong>英國嘅 <strong>"Fish and Chips"</strong>（炸魚薯條）通常用 <strong>cod</strong>（鱈魚）或者 <strong>haddock</strong>。買嚟自己煎都得！</div>
+
+        <div class="teacher-note"><strong>👩‍🏫 <strong>新鮮程度 3 種狀態：</strong><br>• <strong>Fresh</strong> — 新鮮 / 冇冷藏<br>• <strong>Frozen</strong> — 急凍<br>• <strong>Cooked</strong> — 熟咗，可以即食<br><br>通常 prawns 有 <strong>cooked</strong>（粉紅色、即食）同 <strong>raw</strong>（灰色、要煮），唔好買錯！</strong></div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-content hidden" data-step="5">
+        <div class="section-label">Part 5 · 角色扮演 (4 分鐘)</div>
+        <h2>到你開口啦！🎭</h2>
+        <div class="card-sub">扮 Hannah，買三文魚同蝦</div>
+
+        <div class="instruction"><strong>📋 點玩：</strong>每句店員講完，到你諗點答。先諗，再 㩒 "💡 提示" 睇建議答案，最後 㩒 ▶️ 對比讀音。</div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">🐟 員工</div><div class="what">Hi! What can I get you?</div><div class="what-zh">你好！想要啲咩？</div><button class="play-btn small blue" onclick="speak(`Hi! What can I get you?`)">▶️ 聽</button> <button class="play-btn small" onclick="speak(`Hi! What can I get you?`, 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint1">問有冇新鮮三文魚 →</div><button class="play-btn small" onclick="showHint(1, `Do you have fresh salmon?`, `有冇新鮮三文魚？`)">💡 提示</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">🐟 員工</div><div class="what">Yes! How much?</div><div class="what-zh">有！要幾多？</div><button class="play-btn small blue" onclick="speak(`Yes! How much?`)">▶️ 聽</button> <button class="play-btn small" onclick="speak(`Yes! How much?`, 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint2">要兩塊魚柳 →</div><button class="play-btn small" onclick="showHint(2, `Two fillets, please.`, `兩塊，唔該。`)">💡 提示</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">🐟 員工</div><div class="what">Anything else?</div><div class="what-zh">仲要其他？</div><button class="play-btn small blue" onclick="speak(`Anything else?`)">▶️ 聽</button> <button class="play-btn small" onclick="speak(`Anything else?`, 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint3">問啲蝦熟咗未 →</div><button class="play-btn small" onclick="showHint(3, `Are these prawns cooked?`, `啲蝦熟咗未？`)">💡 提示</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">🐟 員工</div><div class="what">Yes, these are cooked.</div><div class="what-zh">熟咗。</div><button class="play-btn small blue" onclick="speak(`Yes, these are cooked.`)">▶️ 聽</button> <button class="play-btn small" onclick="speak(`Yes, these are cooked.`, 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint4">要 200 克 →</div><button class="play-btn small" onclick="showHint(4, `200 grams, please.`, `200 克，唔該。`)">💡 提示</button></div>
+        </div>
+
+        <div class="roleplay-card">
+          <div class="roleplay-prompt"><div class="who">🐟 員工</div><div class="what">Would you like me to clean the fish?</div><div class="what-zh">要幫你劏魚嗎？</div><button class="play-btn small blue" onclick="speak(`Would you like me to clean the fish?`)">▶️ 聽</button> <button class="play-btn small" onclick="speak(`Would you like me to clean the fish?`, 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint5">係，要 →</div><button class="play-btn small" onclick="showHint(5, `Yes, please!`, `係，唔該！`)">💡 提示</button></div>
+        </div>
+
+        <div class="teacher-note"><strong>👩‍🏫 海鮮檔員工幫手劏魚係免費嘅 — 大膽問 <strong>"Can you clean the fish for me?"</strong>！</strong></div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-content hidden" data-step="6">
+        <div class="section-label">Part 6 · 完成 (1 分鐘)</div>
+        <div class="complete-screen">
+          <div class="complete-trophy">🏆</div>
+          <div class="complete-title">完成 Week 2 · Day 4！</div>
+          <div class="complete-sub">你識得點買海鮮喇 🦐</div>
+        </div>
+
+        <div class="summary-box">
+          <h3>✏️ 今日學咗</h3>
+          <ul class="summary-list">
+            <li>Do you have fresh salmon? — 有冇新鮮三文魚？</li>
+            <li>Are these prawns cooked? — 啲蝦熟咗未？</li>
+            <li>Can you clean the fish for me? — 可唔可以幫我劏魚？</li>
+            <li>Is this frozen or fresh? — 急凍定新鮮？</li>
+            <li>200 grams, please. — 兩百克，唔該</li>
+            <li>魚類字詞（salmon, cod, tuna...）</li>
+            <li>甲殼類字詞（prawns, crab, mussels...）</li>
+            <li>完整買海鮮 roleplay</li>
+          </ul>
+        </div>
+
+        <div class="homework-card">
+          <h3>📝 今日嘅 homework</h3>
+          <div class="homework-item"><div class="homework-num">1.</div><div>今星期試去 <strong>fish counter</strong> 買三文魚或其他魚。</div></div>
+          <div class="homework-item"><div class="homework-num">2.</div><div>叫員工<strong>幫手劏魚</strong>（唔使怕，佢哋樂意！）。</div></div>
+          <div class="homework-item"><div class="homework-num">3.</div><div>煮一餐<strong>海鮮晚餐</strong>（煎三文魚 + 蝦）。</div></div>
+        </div>
+
+        <div class="teacher-note" style="margin-top: 14px;"><strong>👩‍🏫 next：</strong>Day 5 — 水果 & 蔬菜！fruits & veg 大集合 🍎🥕</div>
+      </div>
+
+    </div>
+
+    <div class="footer-nav">
+      <button class="btn-secondary" id="prev-btn" onclick="goPrev()">← 上一步</button>
+      <div style="font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-soft); font-size: 13px;" id="step-indicator">Step 1 of 6</div>
+      <button class="btn-primary" id="next-btn" onclick="goNext()"><span id="next-btn-text">開始學習</span><span>→</span></button>
+    </div>
+
+    <div class="mobile-nav-bar">
+      <button class="nav-btn prev disabled" id="mobile-prev-btn" onclick="goPrev()">← 返</button>
+      <button class="nav-btn next" id="mobile-next-btn" onclick="goNext()"><span id="mobile-next-btn-text">開始學習 →</span></button>
+    </div>
+  </main>
+</div>
+
+<script>
+let currentStep = 1;
+let currentSpeed = 0.3;
+const completedSteps = new Set();
+const TOTAL_STEPS = 6;
+
+const FULL_DIALOGUE = [
+  "Hello! What can I get for you today?",
+  "Hi! Do you have fresh salmon?",
+  "Yes, we have fresh fillets. How much would you like?",
+  "Two fillets, please. Are these prawns cooked?",
+  "Yes, these are cooked. Raw ones are over there.",
+  "I'll take cooked ones, please. 200 grams.",
+  "Sure! Can I clean the fish for you?",
+  "Yes, please. Thank you so much!"
+];
+
+// ============ SPEECH (dual voice) ============
+let emmaVoice = null;   // 對方 / 店員 voice
+let hannahVoice = null; // 你 / Hannah voice
+let englishVoice = null; // default fallback (= emmaVoice)
+
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  const ukFemale = voices.filter(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female'));
+  const ukAny = voices.filter(v => v.lang === 'en-GB');
+  const enFemale = voices.filter(v => v.lang.startsWith('en-') && v.name.toLowerCase().includes('female'));
+  const enAny = voices.filter(v => v.lang.startsWith('en-'));
+
+  const femalePool = [...ukFemale, ...enFemale];
+  const generalPool = [...ukAny, ...enAny, ...voices];
+
+  const seen = new Set();
+  const uniqueFemale = femalePool.filter(v => !seen.has(v.name) && seen.add(v.name));
+  const seen2 = new Set();
+  const uniqueGeneral = generalPool.filter(v => !seen2.has(v.name) && seen2.add(v.name));
+
+  emmaVoice = uniqueFemale[0] || uniqueGeneral[0] || voices[0];
+  hannahVoice = uniqueFemale.find(v => v !== emmaVoice)
+             || uniqueGeneral.find(v => v !== emmaVoice)
+             || emmaVoice;
+  englishVoice = emmaVoice;  // default for flashcards / single-line speak
+}
+if (typeof speechSynthesis !== 'undefined') {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+// Main speak() — accepts optional voice param (shop/you/null=default)
+function speak(text, rate, voiceKind) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = rate || 0.3;
+  u.pitch = 1;
+  u.volume = 1;
+  u.lang = 'en-GB';
+  if (voiceKind === 'you') u.voice = hannahVoice;
+  else if (voiceKind === 'shop') u.voice = emmaVoice;
+  else u.voice = englishVoice;
+  speechSynthesis.speak(u);
+}
+
+// ============ FULL DIALOGUE TOGGLE ============
+let FULL_DIALOGUE_DATA = [];  // populated from DOM on first play
+let dialogueTimers = [];
+let dialoguePlaying = false;
+
+function buildDialogueData() {
+  const lines = document.querySelectorAll('.dialogue-card .dialogue-line');
+  FULL_DIALOGUE_DATA = [];
+  lines.forEach((line, idx) => {
+    line.setAttribute('data-line-idx', idx);
+    const textEl = line.querySelector('.dialogue-text');
+    const bubble = line.querySelector('.dialogue-bubble');
+    const isYou = bubble && bubble.classList.contains('you');
+    FULL_DIALOGUE_DATA.push({
+      text: textEl ? textEl.textContent.trim() : '',
+      voiceKind: isYou ? 'you' : 'shop',
+      idx: idx
+    });
+  });
+}
+
+function highlightLine(idx) {
+  const el = document.querySelector(`.dialogue-line[data-line-idx="${idx}"]`);
+  if (el) el.classList.add('active');
+}
+function unhighlightLine(idx) {
+  const el = document.querySelector(`.dialogue-line[data-line-idx="${idx}"]`);
+  if (el) el.classList.remove('active');
+}
+function clearAllHighlights() {
+  document.querySelectorAll('.dialogue-line.active').forEach(el => el.classList.remove('active'));
+}
+
+function toggleFullDialogue() {
+  if (dialoguePlaying) stopFullDialogue();
+  else playFullDialogue();
+}
+
+function playFullDialogue() {
+  if (FULL_DIALOGUE_DATA.length === 0) buildDialogueData();
+  speechSynthesis.cancel();
+  clearAllHighlights();
+  dialogueTimers.forEach(t => clearTimeout(t));
+  dialogueTimers = [];
+  dialoguePlaying = true;
+  updateDialogueButton(true);
+
+  const gap = 3500;  // ms between lines
+
+  FULL_DIALOGUE_DATA.forEach((item, i) => {
+    const t = setTimeout(() => {
+      if (i > 0) unhighlightLine(i - 1);
+      highlightLine(i);
+      speak(item.text, 0.4, item.voiceKind);
+    }, i * gap);
+    dialogueTimers.push(t);
+  });
+
+  const totalMs = FULL_DIALOGUE_DATA.length * gap;
+  const endTimer = setTimeout(() => {
+    clearAllHighlights();
+    dialoguePlaying = false;
+    updateDialogueButton(false);
+  }, totalMs + 1500);
+  dialogueTimers.push(endTimer);
+}
+
+function stopFullDialogue() {
+  speechSynthesis.cancel();
+  dialogueTimers.forEach(t => clearTimeout(t));
+  dialogueTimers = [];
+  clearAllHighlights();
+  dialoguePlaying = false;
+  updateDialogueButton(false);
+}
+
+function updateDialogueButton(isPlaying) {
+  const btn = document.querySelector('button[onclick*="FullDialogue"]');
+  if (!btn) return;
+  if (isPlaying) {
+    btn.innerHTML = '⏹️ 停止';
+    btn.setAttribute('onclick', 'toggleFullDialogue()');
+  } else {
+    btn.innerHTML = '🔊 聽全段對話';
+    btn.setAttribute('onclick', 'toggleFullDialogue()');
+  }
+}
+
+function showHint(num, en, zh) {
+  const el = document.getElementById('hint' + num);
+  el.innerHTML = `<div style="font-weight:600;color:var(--ink);font-size:16px;margin-bottom:4px;">${en}</div><div style="color:var(--ink-soft);font-size:13px;">${zh}</div>`;
+  setTimeout(() => speak(en), 200);
+}
+
+function goToStep(step) {
+  speechSynthesis.cancel();
+  if (step > currentStep) completedSteps.add(currentStep);
+  currentStep = step;
+
+  document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+  document.querySelector(`.step-content[data-step="${step}"]`).classList.remove('hidden');
+
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    const btnStep = parseInt(btn.dataset.step);
+    btn.classList.remove('active', 'completed');
+    if (btnStep === step) btn.classList.add('active');
+    else if (completedSteps.has(btnStep)) btn.classList.add('completed');
+  });
+
+  const progress = (step / TOTAL_STEPS) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('progress-text').textContent = `第 ${step} 部分 / 共 6 部分`;
+
+  const mobileProgress = document.getElementById('mobile-progress-fill');
+  if (mobileProgress) mobileProgress.style.width = progress + '%';
+  const mobileIndicator = document.getElementById('mobile-step-indicator');
+  if (mobileIndicator) mobileIndicator.innerHTML = `${step} <span class="total">/ ${TOTAL_STEPS}</span>`;
+
+  const timeMap = { 1: "2 分鐘", 2: "4 分鐘", 3: "5 分鐘", 4: "4 分鐘", 5: "4 分鐘", 6: "1 分鐘" };
+  document.getElementById('progress-time').textContent = timeMap[step] || "";
+
+  document.getElementById('step-indicator').textContent = `Step ${step} of ${TOTAL_STEPS}`;
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const nextText = document.getElementById('next-btn-text');
+
+  prevBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
+  if (step === TOTAL_STEPS) {
+    nextText.textContent = '🎉 完成';
+    nextBtn.onclick = () => alert('恭喜完成 Day 4！記得做 homework 喇 🦐');
+  } else if (step === 1) {
+    nextText.textContent = '開始學習';
+    nextBtn.onclick = goNext;
+  } else {
+    nextText.textContent = '下一步';
+    nextBtn.onclick = goNext;
+  }
+
+  const mobilePrev = document.getElementById('mobile-prev-btn');
+  if (mobilePrev) mobilePrev.classList.toggle('disabled', step === 1);
+  const mobileNextText = document.getElementById('mobile-next-btn-text');
+  const mobileNextBtn = document.getElementById('mobile-next-btn');
+  if (mobileNextText && mobileNextBtn) {
+    if (step === TOTAL_STEPS) {
+      mobileNextText.textContent = '🎉 完成';
+      mobileNextBtn.onclick = () => alert('恭喜完成 Day 4！記得做 homework 喇 🦐');
+    } else if (step === 1) {
+      mobileNextText.textContent = '開始學習 →';
+      mobileNextBtn.onclick = goNext;
+    } else {
+      mobileNextText.textContent = '下一步 →';
+      mobileNextBtn.onclick = goNext;
+    }
+  }
+
+  document.querySelector('.main-inner').scrollTop = 0;
+}
+
+function goNext() { if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1); }
+function goPrev() { if (currentStep > 1) goToStep(currentStep - 1); }
+
+function openMobileSidebar() {
+  document.querySelector('.sidebar').classList.add('open');
+  document.getElementById('sidebar-backdrop').classList.add('show');
+}
+function closeMobileSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebar-backdrop').classList.remove('show');
+}
+document.querySelectorAll('.step-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 768) setTimeout(closeMobileSidebar, 150);
+  });
+});
+
+goToStep(1);
+</script>
+
+</body>
+</html>

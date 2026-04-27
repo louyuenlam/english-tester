@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf6ef">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23faf6ef'/><text x='50' y='70' text-anchor='middle' font-size='58'>🏔️</text></svg>">
+<title>評估山頂 · Hannah's Assessment Mountain</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --burgundy: #8b3a3a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    min-height: 100%;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  body {
+    font-family: 'Noto Sans HK', 'Fraunces', serif;
+    background:
+      radial-gradient(ellipse at top, rgba(122, 132, 113, 0.15), transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(90, 122, 139, 0.12), transparent 60%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(20px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .game-header {
+    text-align: center;
+    padding: 10px 0 18px;
+    position: relative;
+  }
+  .back-btn {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    background: var(--paper);
+    border: 1.5px solid var(--cream-dark);
+    color: var(--ink-soft);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  .back-btn:active { background: var(--cream); }
+  .game-header .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin-bottom: 6px;
+  }
+  .game-header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .game-header .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+
+  .overall-stats {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 2px 0 var(--cream-dark);
+  }
+  .stat { text-align: center; flex: 1; }
+  .stat .num {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--sage-dark);
+    display: block;
+    line-height: 1.1;
+  }
+  .stat .lbl {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+  .stat-divider { width: 1px; height: 30px; background: var(--cream-dark); }
+
+  /* ============ MOUNTAIN MAP (vertical climb) ============ */
+  .map {
+    position: relative;
+    padding: 20px 0 40px;
+  }
+  /* Mountain decoration on the right side */
+  .map::before {
+    content: '🏔️';
+    position: absolute;
+    top: 20px;
+    right: 0;
+    font-size: 80px;
+    opacity: 0.08;
+    z-index: 0;
+    pointer-events: none;
+  }
+  /* Vertical climbing path */
+  .map::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    bottom: 60px;
+    width: 4px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--cream-dark) 0 10px,
+      transparent 10px 20px
+    );
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  .level {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .level:nth-child(odd) { justify-content: flex-start; padding-left: 6%; }
+  .level:nth-child(even) { justify-content: flex-end; padding-right: 6%; }
+
+  .level-node {
+    background: var(--paper);
+    border: 3px solid var(--cream-dark);
+    border-radius: 22px;
+    padding: 16px;
+    width: 220px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.3, 0.85, 0.4, 1);
+    box-shadow: 0 3px 0 var(--cream-dark);
+    position: relative;
+    text-align: center;
+  }
+  .level-node:not(.locked):hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 12px var(--shadow), 0 3px 0 var(--cream-dark);
+  }
+  .level-node:not(.locked):active { transform: translateY(0); }
+
+  .level-node.locked {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: var(--cream-dark);
+  }
+  .level-node.locked .emoji { filter: grayscale(1); }
+
+  .level-node.completed { border-color: var(--sage); }
+  .level-node.unlocked { border-color: var(--gold); }
+  .level-node.boss {
+    border-color: var(--burgundy);
+    background: linear-gradient(135deg, var(--paper), #fef0ee);
+  }
+  .level-node.boss.locked { background: var(--cream-dark); }
+
+  .level-node .level-num {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+  .level-node.completed .level-num { background: var(--sage); }
+  .level-node.boss .level-num { background: var(--burgundy); }
+  .level-node.locked .level-num { background: var(--ink-soft); }
+
+  .level-node .emoji {
+    font-size: 42px;
+    margin: 6px 0 8px;
+    line-height: 1;
+  }
+  .level-node .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .level-node .sub {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .level-node .difficulty {
+    display: inline-block;
+    background: var(--cream);
+    color: var(--ink-soft);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .level-node.boss .difficulty { background: var(--burgundy); color: white; }
+
+  .stars {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    font-size: 16px;
+    margin-top: 2px;
+  }
+  .stars .star {
+    filter: grayscale(1) opacity(0.3);
+    transition: all 0.3s ease;
+  }
+  .stars .star.earned {
+    filter: none;
+    animation: starPop 0.4s ease;
+  }
+  @keyframes starPop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+  .lock-icon { font-size: 18px; margin-top: 4px; color: var(--ink-soft); }
+
+  /* ============ GAME MODAL ============ */
+  .game-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 36, 32, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .game-modal.open { display: flex; }
+
+  .game-sheet {
+    background: var(--paper);
+    width: 100%;
+    max-width: 480px;
+    max-height: 94vh;
+    border-radius: 24px;
+    overflow-y: auto;
+    padding: 18px 20px;
+    animation: zoomIn 0.3s cubic-bezier(0.3, 0.85, 0.4, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+  }
+  @keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .game-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .game-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    flex: 1;
+  }
+  .close-game {
+    background: var(--cream);
+    border: none;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+  }
+  .close-game:active { background: var(--cream-dark); }
+
+  .top-meta {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .game-progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .game-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage), var(--gold));
+    transition: width 0.4s ease;
+    border-radius: 4px;
+  }
+  .score-badge {
+    background: var(--sage);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ============ QUESTION AREA ============ */
+  .question-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .q-type-badge {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    align-self: flex-start;
+    font-family: 'Fraunces', serif;
+    letter-spacing: 1px;
+  }
+  .q-type-badge.audio { background: var(--terra); }
+  .q-type-badge.fill { background: var(--gold); }
+  .q-type-badge.scenario { background: var(--sage); }
+  .q-type-badge.reverse { background: var(--burgundy); }
+
+  .question-card {
+    background: linear-gradient(135deg, var(--paper), var(--cream));
+    border: 2.5px solid var(--cream-dark);
+    border-radius: 18px;
+    padding: 20px 18px;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 0 var(--cream-dark);
+  }
+  .question-card.boss-card {
+    background: linear-gradient(135deg, #fef0ee, var(--paper));
+    border-color: var(--burgundy);
+  }
+  .q-prompt {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .q-content {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .q-content .blank {
+    background: var(--gold);
+    color: white;
+    padding: 2px 12px;
+    border-radius: 6px;
+    margin: 0 4px;
+    font-weight: 700;
+  }
+  .q-context {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 8px;
+  }
+  .q-audio-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .q-audio-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .q-audio-btn:active { background: var(--blue-dark); }
+  .q-audio-btn.slow { background: var(--gold); }
+  .q-audio-btn.slow:active { background: var(--gold-dark); }
+
+  /* Choices */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .choice-btn {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .choice-btn:not(.disabled):active { transform: scale(0.98); }
+  .choice-btn:not(.disabled):hover { border-color: var(--sage); }
+  .choice-btn .letter {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cream);
+    color: var(--ink-soft);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .choice-btn .text { flex: 1; }
+  .choice-btn.correct {
+    background: rgba(122, 132, 113, 0.15);
+    border-color: var(--sage);
+  }
+  .choice-btn.correct .letter { background: var(--sage); color: white; }
+  .choice-btn.correct::after {
+    content: '✓';
+    color: var(--sage-dark);
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .choice-btn.wrong {
+    background: rgba(200, 107, 74, 0.1);
+    border-color: var(--terra);
+  }
+  .choice-btn.wrong .letter { background: var(--terra); color: white; }
+  .choice-btn.wrong::after {
+    content: '✗';
+    color: var(--terra-dark);
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .choice-btn.disabled { cursor: not-allowed; }
+  .choice-btn.dimmed { opacity: 0.45; }
+
+  .feedback {
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    min-height: 22px;
+  }
+  .feedback.good { color: var(--sage-dark); font-weight: 600; }
+  .feedback.bad { color: var(--terra-dark); font-weight: 600; }
+
+  .next-q-btn {
+    background: var(--sage);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 48px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .next-q-btn:active { background: var(--sage-dark); }
+
+  /* Result screen */
+  .result-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 0;
+  }
+  .result-emoji {
+    font-size: 72px;
+    margin-bottom: 12px;
+    animation: bounce 0.6s ease;
+  }
+  @keyframes bounce {
+    0% { transform: scale(0) rotate(-180deg); }
+    60% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+  .result-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .result-subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .result-stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 44px;
+    margin-bottom: 18px;
+  }
+  .result-stars .star {
+    filter: grayscale(1) opacity(0.25);
+    transition: filter 0.4s ease, transform 0.4s ease;
+  }
+  .result-stars .star.earned {
+    filter: none;
+    animation: starPop 0.6s ease;
+  }
+  .result-stars .star:nth-child(1).earned { animation-delay: 0.2s; animation-fill-mode: backwards; }
+  .result-stars .star:nth-child(2).earned { animation-delay: 0.5s; animation-fill-mode: backwards; }
+  .result-stars .star:nth-child(3).earned { animation-delay: 0.8s; animation-fill-mode: backwards; }
+
+  .result-stats {
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-around;
+  }
+  .result-stat { text-align: center; }
+  .result-stat .v {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    display: block;
+  }
+  .result-stat .l {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .result-stat .v.good { color: var(--sage-dark); }
+  .result-stat .v.bad { color: var(--terra-dark); }
+
+  .result-actions { display: flex; gap: 10px; }
+  .result-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    min-height: 50px;
+  }
+  .result-btn.primary { background: var(--sage); color: white; }
+  .result-btn.primary:active { background: var(--sage-dark); }
+  .result-btn.secondary { background: var(--cream); color: var(--ink); }
+  .result-btn.secondary:active { background: var(--cream-dark); }
+
+  .map-footer {
+    text-align: center;
+    padding: 20px 0;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+  }
+  .reset-btn {
+    background: transparent;
+    border: 1px dashed var(--cream-dark);
+    color: var(--ink-soft);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .reset-btn:active { background: var(--cream); }
+
+  .toast {
+    position: fixed;
+    bottom: calc(30px + var(--safe-bottom));
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-size: 14px;
+    z-index: 200;
+    transition: transform 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (min-width: 480px) {
+    .level-node { width: 240px; }
+    .game-header h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="game-header">
+    <a class="back-btn" href="../index.html" aria-label="返回主頁">←</a>
+    <div class="ornament">· · ·</div>
+    <h1>評估山頂 🏔️</h1>
+    <div class="subtitle">Climb the Assessment Mountain</div>
+  </div>
+
+  <div class="overall-stats">
+    <div class="stat">
+      <span class="num" id="stats-levels">0/5</span>
+      <span class="lbl">登頂</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="num" id="stats-stars">0</span>
+      <span class="lbl">⭐ 星</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="num" id="stats-progress">0%</span>
+      <span class="lbl">完成度</span>
+    </div>
+  </div>
+
+  <div class="map" id="map"></div>
+
+  <div class="map-footer">
+    🥾 由山腳一步步爬上山頂
+    <br>
+    <button class="reset-btn" onclick="resetProgress()">🔄 重新開始</button>
+  </div>
+
+</div>
+
+<!-- Game modal -->
+<div class="game-modal" id="game-modal">
+  <div class="game-sheet">
+    <div class="game-header-inner">
+      <div class="game-title" id="game-title">關卡</div>
+      <button class="close-game" onclick="closeGame()">✕</button>
+    </div>
+
+    <div class="top-meta">
+      <div class="game-progress-bar">
+        <div class="game-progress-fill" id="game-progress-fill" style="width: 0%;"></div>
+      </div>
+      <div class="score-badge">✓ <span id="score-display">0</span></div>
+    </div>
+
+    <div class="question-view" id="question-view">
+      <span class="q-type-badge" id="q-type-badge">配對</span>
+      <div class="question-card" id="question-card">
+        <div class="q-prompt" id="q-prompt">配對英文同中文</div>
+        <div class="q-content" id="q-content">Hello!</div>
+        <div class="q-context" id="q-context"></div>
+        <div class="q-audio-row" id="q-audio-row">
+          <button class="q-audio-btn" onclick="speakQuestion()">▶️ 聽</button>
+          <button class="q-audio-btn slow" onclick="speakQuestion(0.2)">🐢 極慢</button>
+        </div>
+      </div>
+
+      <div class="choices" id="choices"></div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <button class="next-q-btn" id="next-q-btn" onclick="nextQuestion()" style="display:none;">下一題 →</button>
+    </div>
+
+    <!-- Result -->
+    <div class="result-screen" id="result-view" style="display: none;">
+      <div class="result-emoji" id="result-emoji">🎉</div>
+      <div class="result-title" id="result-title">過關！</div>
+      <div class="result-subtitle" id="result-subtitle">你登頂啦！</div>
+
+      <div class="result-stars">
+        <span class="star">⭐</span>
+        <span class="star">⭐</span>
+        <span class="star">⭐</span>
+      </div>
+
+      <div class="result-stats">
+        <div class="result-stat">
+          <span class="v good" id="result-good">0</span>
+          <span class="l">✓ 答啱</span>
+        </div>
+        <div class="result-stat">
+          <span class="v bad" id="result-bad">0</span>
+          <span class="l">✗ 錯</span>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="result-btn secondary" onclick="retryLevel()">🔄 重玩</button>
+        <button class="result-btn primary" onclick="closeGame()" id="next-level-btn">返回地圖</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">🔒 完成前一關先！</div>
+
+<script>
+// ================================================================
+// QUESTION POOLS - 用於隨機抽取
+// ================================================================
+
+// Pool 1: Lesson 1-3 簡單套語（配對 + 反向）
+const POOL_BASIC = [
+  { en: 'Hello!', zh: '你好！' },
+  { en: 'My name is Hannah.', zh: '我叫 Hannah。' },
+  { en: "I'm from Hong Kong.", zh: '我嚟自香港。' },
+  { en: 'I live in England.', zh: '我住喺英國。' },
+  { en: 'Nice to meet you.', zh: '好開心識到你。' },
+  { en: 'Good morning!', zh: '早晨！' },
+  { en: 'Good afternoon!', zh: '下午好！' },
+  { en: 'Good evening!', zh: '晚上好！' },
+  { en: 'How are you?', zh: '你點呀？' },
+  { en: "I'm fine, thanks.", zh: '我幾好，多謝。' },
+  { en: 'Goodbye!', zh: '再見！' },
+  { en: 'See you later!', zh: '遲啲見！' },
+  { en: 'Thank you.', zh: '多謝。' },
+  { en: 'Excuse me.', zh: '唔好意思。' },
+  { en: "I'm sorry.", zh: '對唔住。' }
+];
+
+// Pool 2: Lesson 4-5 問題詞
+const POOL_QUESTIONS = [
+  { en: "What's your name?", zh: '你叫咩名？', reply: 'My name is Hannah.', replyZh: '我叫 Hannah。' },
+  { en: 'Where are you from?', zh: '你嚟自邊度？', reply: "I'm from Hong Kong.", replyZh: '我嚟自香港。' },
+  { en: 'Where do you live?', zh: '你住邊？', reply: 'I live in England.', replyZh: '我住喺英國。' },
+  { en: 'How old are you?', zh: '你幾大？', reply: "I'm 55.", replyZh: '我 55 歲。' },
+  { en: 'Do you speak English?', zh: '你識講英文嗎？', reply: 'A little.', replyZh: '一啲啲。' },
+  { en: 'Are you from Hong Kong?', zh: '你係咪嚟自香港？', reply: "Yes, I'm from Hong Kong.", replyZh: '係，我嚟自香港。' },
+  { en: 'How are you today?', zh: '你今日點呀？', reply: "I'm good, thanks!", replyZh: '我幾好，多謝！' }
+];
+
+// Pool 3: Lesson 6 購物
+const POOL_SHOPPING = [
+  { en: 'How much is this?', zh: '呢個幾錢？', context: '指住件貨問價錢' },
+  { en: 'Do you take cards?', zh: '收唔收 card？', context: '俾錢之前' },
+  { en: "I'll take this, please.", zh: '我要呢個，唔該。', context: '決定買乜' },
+  { en: 'Can I have a bag, please?', zh: '可唔可以畀個袋我？', context: '需要袋' },
+  { en: "That's everything, thanks.", zh: '就咁多，唔該。', context: '答店員「仲要嗎」' },
+  { en: 'Receipt, please.', zh: '唔該畀張單。', context: '想要收據' },
+  { en: 'Yes, please.', zh: '好呀，唔該。', context: '答店員問「要袋嗎」' },
+  { en: "It's two pounds fifty.", zh: '兩鎊五。', context: '聽到價錢回應' }
+];
+
+// Pool 4: Lesson 7 Café
+const POOL_CAFE = [
+  { en: 'Can I get a coffee, please?', zh: '唔該俾我一杯咖啡。', context: '叫飲品' },
+  { en: 'To stay.', zh: '堂食。', context: '答「堂食定外賣」' },
+  { en: 'Take away, please.', zh: '外賣，唔該。', context: '答「堂食定外賣」' },
+  { en: 'Medium, please.', zh: '中杯，唔該。', context: '答「細中大」' },
+  { en: 'With milk, please.', zh: '加奶，唔該。', context: '答「要奶嗎」' },
+  { en: "No, that's all, thanks.", zh: '唔使，就咁，唔該。', context: '答「仲要嗎」' },
+  { en: 'How long will it take?', zh: '要等幾耐？', context: '想知幾時拎到' },
+  { en: 'Can I get an Earl Grey, please?', zh: '唔該俾我一杯伯爵茶。', context: '叫茶' }
+];
+
+// ================================================================
+// QUESTION GENERATORS
+// ================================================================
+
+// Helper: shuffle
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+// Type 1: 配對 - 英文 → 揀啱中文
+function genMatch(item, pool) {
+  const wrong = shuffle(pool.filter(p => p.zh !== item.zh)).slice(0, 2);
+  const choices = shuffle([item, ...wrong]).map(c => c.zh);
+  return {
+    type: 'match',
+    badge: '📖 配對',
+    badgeClass: '',
+    prompt: '英文係咩中文意思？',
+    content: item.en,
+    audio: item.en,
+    choices: choices,
+    correct: choices.indexOf(item.zh)
+  };
+}
+
+// Type 2: 反向 - 中文 → 揀啱英文
+function genReverse(item, pool) {
+  const wrong = shuffle(pool.filter(p => p.en !== item.en)).slice(0, 2);
+  const choices = shuffle([item, ...wrong]).map(c => c.en);
+  return {
+    type: 'reverse',
+    badge: '🔄 反向',
+    badgeClass: 'reverse',
+    prompt: '中文點樣用英文講？',
+    content: item.zh,
+    audio: item.en,  // play correct after answer
+    choices: choices,
+    correct: choices.indexOf(item.en),
+    hideAudioInitial: true  // hide audio buttons until answered
+  };
+}
+
+// Type 3: 聽力 - 聽英文 → 揀啱中文（content 隱藏）
+function genListen(item, pool) {
+  const wrong = shuffle(pool.filter(p => p.zh !== item.zh)).slice(0, 2);
+  const choices = shuffle([item, ...wrong]).map(c => c.zh);
+  return {
+    type: 'listen',
+    badge: '👂 聽力',
+    badgeClass: 'audio',
+    prompt: '聽英文 → 揀啱嘅中文意思',
+    content: '🔊 聽聽睇...',
+    audio: item.en,
+    revealContent: item.en,  // reveal after answer
+    choices: choices,
+    correct: choices.indexOf(item.zh),
+    autoplay: true
+  };
+}
+
+// Type 4: 情境 - 店員問 → 揀啱 reply
+function genScenario(item, pool) {
+  const wrong = shuffle(POOL_BASIC.filter(p => p.en !== item.reply)).slice(0, 2);
+  const choices = shuffle([{en: item.reply, zh: item.replyZh}, ...wrong]).map(c => c.en);
+  return {
+    type: 'scenario',
+    badge: '🎭 情境',
+    badgeClass: 'scenario',
+    prompt: '人哋問你 — 點答好？',
+    content: item.en,
+    context: item.zh,
+    audio: item.en,
+    choices: choices,
+    correct: choices.indexOf(item.reply),
+    revealAfter: item.reply  // play correct reply after
+  };
+}
+
+// Type 5: 填空 - "Can I get a ___, please?"
+function genFill(item, pool) {
+  // Use a key word from item (last meaningful word before .,?!)
+  // Simple: pick a random word that looks like content
+  const words = item.en.replace(/[.,!?]/g, '').split(' ');
+  // Pick a content-y word: noun-ish, length > 3
+  const candidates = words.filter(w => w.length > 3 && !['this', 'that', 'have', 'take', 'with', 'please', 'thanks', 'will', 'much', 'cards', 'morning', 'afternoon', 'evening'].includes(w.toLowerCase()));
+  const target = candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : words[words.length - 1];
+  // Build display with blank
+  const display = item.en.replace(target, '___');
+  // Wrong choices: pick random words from other items
+  const wrongWords = shuffle(POOL_SHOPPING.concat(POOL_CAFE).map(i => {
+    const ws = i.en.replace(/[.,!?]/g, '').split(' ').filter(w => w.length > 3);
+    return ws[Math.floor(Math.random() * ws.length)];
+  }).filter(w => w && w.toLowerCase() !== target.toLowerCase())).slice(0, 2);
+  const choices = shuffle([target, ...wrongWords]);
+  return {
+    type: 'fill',
+    badge: '💭 填空',
+    badgeClass: 'fill',
+    prompt: '填啱嗰個字',
+    content: display,
+    context: item.zh,
+    audio: item.en,  // play full sentence after answer
+    choices: choices,
+    correct: choices.indexOf(target)
+  };
+}
+
+// ================================================================
+// LEVELS DATA - 5 progressive levels
+// ================================================================
+const LEVELS = [
+  {
+    id: 1,
+    title: '山腳營地',
+    subtitle: 'Lesson 1-3',
+    emoji: '⛰️',
+    difficulty: '簡單',
+    questionCount: 10,
+    generators: [
+      // Mostly match (8) + a few listen (2)
+      { fn: 'match', pool: 'BASIC', weight: 8 },
+      { fn: 'listen', pool: 'BASIC', weight: 2 }
+    ]
+  },
+  {
+    id: 2,
+    title: '登山小徑',
+    subtitle: 'Lesson 1-5',
+    emoji: '🥾',
+    difficulty: '中等',
+    questionCount: 10,
+    generators: [
+      { fn: 'match', pool: 'BASIC', weight: 4 },
+      { fn: 'listen', pool: 'BASIC', weight: 2 },
+      { fn: 'scenario', pool: 'QUESTIONS', weight: 4 }
+    ]
+  },
+  {
+    id: 3,
+    title: '半山營地',
+    subtitle: 'Lesson 6 · 購物',
+    emoji: '🏕️',
+    difficulty: '進階',
+    questionCount: 12,
+    generators: [
+      { fn: 'match', pool: 'SHOPPING', weight: 4 },
+      { fn: 'listen', pool: 'SHOPPING', weight: 3 },
+      { fn: 'fill', pool: 'SHOPPING', weight: 3 },
+      { fn: 'reverse', pool: 'SHOPPING', weight: 2 }
+    ]
+  },
+  {
+    id: 4,
+    title: '接近山頂',
+    subtitle: 'Lesson 7 · Café',
+    emoji: '🗻',
+    difficulty: '進階',
+    questionCount: 12,
+    generators: [
+      { fn: 'match', pool: 'CAFE', weight: 4 },
+      { fn: 'listen', pool: 'CAFE', weight: 3 },
+      { fn: 'fill', pool: 'CAFE', weight: 3 },
+      { fn: 'reverse', pool: 'CAFE', weight: 2 }
+    ]
+  },
+  {
+    id: 5,
+    title: '山頂 BOSS',
+    subtitle: '綜合考試 · 20 題',
+    emoji: '🏔️',
+    difficulty: 'BOSS',
+    questionCount: 20,
+    boss: true,
+    requiresAllStars: 2,  // 1-4 關各 2 ⭐
+    generators: [
+      // Mix everything
+      { fn: 'match', pool: 'ALL', weight: 4 },
+      { fn: 'listen', pool: 'ALL', weight: 5 },
+      { fn: 'fill', pool: 'SHOPPING_CAFE', weight: 4 },
+      { fn: 'scenario', pool: 'QUESTIONS', weight: 4 },
+      { fn: 'reverse', pool: 'ALL', weight: 3 }
+    ]
+  }
+];
+
+// Pool resolver
+function getPool(name) {
+  switch(name) {
+    case 'BASIC': return POOL_BASIC;
+    case 'QUESTIONS': return POOL_QUESTIONS;
+    case 'SHOPPING': return POOL_SHOPPING;
+    case 'CAFE': return POOL_CAFE;
+    case 'SHOPPING_CAFE': return [...POOL_SHOPPING, ...POOL_CAFE];
+    case 'ALL': return [...POOL_BASIC, ...POOL_SHOPPING, ...POOL_CAFE];
+    default: return POOL_BASIC;
+  }
+}
+
+const GENERATORS = {
+  match: genMatch,
+  reverse: genReverse,
+  listen: genListen,
+  scenario: genScenario,
+  fill: genFill
+};
+
+// Build questions for a level
+function buildQuestions(level) {
+  const questions = [];
+  // Expand generators by weight
+  const expanded = [];
+  level.generators.forEach(g => {
+    for (let i = 0; i < g.weight; i++) expanded.push(g);
+  });
+  const shuffledTypes = shuffle(expanded).slice(0, level.questionCount);
+
+  shuffledTypes.forEach(g => {
+    const pool = getPool(g.pool);
+    const item = pool[Math.floor(Math.random() * pool.length)];
+    const generator = GENERATORS[g.fn];
+    if (generator) {
+      try {
+        const q = generator(item, pool);
+        // For 'scenario', need item to have reply (only POOL_QUESTIONS has it)
+        if (g.fn === 'scenario' && !item.reply) return; // skip
+        questions.push(q);
+      } catch (e) { console.warn('Gen failed:', e); }
+    }
+  });
+
+  // Pad if we got fewer than expected (rare edge case)
+  while (questions.length < level.questionCount) {
+    const item = POOL_BASIC[Math.floor(Math.random() * POOL_BASIC.length)];
+    questions.push(genMatch(item, POOL_BASIC));
+  }
+
+  return questions.slice(0, level.questionCount);
+}
+
+// ================================================================
+// STATE
+// ================================================================
+const STORAGE_KEY = 'hannah_test_game_v1';
+let gameState = loadProgress();
+let currentLevel = null;
+let currentQuestions = [];
+let currentQIndex = 0;
+let currentScore = 0;
+let currentWrong = 0;
+let answered = false;
+let englishVoice = null;
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return { levels: {} };
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+  } catch (e) { console.warn('Save failed:', e); }
+}
+
+function resetProgress() {
+  if (confirm('確認重新開始？之前嘅星星會消失！')) {
+    gameState = { levels: {} };
+    saveProgress();
+    renderMap();
+    updateStats();
+  }
+}
+
+// ================================================================
+// MAP
+// ================================================================
+function isUnlocked(levelId) {
+  if (levelId === 1) return true;
+  const level = LEVELS[levelId - 1];
+  if (level && level.requiresAllStars) {
+    for (let i = 1; i <= 4; i++) {
+      if (!gameState.levels[i] || gameState.levels[i].stars < level.requiresAllStars) {
+        return false;
+      }
+    }
+    return true;
+  }
+  const prev = gameState.levels[levelId - 1];
+  return prev && prev.stars >= 1;
+}
+
+function renderMap() {
+  const map = document.getElementById('map');
+  map.innerHTML = '';
+
+  LEVELS.forEach(level => {
+    const prog = gameState.levels[level.id];
+    const unlocked = isUnlocked(level.id);
+    const completed = prog && prog.stars >= 1;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'level';
+
+    const node = document.createElement('div');
+    node.className = 'level-node';
+    if (!unlocked) node.classList.add('locked');
+    else if (completed) node.classList.add('completed');
+    else node.classList.add('unlocked');
+    if (level.boss) node.classList.add('boss');
+
+    const stars = prog ? prog.stars : 0;
+
+    node.innerHTML = `
+      <div class="level-num">第 ${level.id} 站</div>
+      <div class="emoji">${level.emoji}</div>
+      <div class="title">${level.title}</div>
+      <div class="sub">${level.subtitle}</div>
+      <div class="difficulty">${level.difficulty}</div>
+      ${unlocked ? `
+        <div class="stars">
+          <span class="star ${stars >= 1 ? 'earned' : ''}">⭐</span>
+          <span class="star ${stars >= 2 ? 'earned' : ''}">⭐</span>
+          <span class="star ${stars >= 3 ? 'earned' : ''}">⭐</span>
+        </div>
+      ` : '<div class="lock-icon">🔒</div>'}
+    `;
+
+    node.onclick = () => {
+      if (!unlocked) {
+        if (level.boss) {
+          showToast('🔒 1-4 站每站至少 2 ⭐ 先解鎖 Boss！');
+        } else {
+          showToast('🔒 過咗前一站先得！');
+        }
+        return;
+      }
+      startLevel(level);
+    };
+
+    wrap.appendChild(node);
+    map.appendChild(wrap);
+  });
+}
+
+function updateStats() {
+  let completed = 0;
+  let totalStars = 0;
+  LEVELS.forEach(level => {
+    const prog = gameState.levels[level.id];
+    if (prog && prog.stars >= 1) completed++;
+    if (prog) totalStars += prog.stars;
+  });
+  document.getElementById('stats-levels').textContent = `${completed}/${LEVELS.length}`;
+  document.getElementById('stats-stars').textContent = totalStars;
+  const pct = Math.round((completed / LEVELS.length) * 100);
+  document.getElementById('stats-progress').textContent = pct + '%';
+}
+
+// Toast
+let toastTimer;
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+// Speech
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  englishVoice = voices.find(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female')) ||
+                 voices.find(v => v.lang === 'en-GB') ||
+                 voices.find(v => v.lang.startsWith('en-')) ||
+                 voices[0];
+}
+if (typeof speechSynthesis !== 'undefined') {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+function speak(text, speed = 0.3) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = speed;
+  u.pitch = 1;
+  u.volume = 1;
+  if (englishVoice) u.voice = englishVoice;
+  u.lang = 'en-GB';
+  speechSynthesis.speak(u);
+}
+function speakQuestion(speed = 0.3) {
+  const q = currentQuestions[currentQIndex];
+  if (q && q.audio) speak(q.audio, speed);
+}
+
+// ================================================================
+// GAME FLOW
+// ================================================================
+function startLevel(level) {
+  currentLevel = level;
+  currentQuestions = buildQuestions(level);
+  currentQIndex = 0;
+  currentScore = 0;
+  currentWrong = 0;
+
+  document.getElementById('question-view').style.display = 'flex';
+  document.getElementById('result-view').style.display = 'none';
+  document.getElementById('game-title').textContent = `${level.emoji} ${level.title}`;
+
+  const card = document.getElementById('question-card');
+  card.classList.toggle('boss-card', !!level.boss);
+
+  document.getElementById('game-modal').classList.add('open');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = currentQuestions[currentQIndex];
+  if (!q) return;
+  answered = false;
+
+  // Badge
+  const badge = document.getElementById('q-type-badge');
+  badge.className = 'q-type-badge ' + (q.badgeClass || '');
+  badge.textContent = q.badge;
+
+  // Prompt
+  document.getElementById('q-prompt').textContent = q.prompt;
+
+  // Content
+  document.getElementById('q-content').innerHTML = q.content.replace('___', '<span class="blank">___</span>');
+
+  // Context
+  const ctxEl = document.getElementById('q-context');
+  ctxEl.textContent = q.context || '';
+  ctxEl.style.display = q.context ? '' : 'none';
+
+  // Audio row
+  const audioRow = document.getElementById('q-audio-row');
+  if (q.hideAudioInitial) {
+    audioRow.style.display = 'none';
+  } else {
+    audioRow.style.display = '';
+  }
+
+  // Score / progress
+  document.getElementById('score-display').textContent = currentScore;
+  const pct = (currentQIndex / currentQuestions.length) * 100;
+  document.getElementById('game-progress-fill').style.width = pct + '%';
+
+  // Choices
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  const letters = ['A', 'B', 'C'];
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="letter">${letters[i]}</span><span class="text">${choice}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    choicesEl.appendChild(btn);
+  });
+
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('next-q-btn').style.display = 'none';
+
+  // Auto-play for listen type
+  if (q.autoplay) {
+    setTimeout(() => speak(q.audio), 400);
+  } else if (!q.hideAudioInitial && q.audio && q.type !== 'reverse') {
+    setTimeout(() => speak(q.audio), 400);
+  }
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = currentQuestions[currentQIndex];
+  const correct = q.correct;
+  const buttons = document.querySelectorAll('.choice-btn');
+  buttons.forEach((btn, i) => {
+    btn.classList.add('disabled');
+    if (i === correct) btn.classList.add('correct');
+    else if (i === idx) btn.classList.add('wrong');
+    else btn.classList.add('dimmed');
+  });
+
+  // Reveal hidden content (listen type)
+  if (q.revealContent) {
+    document.getElementById('q-content').innerHTML = q.revealContent;
+  }
+
+  // Show audio row if was hidden
+  if (q.hideAudioInitial) {
+    document.getElementById('q-audio-row').style.display = '';
+  }
+
+  const feedback = document.getElementById('feedback');
+  if (idx === correct) {
+    currentScore++;
+    feedback.textContent = '✓ 答啱！👍';
+    feedback.className = 'feedback good';
+  } else {
+    currentWrong++;
+    feedback.textContent = `✗ 啱嘅係：${q.choices[correct]}`;
+    feedback.className = 'feedback bad';
+  }
+
+  document.getElementById('score-display').textContent = currentScore;
+
+  // Play audio after answer
+  setTimeout(() => {
+    if (q.revealAfter) speak(q.revealAfter);
+    else if (q.audio) speak(q.audio);
+  }, 400);
+
+  document.getElementById('next-q-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+  currentQIndex++;
+  if (currentQIndex >= currentQuestions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function computeStars(score, total) {
+  const pct = score / total;
+  if (pct >= 0.9) return 3;
+  if (pct >= 0.7) return 2;
+  if (pct >= 0.5) return 1;
+  return 0;
+}
+
+function showResult() {
+  document.getElementById('game-progress-fill').style.width = '100%';
+
+  const total = currentQuestions.length;
+  const stars = computeStars(currentScore, total);
+
+  const existing = gameState.levels[currentLevel.id];
+  const maxStars = Math.max(stars, existing ? existing.stars : 0);
+  gameState.levels[currentLevel.id] = { stars: maxStars, played: true };
+  saveProgress();
+
+  document.getElementById('question-view').style.display = 'none';
+  document.getElementById('result-view').style.display = 'flex';
+
+  const emojis = ['😅', '🥾', '⛰️', '🏔️'];
+  const titles = ['差少少！', '過站啦！', '登得好高！', '登頂！'];
+  const subs = [
+    '滑落山腳啦 — 再試一次！',
+    `你答啱 ${currentScore} / ${total} 題 👍`,
+    `你答啱 ${currentScore} / ${total} 題 🌟`,
+    currentLevel.boss ? '完美登頂！你已經畢業 🎉' : `全部答啱！你勁到爆 🎉`
+  ];
+  document.getElementById('result-emoji').textContent = currentLevel.boss && stars === 3 ? '🏆' : emojis[stars];
+  document.getElementById('result-title').textContent = currentLevel.boss && stars >= 1 ? '登頂成功！🏔️' : titles[stars];
+  document.getElementById('result-subtitle').textContent = subs[stars];
+  document.getElementById('result-good').textContent = currentScore;
+  document.getElementById('result-bad').textContent = currentWrong;
+
+  document.querySelectorAll('.result-stars .star').forEach((el, i) => {
+    el.classList.remove('earned');
+    if (i < stars) {
+      setTimeout(() => el.classList.add('earned'), 100);
+    }
+  });
+
+  const nextBtn = document.getElementById('next-level-btn');
+  const nextLevel = LEVELS[currentLevel.id];
+  if (stars === 0) {
+    nextBtn.textContent = '再試一次';
+    nextBtn.onclick = retryLevel;
+  } else if (nextLevel && isUnlocked(nextLevel.id)) {
+    nextBtn.textContent = '下一站 →';
+    nextBtn.onclick = () => { closeGame(); setTimeout(() => startLevel(nextLevel), 300); };
+  } else {
+    nextBtn.textContent = '返回地圖';
+    nextBtn.onclick = closeGame;
+  }
+}
+
+function retryLevel() {
+  if (currentLevel) startLevel(currentLevel);
+}
+
+function closeGame() {
+  document.getElementById('game-modal').classList.remove('open');
+  speechSynthesis.cancel();
+  renderMap();
+  updateStats();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeGame();
+});
+
+// ================================================================
+// INIT
+// ================================================================
+renderMap();
+updateStats();
+</script>
+
+</body>
+</html>

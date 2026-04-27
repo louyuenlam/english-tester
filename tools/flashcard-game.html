@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf6ef">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23faf6ef'/><text x='50' y='70' text-anchor='middle' font-size='58'>🌲</text></svg>">
+<title>套語森林 · Hannah's English Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Noto+Sans+HK:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f2ebdc;
+    --paper: #fffdf7;
+    --ink: #2a2420;
+    --ink-soft: #4a3f38;
+    --terra: #c86b4a;
+    --terra-dark: #a8512f;
+    --sage: #7a8471;
+    --sage-dark: #5a6451;
+    --gold: #c9a84c;
+    --gold-dark: #a88828;
+    --blue: #5a7a8b;
+    --blue-dark: #3d5a6a;
+    --shadow: rgba(58, 40, 28, 0.12);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    min-height: 100%;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  body {
+    font-family: 'Noto Sans HK', 'Fraunces', serif;
+    background:
+      radial-gradient(ellipse at top, rgba(122, 132, 113, 0.12), transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(201, 168, 76, 0.1), transparent 60%),
+      var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(20px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 115, 85, 0.015) 0 1px, transparent 1px 4px);
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============ HEADER ============ */
+  .game-header {
+    text-align: center;
+    padding: 10px 0 18px;
+    position: relative;
+  }
+  .back-btn {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    background: var(--paper);
+    border: 1.5px solid var(--cream-dark);
+    color: var(--ink-soft);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  .back-btn:active { background: var(--cream); }
+
+  .game-header .ornament {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin-bottom: 6px;
+  }
+  .game-header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .game-header .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+
+  /* ============ OVERALL PROGRESS ============ */
+  .overall-stats {
+    background: var(--paper);
+    border: 2px solid var(--cream-dark);
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 2px 0 var(--cream-dark);
+  }
+  .stat {
+    text-align: center;
+    flex: 1;
+  }
+  .stat .num {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--terra-dark);
+    display: block;
+    line-height: 1.1;
+  }
+  .stat .lbl {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+  .stat-divider {
+    width: 1px;
+    height: 30px;
+    background: var(--cream-dark);
+  }
+
+  /* ============ LEVEL MAP ============ */
+  .map {
+    position: relative;
+    padding: 20px 0 40px;
+  }
+
+  /* Decorative path (SVG background) */
+  .map::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 40px;
+    bottom: 40px;
+    width: 4px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--cream-dark) 0 10px,
+      transparent 10px 20px
+    );
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  .level {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+  }
+  .level:nth-child(odd) { justify-content: flex-start; padding-left: 8%; }
+  .level:nth-child(even) { justify-content: flex-end; padding-right: 8%; }
+
+  .level-node {
+    background: var(--paper);
+    border: 3px solid var(--cream-dark);
+    border-radius: 22px;
+    padding: 16px;
+    width: 200px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.3, 0.85, 0.4, 1);
+    box-shadow: 0 3px 0 var(--cream-dark);
+    position: relative;
+    text-align: center;
+  }
+  .level-node:not(.locked):hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 12px var(--shadow), 0 3px 0 var(--cream-dark);
+  }
+  .level-node:not(.locked):active {
+    transform: translateY(0);
+  }
+
+  .level-node.locked {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: var(--cream-dark);
+  }
+  .level-node.locked .emoji { filter: grayscale(1); }
+
+  .level-node.completed { border-color: var(--sage); }
+  .level-node.unlocked { border-color: var(--gold); }
+  .level-node.boss { 
+    border-color: var(--terra);
+    background: linear-gradient(135deg, var(--paper), #fff4ee);
+  }
+  .level-node.boss.locked {
+    background: var(--cream-dark);
+  }
+
+  .level-node .level-num {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+  .level-node.completed .level-num { background: var(--sage); }
+  .level-node.boss .level-num { background: var(--terra); }
+  .level-node.locked .level-num { background: var(--ink-soft); }
+
+  .level-node .emoji {
+    font-size: 42px;
+    margin: 6px 0 8px;
+    line-height: 1;
+  }
+  .level-node .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .level-node .sub {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .stars {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    font-size: 16px;
+    margin-top: 2px;
+  }
+  .stars .star {
+    filter: grayscale(1) opacity(0.3);
+    transition: all 0.3s ease;
+  }
+  .stars .star.earned {
+    filter: none;
+    animation: starPop 0.4s ease;
+  }
+  @keyframes starPop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+
+  .lock-icon {
+    font-size: 18px;
+    margin-top: 4px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ GAME MODAL ============ */
+  .game-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 36, 32, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .game-modal.open { display: flex; }
+
+  .game-sheet {
+    background: var(--paper);
+    width: 100%;
+    max-width: 480px;
+    max-height: 92vh;
+    border-radius: 24px;
+    overflow-y: auto;
+    padding: 20px;
+    animation: zoomIn 0.3s cubic-bezier(0.3, 0.85, 0.4, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+  }
+  @keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .game-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .game-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--ink);
+  }
+  .close-game {
+    background: var(--cream);
+    border: none;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+  .close-game:active { background: var(--cream-dark); }
+
+  .game-progress-bar {
+    height: 8px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .game-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--gold));
+    transition: width 0.4s ease;
+    border-radius: 4px;
+  }
+
+  /* ============ FLASHCARD ============ */
+  .flashcard-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card {
+    background: linear-gradient(135deg, var(--paper), var(--cream));
+    border: 2.5px solid var(--cream-dark);
+    border-radius: 20px;
+    padding: 30px 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 0 var(--cream-dark);
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+  }
+  .card.boss-card {
+    background: linear-gradient(135deg, #fff4ee, var(--paper));
+    border-color: var(--terra);
+  }
+
+  .card .card-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--terra-dark);
+  }
+
+  .card .english {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .card .chinese {
+    font-size: 18px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    min-height: 28px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .card.revealed .chinese { opacity: 1; }
+
+  .card .hidden-prompt {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    min-height: 28px;
+    transition: opacity 0.3s ease;
+  }
+  .card.revealed .hidden-prompt { opacity: 0; height: 0; min-height: 0; margin: 0; }
+
+  .card-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .audio-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+  }
+  .audio-btn:active { background: var(--blue-dark); }
+  .audio-btn.slow { background: var(--gold); }
+  .audio-btn.slow:active { background: var(--gold-dark); }
+
+  .reveal-btn {
+    background: var(--terra);
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 52px;
+    margin-bottom: 12px;
+  }
+  .reveal-btn:active { background: var(--terra-dark); }
+
+  .rating-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .rating-btn {
+    padding: 14px 10px;
+    border: 2px solid var(--cream-dark);
+    background: var(--paper);
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-height: 70px;
+    transition: all 0.15s ease;
+  }
+  .rating-btn .emoji { font-size: 24px; }
+  .rating-btn.good { border-color: var(--sage); color: var(--sage-dark); }
+  .rating-btn.good:active { background: #eef3e8; }
+  .rating-btn.again { border-color: var(--terra); color: var(--terra-dark); }
+  .rating-btn.again:active { background: #faeee8; }
+
+  /* ============ RESULT SCREEN ============ */
+  .result-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 0;
+  }
+  .result-emoji {
+    font-size: 72px;
+    margin-bottom: 12px;
+    animation: bounce 0.6s ease;
+  }
+  @keyframes bounce {
+    0% { transform: scale(0) rotate(-180deg); }
+    60% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+  .result-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .result-subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .result-stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 44px;
+    margin-bottom: 18px;
+  }
+  .result-stars .star {
+    filter: grayscale(1) opacity(0.25);
+    transition: filter 0.4s ease, transform 0.4s ease;
+  }
+  .result-stars .star.earned {
+    filter: none;
+    animation: starPop 0.6s ease;
+  }
+  .result-stars .star:nth-child(1).earned { animation-delay: 0.2s; animation-fill-mode: backwards; }
+  .result-stars .star:nth-child(2).earned { animation-delay: 0.5s; animation-fill-mode: backwards; }
+  .result-stars .star:nth-child(3).earned { animation-delay: 0.8s; animation-fill-mode: backwards; }
+
+  .result-stats {
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-around;
+  }
+  .result-stat { text-align: center; }
+  .result-stat .v {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    display: block;
+  }
+  .result-stat .l {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .result-stat .v.good { color: var(--sage-dark); }
+  .result-stat .v.again { color: var(--terra-dark); }
+
+  .result-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .result-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    min-height: 50px;
+  }
+  .result-btn.primary {
+    background: var(--terra);
+    color: white;
+  }
+  .result-btn.primary:active { background: var(--terra-dark); }
+  .result-btn.secondary {
+    background: var(--cream);
+    color: var(--ink);
+  }
+  .result-btn.secondary:active { background: var(--cream-dark); }
+
+  /* ============ FOOTER ============ */
+  .map-footer {
+    text-align: center;
+    padding: 20px 0;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+  }
+
+  /* Reset progress button */
+  .reset-btn {
+    background: transparent;
+    border: 1px dashed var(--cream-dark);
+    color: var(--ink-soft);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .reset-btn:active { background: var(--cream); }
+
+  /* Toast for locked levels */
+  .toast {
+    position: fixed;
+    bottom: calc(30px + var(--safe-bottom));
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-size: 14px;
+    z-index: 200;
+    transition: transform 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (min-width: 480px) {
+    .level-node { width: 240px; }
+    .game-header h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="game-header">
+    <a class="back-btn" href="../index.html" aria-label="返回主頁">←</a>
+    <div class="ornament">· · ·</div>
+    <h1>套語森林 🌲</h1>
+    <div class="subtitle">Hannah's English Journey</div>
+  </div>
+
+  <!-- Overall stats -->
+  <div class="overall-stats">
+    <div class="stat">
+      <span class="num" id="stats-levels">0/8</span>
+      <span class="lbl">過關</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="num" id="stats-stars">0</span>
+      <span class="lbl">⭐ 星</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="num" id="stats-progress">0%</span>
+      <span class="lbl">完成度</span>
+    </div>
+  </div>
+
+  <!-- Level map -->
+  <div class="map" id="map"></div>
+
+  <div class="map-footer">
+    🗺️ 每關過關（至少 1 星）解鎖下一關
+    <br>
+    <button class="reset-btn" onclick="resetProgress()">🔄 重新開始</button>
+  </div>
+
+</div>
+
+<!-- Game modal -->
+<div class="game-modal" id="game-modal">
+  <div class="game-sheet">
+    <div class="game-header-inner">
+      <div class="game-title" id="game-title">關卡</div>
+      <button class="close-game" onclick="closeGame()">✕</button>
+    </div>
+    <div class="game-progress-bar">
+      <div class="game-progress-fill" id="game-progress-fill" style="width: 0%;"></div>
+    </div>
+
+    <!-- Flashcard view -->
+    <div class="flashcard-view" id="flashcard-view">
+      <div class="card" id="card">
+        <div class="card-num" id="card-num">第 1 張 / 5</div>
+        <div class="english" id="card-english">Hello!</div>
+        <div class="hidden-prompt" id="card-prompt">諗諗中文意思...</div>
+        <div class="chinese" id="card-chinese">你好！</div>
+      </div>
+
+      <div class="card-controls">
+        <button class="audio-btn" onclick="speakCard()">▶️ 聽</button>
+        <button class="audio-btn slow" onclick="speakCard(0.2)">🐢 極慢</button>
+      </div>
+
+      <button class="reveal-btn" id="reveal-btn" onclick="revealCard()">揭開中文答案</button>
+
+      <div class="rating-buttons" id="rating-buttons" style="display: none;">
+        <button class="rating-btn again" onclick="rate('again')">
+          <span class="emoji">🔁</span>
+          <span>再練</span>
+        </button>
+        <button class="rating-btn good" onclick="rate('good')">
+          <span class="emoji">✓</span>
+          <span>識</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Result view (hidden initially) -->
+    <div class="result-screen" id="result-view" style="display: none;">
+      <div class="result-emoji" id="result-emoji">🎉</div>
+      <div class="result-title" id="result-title">過關！</div>
+      <div class="result-subtitle" id="result-subtitle">你好叻！</div>
+
+      <div class="result-stars">
+        <span class="star" data-star="1">⭐</span>
+        <span class="star" data-star="2">⭐</span>
+        <span class="star" data-star="3">⭐</span>
+      </div>
+
+      <div class="result-stats">
+        <div class="result-stat">
+          <span class="v good" id="result-good">0</span>
+          <span class="l">✓ 識</span>
+        </div>
+        <div class="result-stat">
+          <span class="v again" id="result-again">0</span>
+          <span class="l">🔁 再練</span>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="result-btn secondary" onclick="retryLevel()">🔄 重玩</button>
+        <button class="result-btn primary" onclick="closeGame()" id="next-btn">下一關 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">🔒 完成前一關先！</div>
+
+<script>
+// ================================================================
+// LEVELS DATA
+// ================================================================
+const LEVELS = [
+  {
+    id: 1,
+    title: '介紹自己',
+    subtitle: 'Lesson 1',
+    emoji: '🌱',
+    cards: [
+      { en: 'Hello!', zh: '你好！' },
+      { en: 'My name is Hannah.', zh: '我叫 Hannah。' },
+      { en: "I'm from Hong Kong.", zh: '我嚟自香港。' },
+      { en: 'I live in England.', zh: '我住喺英國。' },
+      { en: 'Nice to meet you.', zh: '好開心識到你。' }
+    ]
+  },
+  {
+    id: 2,
+    title: '打招呼',
+    subtitle: 'Lesson 2',
+    emoji: '👋',
+    cards: [
+      { en: 'Good morning!', zh: '早晨！' },
+      { en: 'Good afternoon!', zh: '下午好！' },
+      { en: 'Good evening!', zh: '晚上好！' },
+      { en: 'How are you?', zh: '你點呀？' },
+      { en: "I'm fine, thanks.", zh: '我幾好，多謝。' }
+    ]
+  },
+  {
+    id: 3,
+    title: '告別禮貌',
+    subtitle: 'Lesson 3',
+    emoji: '🙏',
+    cards: [
+      { en: 'Goodbye!', zh: '再見！' },
+      { en: 'See you later!', zh: '遲啲見！' },
+      { en: 'Thank you.', zh: '多謝。' },
+      { en: 'Excuse me.', zh: '唔好意思。' },
+      { en: "I'm sorry.", zh: '對唔住。' }
+    ]
+  },
+  {
+    id: 4,
+    title: '基本問題',
+    subtitle: 'Lesson 4',
+    emoji: '❓',
+    cards: [
+      { en: "What's your name?", zh: '你叫咩名？' },
+      { en: 'Where are you from?', zh: '你嚟自邊度？' },
+      { en: 'Where do you live?', zh: '你住邊？' },
+      { en: 'How old are you?', zh: '你幾大？' },
+      { en: 'Do you speak English?', zh: '你識講英文嗎？' }
+    ]
+  },
+  {
+    id: 5,
+    title: '購物入門',
+    subtitle: 'Lesson 6',
+    emoji: '🛍️',
+    cards: [
+      { en: 'How much is this?', zh: '呢個幾錢？' },
+      { en: 'Do you take cards?', zh: '收唔收 card？' },
+      { en: "I'll take this, please.", zh: '我要呢個，唔該。' },
+      { en: 'Can I have a bag, please?', zh: '可唔可以畀個袋我？' },
+      { en: "That's everything, thanks.", zh: '就咁多，唔該。' },
+      { en: 'Receipt, please.', zh: '唔該畀張單。' }
+    ]
+  },
+  {
+    id: 6,
+    title: 'Café 點嘢飲',
+    subtitle: 'Lesson 7',
+    emoji: '☕',
+    cards: [
+      { en: 'Can I get a coffee, please?', zh: '唔該俾我一杯咖啡。' },
+      { en: 'To stay.', zh: '堂食。' },
+      { en: 'Take away, please.', zh: '外賣，唔該。' },
+      { en: 'Medium, please.', zh: '中杯，唔該。' },
+      { en: 'With milk, please.', zh: '加奶，唔該。' },
+      { en: "No, that's all, thanks.", zh: '唔使，就咁，唔該。' },
+      { en: 'How long will it take?', zh: '要等幾耐？' }
+    ]
+  },
+  {
+    id: 7,
+    title: '綜合挑戰',
+    subtitle: '隨機 10 句',
+    emoji: '🌟',
+    mixed: true,
+    cardCount: 10
+  },
+  {
+    id: 8,
+    title: 'Boss 關',
+    subtitle: '純聽力 · 8 句',
+    emoji: '🏆',
+    boss: true,
+    mixed: true,
+    cardCount: 8,
+    requiresAllStars: 2  // must have 2+ stars in levels 1-6
+  }
+];
+
+// ================================================================
+// STATE
+// ================================================================
+const STORAGE_KEY = 'hannah_game_progress_v1';
+let gameState = loadProgress();
+let currentLevel = null;
+let currentCards = [];
+let currentCardIndex = 0;
+let currentStats = { good: 0, again: 0 };
+let englishVoice = null;
+
+// Load/save progress
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return { levels: {} };  // { 1: { stars: 2, played: true }, ... }
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+  } catch (e) { console.warn('Save failed:', e); }
+}
+
+function resetProgress() {
+  if (confirm('確認重新開始？之前嘅星星會消失！')) {
+    gameState = { levels: {} };
+    saveProgress();
+    renderMap();
+    updateStats();
+  }
+}
+
+// ================================================================
+// MAP RENDERING
+// ================================================================
+function isUnlocked(levelId) {
+  if (levelId === 1) return true;
+  const level = LEVELS[levelId - 1];
+  // Boss level: need all levels 1-6 to have 2+ stars
+  if (level && level.requiresAllStars) {
+    for (let i = 1; i <= 6; i++) {
+      if (!gameState.levels[i] || gameState.levels[i].stars < level.requiresAllStars) {
+        return false;
+      }
+    }
+    return true;
+  }
+  // Normal: need previous level to have 1+ star
+  const prev = gameState.levels[levelId - 1];
+  return prev && prev.stars >= 1;
+}
+
+function renderMap() {
+  const map = document.getElementById('map');
+  map.innerHTML = '';
+
+  LEVELS.forEach(level => {
+    const prog = gameState.levels[level.id];
+    const unlocked = isUnlocked(level.id);
+    const completed = prog && prog.stars >= 1;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'level';
+
+    const node = document.createElement('div');
+    node.className = 'level-node';
+    if (!unlocked) node.classList.add('locked');
+    else if (completed) node.classList.add('completed');
+    else node.classList.add('unlocked');
+    if (level.boss) node.classList.add('boss');
+
+    const stars = prog ? prog.stars : 0;
+
+    node.innerHTML = `
+      <div class="level-num">關卡 ${level.id}</div>
+      <div class="emoji">${level.emoji}</div>
+      <div class="title">${level.title}</div>
+      <div class="sub">${level.subtitle}</div>
+      ${unlocked ? `
+        <div class="stars">
+          <span class="star ${stars >= 1 ? 'earned' : ''}">⭐</span>
+          <span class="star ${stars >= 2 ? 'earned' : ''}">⭐</span>
+          <span class="star ${stars >= 3 ? 'earned' : ''}">⭐</span>
+        </div>
+      ` : '<div class="lock-icon">🔒</div>'}
+    `;
+
+    node.onclick = () => {
+      if (!unlocked) {
+        if (level.boss) {
+          showToast('🔒 1-6 關每關要至少 2 ⭐ 先解鎖 Boss 關！');
+        } else {
+          showToast('🔒 完成前一關先！');
+        }
+        return;
+      }
+      startLevel(level);
+    };
+
+    wrap.appendChild(node);
+    map.appendChild(wrap);
+  });
+}
+
+function updateStats() {
+  let completed = 0;
+  let totalStars = 0;
+  LEVELS.forEach(level => {
+    const prog = gameState.levels[level.id];
+    if (prog && prog.stars >= 1) completed++;
+    if (prog) totalStars += prog.stars;
+  });
+  document.getElementById('stats-levels').textContent = `${completed}/${LEVELS.length}`;
+  document.getElementById('stats-stars').textContent = totalStars;
+  const pct = Math.round((completed / LEVELS.length) * 100);
+  document.getElementById('stats-progress').textContent = pct + '%';
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+let toastTimer;
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+// ================================================================
+// SPEECH
+// ================================================================
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  englishVoice = voices.find(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female')) ||
+                 voices.find(v => v.lang === 'en-GB') ||
+                 voices.find(v => v.lang.startsWith('en-')) ||
+                 voices[0];
+}
+if (typeof speechSynthesis !== 'undefined') {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speak(text, speed = 0.3) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = speed;
+  u.pitch = 1;
+  u.volume = 1;
+  if (englishVoice) u.voice = englishVoice;
+  u.lang = 'en-GB';
+  speechSynthesis.speak(u);
+}
+
+function speakCard(speed = 0.3) {
+  if (currentCards[currentCardIndex]) {
+    speak(currentCards[currentCardIndex].en, speed);
+  }
+}
+
+// ================================================================
+// GAME FLOW
+// ================================================================
+function startLevel(level) {
+  currentLevel = level;
+  currentCards = buildCards(level);
+  currentCardIndex = 0;
+  currentStats = { good: 0, again: 0 };
+
+  // Show flashcard view
+  document.getElementById('flashcard-view').style.display = 'flex';
+  document.getElementById('result-view').style.display = 'none';
+  document.getElementById('game-title').textContent = `${level.emoji} ${level.title}`;
+
+  const card = document.getElementById('card');
+  card.classList.toggle('boss-card', !!level.boss);
+
+  document.getElementById('game-modal').classList.add('open');
+  renderCard();
+}
+
+function buildCards(level) {
+  if (level.mixed) {
+    // Collect all cards from levels 1-6
+    const pool = [];
+    for (let i = 1; i <= 6; i++) {
+      const lvl = LEVELS[i - 1];
+      if (lvl.cards) pool.push(...lvl.cards);
+    }
+    // Shuffle and take N
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, level.cardCount || 10);
+  }
+  return [...level.cards];
+}
+
+function renderCard() {
+  const card = currentCards[currentCardIndex];
+  if (!card) return;
+
+  const cardEl = document.getElementById('card');
+  cardEl.classList.remove('revealed');
+
+  document.getElementById('card-num').textContent = `第 ${currentCardIndex + 1} 張 / ${currentCards.length}`;
+
+  // Boss mode: hide English, play audio only
+  if (currentLevel.boss) {
+    document.getElementById('card-english').textContent = '🔊 聽聽睇...';
+    document.getElementById('card-english').style.fontSize = '30px';
+    document.getElementById('card-prompt').textContent = '聽完 → 諗中文';
+  } else {
+    document.getElementById('card-english').textContent = card.en;
+    document.getElementById('card-english').style.fontSize = '';
+    document.getElementById('card-prompt').textContent = '諗諗中文意思...';
+  }
+  document.getElementById('card-chinese').textContent = card.zh;
+
+  document.getElementById('reveal-btn').style.display = '';
+  document.getElementById('rating-buttons').style.display = 'none';
+
+  // Progress bar
+  const pct = ((currentCardIndex) / currentCards.length) * 100;
+  document.getElementById('game-progress-fill').style.width = pct + '%';
+
+  // Auto-play audio
+  setTimeout(() => speakCard(), 300);
+}
+
+function revealCard() {
+  const cardEl = document.getElementById('card');
+  cardEl.classList.add('revealed');
+
+  // Boss: reveal English too
+  if (currentLevel.boss) {
+    const card = currentCards[currentCardIndex];
+    document.getElementById('card-english').textContent = card.en;
+  }
+
+  document.getElementById('reveal-btn').style.display = 'none';
+  document.getElementById('rating-buttons').style.display = 'grid';
+}
+
+function rate(rating) {
+  currentStats[rating]++;
+  currentCardIndex++;
+
+  if (currentCardIndex >= currentCards.length) {
+    showResult();
+  } else {
+    renderCard();
+  }
+}
+
+function computeStars(good, total) {
+  const pct = good / total;
+  if (pct >= 0.9) return 3;
+  if (pct >= 0.7) return 2;
+  if (pct >= 0.5) return 1;
+  return 0;
+}
+
+function showResult() {
+  // Update progress bar to 100%
+  document.getElementById('game-progress-fill').style.width = '100%';
+
+  const total = currentCards.length;
+  const stars = computeStars(currentStats.good, total);
+
+  // Save to gameState (only keep max stars)
+  const existing = gameState.levels[currentLevel.id];
+  const maxStars = Math.max(stars, existing ? existing.stars : 0);
+  gameState.levels[currentLevel.id] = { stars: maxStars, played: true };
+  saveProgress();
+
+  // Show result screen
+  document.getElementById('flashcard-view').style.display = 'none';
+  document.getElementById('result-view').style.display = 'flex';
+
+  // Result content
+  const emojis = ['😅', '🙂', '😊', '🤩'];
+  const titles = ['差少少！', '過關啦！', '好叻！', '完美！'];
+  const subs = [
+    '多練幾次就得 💪',
+    `你識得 ${currentStats.good} / ${total} 句 👍`,
+    `你識得 ${currentStats.good} / ${total} 句 🌟`,
+    `全部都識！你勁到爆 🎉`
+  ];
+  document.getElementById('result-emoji').textContent = emojis[stars];
+  document.getElementById('result-title').textContent = titles[stars];
+  document.getElementById('result-subtitle').textContent = subs[stars];
+  document.getElementById('result-good').textContent = currentStats.good;
+  document.getElementById('result-again').textContent = currentStats.again;
+
+  // Animate stars (reset then add earned)
+  document.querySelectorAll('.result-stars .star').forEach((el, i) => {
+    el.classList.remove('earned');
+    if (i < stars) {
+      setTimeout(() => el.classList.add('earned'), 100);
+    }
+  });
+
+  // Next button behavior
+  const nextBtn = document.getElementById('next-btn');
+  const nextLevel = LEVELS[currentLevel.id];  // index = id (since array is 0-indexed, id starts at 1)
+  if (stars === 0) {
+    nextBtn.textContent = '再試一次';
+    nextBtn.onclick = retryLevel;
+  } else if (nextLevel && isUnlocked(nextLevel.id)) {
+    nextBtn.textContent = '下一關 →';
+    nextBtn.onclick = () => { closeGame(); setTimeout(() => startLevel(nextLevel), 300); };
+  } else {
+    nextBtn.textContent = '返回地圖';
+    nextBtn.onclick = closeGame;
+  }
+}
+
+function retryLevel() {
+  if (currentLevel) startLevel(currentLevel);
+}
+
+function closeGame() {
+  document.getElementById('game-modal').classList.remove('open');
+  speechSynthesis.cancel();
+  renderMap();
+  updateStats();
+}
+
+// ESC to close
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeGame();
+});
+
+// ================================================================
+// INIT
+// ================================================================
+renderMap();
+updateStats();
+</script>
+
+</body>
+</html>
