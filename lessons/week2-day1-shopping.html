@@ -789,11 +789,19 @@ function loadVoices() {
     voices.find(v => v.lang.startsWith('en-')) ||
     voices[0];
 
-  // Pick Hannah — prefer DIFFERENT female voice for variety
+  // Pick Hannah — prefer DIFFERENT iOS-local female voice for variety
+  // CRITICAL: hannahVoice must be high-quality, not just "any voice that's not emma"
   hannahVoice =
-    voices.find(v => v !== emmaVoice && isFemale(v) && isIosLocal(v) && v.lang.startsWith('en-')) ||
-    voices.find(v => v !== emmaVoice && isFemale(v) && !isGoogleCloud(v) && v.lang.startsWith('en-')) ||
-    voices.find(v => v !== emmaVoice && isFemale(v) && v.lang.startsWith('en-')) ||
+    // Tier 1: Different enhanced female (best case)
+    voices.find(v => v !== emmaVoice && isFemale(v) && isEnhanced(v) && v.lang.startsWith('en-')) ||
+    // Tier 2: Different iOS-local female with close-to-UK accent
+    voices.find(v => v !== emmaVoice && v.lang === 'en-IE' && isIosLocal(v)) ||  // Moira
+    voices.find(v => v !== emmaVoice && v.lang === 'en-AU' && isIosLocal(v)) ||  // Karen
+    voices.find(v => v !== emmaVoice && v.lang === 'en-ZA' && isIosLocal(v)) ||  // Tessa
+    voices.find(v => v !== emmaVoice && v.lang === 'en-GB' && isIosLocal(v)) ||
+    // Tier 3: Any iOS-local female (e.g. Samantha)
+    voices.find(v => v !== emmaVoice && v.lang.startsWith('en-') && isIosLocal(v)) ||
+    // Last resort: same as emma (better than picking a male/bad voice)
     emmaVoice;
 
   englishVoice = emmaVoice;
@@ -804,7 +812,9 @@ function loadVoices() {
                 'Enhanced:', isEnhanced(emmaVoice), 'iOS-local:', isIosLocal(emmaVoice));
   }
   if (hannahVoice) {
-    console.log('[Voice Hannah]', hannahVoice.name, '(' + hannahVoice.lang + ')');
+    console.log('[Voice Hannah]', hannahVoice.name, '(' + hannahVoice.lang + ')',
+                'Enhanced:', isEnhanced(hannahVoice), 'iOS-local:', isIosLocal(hannahVoice),
+                'Same as Emma:', hannahVoice === emmaVoice);
   }
 }
 if (typeof speechSynthesis !== 'undefined') {
