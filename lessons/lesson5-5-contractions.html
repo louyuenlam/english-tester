@@ -790,30 +790,59 @@ function loadVoices() {
   const FEMALE_NAMES = [
     // iOS / macOS
     'Samantha', 'Karen', 'Moira', 'Kate', 'Serena', 'Victoria', 'Tessa',
-    'Fiona', 'Veena', 'Allison', 'Ava', 'Susan', 'Zoe',
+    'Fiona', 'Veena', 'Allison', 'Ava', 'Susan', 'Zoe', 'Martha',
     // Google / Android
     'Google UK English Female', 'Google US English',
     // Microsoft Windows
-    'Hazel', 'Susan', 'Zira', 'Eva', 'Catherine',
+    'Hazel', 'Zira', 'Eva', 'Catherine',
     // Generic flags
     'Female', 'female'
   ];
 
+  // High-quality iOS local voice names (sound clearer than cloud voices)
+  const IOS_LOCAL_FEMALES = ['Samantha', 'Karen', 'Moira', 'Tessa', 'Kate', 'Serena', 'Fiona', 'Victoria', 'Martha'];
+
   function isFemale(voice) {
     if (!voice || !voice.name) return false;
-    const n = voice.name;
-    return FEMALE_NAMES.some(name => n.includes(name));
+    return FEMALE_NAMES.some(name => voice.name.includes(name));
+  }
+  function isEnhanced(voice) {
+    if (!voice || !voice.name) return false;
+    const n = voice.name.toLowerCase();
+    return n.includes('enhanced') || n.includes('premium') || n.includes('siri');
+  }
+  function isIosLocal(voice) {
+    if (!voice || !voice.name) return false;
+    return IOS_LOCAL_FEMALES.some(name => voice.name.includes(name));
+  }
+  function isGoogleCloud(voice) {
+    if (!voice || !voice.name) return false;
+    return voice.name.toLowerCase().startsWith('google');
   }
 
-  // Priority search (UK female first, then AU/IE close accent, then US, then fallback)
-  // Note: iOS default en-GB voice is often Daniel (male). We prefer en-AU Karen / en-IE Moira
-  // which sound closer to British than en-US Samantha
+  // PRIORITY: Enhanced/Premium > iOS local > Other female > Google cloud > Anything
+  // We deliberately rank Google cloud voices LAST among female voices because they
+  // sound less clear (compressed, streamed) than local iOS voices.
   englishVoice =
-    voices.find(v => v.lang === 'en-GB' && isFemale(v)) ||      // UK female (rare)
-    voices.find(v => v.lang === 'en-AU' && isFemale(v)) ||      // AU female (Karen) - close to UK
-    voices.find(v => v.lang === 'en-IE' && isFemale(v)) ||      // Irish female (Moira)
-    voices.find(v => v.lang === 'en-ZA' && isFemale(v)) ||      // SA female (Tessa)
-    voices.find(v => v.lang.startsWith('en-') && isFemale(v)) || // any English female
+    // Tier 1: Enhanced/Premium female voices (iOS Premium voices, "Siri" voices)
+    voices.find(v => isFemale(v) && isEnhanced(v) && (v.lang.startsWith('en-'))) ||
+
+    // Tier 2: iOS local female voices in close-to-UK accents
+    voices.find(v => v.lang === 'en-GB' && isIosLocal(v)) ||
+    voices.find(v => v.lang === 'en-IE' && isIosLocal(v)) ||  // Moira
+    voices.find(v => v.lang === 'en-AU' && isIosLocal(v)) ||  // Karen
+    voices.find(v => v.lang === 'en-ZA' && isIosLocal(v)) ||  // Tessa
+
+    // Tier 3: Any iOS local female voice (US/etc)
+    voices.find(v => v.lang.startsWith('en-') && isIosLocal(v)) ||
+
+    // Tier 4: Other English females (NOT Google cloud)
+    voices.find(v => v.lang.startsWith('en-') && isFemale(v) && !isGoogleCloud(v)) ||
+
+    // Tier 5: Google cloud female (last resort for female voice)
+    voices.find(v => v.lang.startsWith('en-') && isFemale(v)) ||
+
+    // Tier 6: Any UK / English voice
     voices.find(v => v.lang === 'en-GB') ||
     voices.find(v => v.lang.startsWith('en-')) ||
     voices[0];
@@ -823,7 +852,11 @@ function loadVoices() {
 
   // Console log for debugging
   if (englishVoice) {
-    console.log('[Voice selected]', englishVoice.name, '(' + englishVoice.lang + ')', 'Female:', window._voiceIsFemale);
+    console.log('[Voice selected]', englishVoice.name, '(' + englishVoice.lang + ')',
+                'Female:', window._voiceIsFemale,
+                '| Enhanced:', isEnhanced(englishVoice),
+                '| iOS local:', isIosLocal(englishVoice),
+                '| Google cloud:', isGoogleCloud(englishVoice));
   } else {
     console.log('[Voice selected] No voice available!');
   }
