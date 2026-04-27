@@ -778,14 +778,16 @@ function loadVoices() {
   }
 
   // Single voice — pick the best English female voice available
-  // PRIORITY: Enhanced/Premium > iOS local > Other female > Google cloud
+  // PRIORITY: Enhanced > en-GB local > en-AU Karen > en-IE Moira > en-ZA > others > cloud
+  // Note: Karen (en-AU) sounds closer to British English than Moira (en-IE Irish accent)
+  // which has rolled R's and different rhythm that's harder for A1 learners
   englishVoice =
     voices.find(v => isFemale(v) && isEnhanced(v) && v.lang.startsWith('en-')) ||
     voices.find(v => v.lang === 'en-GB' && isIosLocal(v)) ||
-    voices.find(v => v.lang === 'en-IE' && isIosLocal(v)) ||
-    voices.find(v => v.lang === 'en-AU' && isIosLocal(v)) ||
-    voices.find(v => v.lang === 'en-ZA' && isIosLocal(v)) ||
-    voices.find(v => v.lang.startsWith('en-') && isIosLocal(v)) ||
+    voices.find(v => v.lang === 'en-AU' && isIosLocal(v)) ||  // Karen — closer to UK
+    voices.find(v => v.lang === 'en-IE' && isIosLocal(v)) ||  // Moira — Irish accent
+    voices.find(v => v.lang === 'en-ZA' && isIosLocal(v)) ||  // Tessa — South African
+    voices.find(v => v.lang.startsWith('en-') && isIosLocal(v)) ||  // Samantha (US)
     voices.find(v => v.lang.startsWith('en-') && isFemale(v) && !isGoogleCloud(v)) ||
     voices.find(v => v.lang.startsWith('en-') && isFemale(v)) ||
     voices.find(v => v.lang === 'en-GB') ||
