@@ -522,13 +522,10 @@
     <div class="speed-panel">
       <div class="speed-label">🐢 聲音速度</div>
       <div class="speed-buttons">
-        <button class="speed-btn" data-speed="0.2" onclick="setSpeed(0.2, this)"><span class="rate">0.2x</span><span class="rate-label">極慢</span></button>
-        <button class="speed-btn active" data-speed="0.3" onclick="setSpeed(0.3, this)"><span class="rate">0.3x</span><span class="rate-label">好慢</span></button>
-        <button class="speed-btn" data-speed="0.4" onclick="setSpeed(0.4, this)"><span class="rate">0.4x</span><span class="rate-label">慢</span></button>
-        <button class="speed-btn" data-speed="0.6" onclick="setSpeed(0.6, this)"><span class="rate">0.6x</span><span class="rate-label">正常</span></button>
-        <button class="speed-btn" data-speed="0.7" onclick="setSpeed(0.7, this)"><span class="rate">0.7x</span><span class="rate-label">稍快</span></button>
-        <button class="speed-btn" data-speed="0.9" onclick="setSpeed(0.9, this)"><span class="rate">0.9x</span><span class="rate-label">較快</span></button>
-        <button class="speed-btn" data-speed="1.0" onclick="setSpeed(1.0, this)"><span class="rate">1.0x</span><span class="rate-label">原速</span></button>
+        <button class="speed-btn" data-speed="0.3" onclick="setSpeed(0.3, this)"><span class="rate">0.3x</span><span class="rate-label">極慢</span></button>
+        <button class="speed-btn" data-speed="0.5" onclick="setSpeed(0.5, this)"><span class="rate">0.5x</span><span class="rate-label">慢</span></button>
+        <button class="speed-btn active" data-speed="0.7" onclick="setSpeed(0.7, this)"><span class="rate">0.7x</span><span class="rate-label">稍慢</span></button>
+        <button class="speed-btn" data-speed="1.0" onclick="setSpeed(1.0, this)"><span class="rate">1.0x</span><span class="rate-label">正常</span></button>
       </div>
     </div>
   </aside>
@@ -832,6 +829,12 @@ function speak(text, rate, voiceKind) {
     u.lang = 'en-GB';
   }
   speechSynthesis.speak(u);
+}
+
+function setSpeed(speed, btn) {
+  currentSpeed = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 }
 
 // ============ FULL DIALOGUE TOGGLE ============
