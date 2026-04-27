@@ -58,8 +58,8 @@
     display: grid;
     grid-template-columns: var(--sidebar-w) 1fr;
     height: 100vh;
-    position: relative;
-    z-index: 2;
+    /* No position:relative or z-index here — would create a stacking context
+       that traps the sidebar's z-index below the backdrop on mobile */
   }
 
   .sidebar {
@@ -803,6 +803,35 @@ function loadVoices() {
   } else {
     console.log('[Voice] No voice available!');
   }
+
+  // Show voice info on page (debug indicator)
+  showVoiceIndicator(englishVoice);
+}
+
+function showVoiceIndicator(voice) {
+  let el = document.getElementById('voice-indicator');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'voice-indicator';
+    el.style.cssText = 'position: fixed; bottom: 8px; left: 8px; z-index: 999; background: rgba(42, 36, 32, 0.85); color: white; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-family: monospace; max-width: 240px; line-height: 1.4; cursor: pointer; -webkit-tap-highlight-color: transparent;';
+    el.title = '㩒一㩒收埋';
+    el.onclick = () => { el.style.display = 'none'; };
+    document.body.appendChild(el);
+  }
+  if (!voice) {
+    el.innerHTML = '⚠️ 冇 voice';
+    return;
+  }
+  const name = voice.name || '';
+  const nameLower = name.toLowerCase();
+  const isEnh = nameLower.includes('enhanced') || nameLower.includes('premium') || nameLower.includes('siri');
+  const isIos = ['Samantha', 'Karen', 'Moira', 'Tessa', 'Kate', 'Serena', 'Fiona', 'Victoria', 'Martha'].some(n => name.includes(n));
+  const isCloud = nameLower.startsWith('google');
+  const tags = [];
+  if (isEnh) tags.push('💎 Enhanced');
+  if (isIos) tags.push('📱 iOS');
+  if (isCloud) tags.push('☁️ Cloud');
+  el.innerHTML = `🎙️ <b>${name}</b><br>${voice.lang} · ${tags.join(' · ') || 'standard'}`;
 }
 if (typeof speechSynthesis !== 'undefined') {
   loadVoices();
@@ -823,11 +852,14 @@ function speak(text, rate, voiceKind) {
   } else {
     u.lang = 'en-GB';
   }
+  // DEBUG: log actual rate used
+  console.log('[speak]', 'rate=' + u.rate, 'currentSpeed=' + currentSpeed, 'text=' + text.substring(0, 30));
   speechSynthesis.speak(u);
 }
 
 function setSpeed(speed, btn) {
   currentSpeed = speed;
+  console.log('[setSpeed] currentSpeed now =', currentSpeed);
   document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 }
