@@ -263,6 +263,226 @@
     box-shadow: 0 0 0 2px var(--terra);
   }
 
+
+  /* ============ CLICKABLE WORDS ============ */
+  .word {
+    display: inline-block;
+    cursor: pointer;
+    padding: 1px 2px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .word:hover, .word:focus {
+    background: rgba(201, 168, 76, 0.25);
+    color: var(--terra);
+  }
+  .word.speaking {
+    background: var(--gold);
+    color: white;
+    transform: scale(1.08);
+  }
+
+  /* ============ INFO POPUP ============ */
+  .info-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: white;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 20px;
+    color: var(--blue-dark);
+    font-family: 'Noto Sans HK', serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 4px 0 14px;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
+    min-height: 36px;
+  }
+  .info-btn:hover, .info-btn:focus {
+    border-color: var(--blue);
+    background: rgba(90, 122, 139, 0.06);
+  }
+  .info-btn:active { transform: scale(0.96); }
+  .info-btn .icon { font-size: 16px; }
+
+  .info-btn-float {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    background: white;
+    border: 1.5px solid var(--cream-dark);
+    color: var(--blue-dark);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
+  }
+  .info-btn-float:hover, .info-btn-float:focus {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .info-btn-float:active { transform: scale(0.92); }
+
+  .step-content { position: relative; }
+
+  .info-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 36, 32, 0.55);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  .info-modal-backdrop.show {
+    display: flex;
+    animation: modalFadeIn 0.18s ease;
+  }
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .info-modal {
+    background: var(--paper);
+    border-radius: 18px;
+    padding: 22px 22px 18px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    position: relative;
+    animation: modalSlideUp 0.22s cubic-bezier(0.3, 0.85, 0.4, 1);
+  }
+  @keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .info-modal-header {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-right: 36px;
+    line-height: 1.3;
+  }
+  .info-modal-body {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .info-modal-body strong { color: var(--terra); }
+  .info-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .info-modal-ok {
+    margin-top: 16px;
+    width: 100%;
+    padding: 12px;
+    background: var(--terra);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-family: 'Noto Sans HK', serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .info-modal-ok:hover { background: var(--terra-dark); }
+
+  /* ============ CARD PAGINATION ============ */
+  .card-page-hidden { display: none !important; }
+
+  .card-pager {
+    margin: 18px 0 8px;
+    padding: 14px 12px;
+    background: var(--paper);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-pager-progress {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card-pager-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    transition: all 0.2s ease;
+  }
+  .card-pager-dot.active {
+    background: var(--terra);
+    transform: scale(1.3);
+  }
+  .card-pager-dot.completed { background: var(--gold); }
+  .card-pager-counter {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .card-pager-controls {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+  .card-pager-btn {
+    flex: 1;
+    padding: 12px 10px;
+    border: 1.5px solid var(--cream-dark);
+    background: white;
+    color: var(--ink);
+    border-radius: 10px;
+    font-family: 'Noto Sans HK', serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .card-pager-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .card-pager-btn.primary {
+    background: var(--terra);
+    border-color: var(--terra);
+    color: white;
+  }
+  .card-pager-btn.primary:hover:not(:disabled) {
+    background: var(--terra-dark);
+  }
+
 </style>
 </head>
 <body>
@@ -365,14 +585,14 @@
         <button class="play-btn blue" onclick="toggleFullDialogue()">🔊 聽全段對話</button>
 
         <div class="dialogue-card" style="margin-top: 14px;">
-          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">Hello! Can I help you?</div><div class="dialogue-zh">你好！需要幫手嗎？</div><button class="play-btn small" onclick="speak('Hello! Can I help you?', 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Hello! Can I help you?', 0.2, 'shop')">🐢 極慢</button></div></div>
-          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Hello! How much is this hot chocolate?</div><div class="dialogue-zh">你好！呢杯熱朱古力幾錢？</div><button class="play-btn small" onclick="speak('Hello! How much is this hot chocolate?', 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Hello! How much is this hot chocolate?', 0.2, 'you')">🐢 極慢</button></div></div>
-          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">It's two pounds fifty.</div><div class="dialogue-zh">兩鎊五（£2.50）。</div><button class="play-btn small" onclick="speak(`It's two pounds fifty.`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`It's two pounds fifty.`, 0.2, 'shop')">🐢 極慢</button></div></div>
-          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">OK, I'll take this, please. And one biscuit.</div><div class="dialogue-zh">好，我要呢個，唔該。仲要一塊餅。</div><button class="play-btn small" onclick="speak(`OK, I'll take this, please. And one biscuit.`, 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`OK, I'll take this, please. And one biscuit.`, 0.2, 'you')">🐢 極慢</button></div></div>
-          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">That's four pounds. Do you take cards?</div><div class="dialogue-zh">總共四鎊。收唔收 card？</div><button class="play-btn small" onclick="speak(`That's four pounds. Do you take cards?`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`That's four pounds. Do you take cards?`, 0.2, 'shop')">🐢 極慢</button></div></div>
-          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Yes. Can I have a bag, please?</div><div class="dialogue-zh">收。可唔可以畀個袋我，唔該？</div><button class="play-btn small" onclick="speak('Yes. Can I have a bag, please?', 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Yes. Can I have a bag, please?', 0.2, 'you')">🐢 極慢</button></div></div>
-          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">Sure. Here you are. Have a nice day!</div><div class="dialogue-zh">當然！畀你。祝你有美好一日！</div><button class="play-btn small" onclick="speak('Sure. Here you are. Have a nice day!', 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Sure. Here you are. Have a nice day!', 0.2, 'shop')">🐢 極慢</button></div></div>
-          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Thank you! You too!</div><div class="dialogue-zh">多謝！你都係！</div><button class="play-btn small" onclick="speak('Thank you! You too!', 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Thank you! You too!', 0.2, 'you')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">Hello! Can I help you?</div><div class="dialogue-zh">你好！需要幫手嗎？</div><button class="play-btn small" onclick="speak('Hello! Can I help you?', 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Hello! Can I help you?', 0.3, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Hello! How much is this hot chocolate?</div><div class="dialogue-zh">你好！呢杯熱朱古力幾錢？</div><button class="play-btn small" onclick="speak('Hello! How much is this hot chocolate?', 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Hello! How much is this hot chocolate?', 0.3, 'you')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">It's two pounds fifty.</div><div class="dialogue-zh">兩鎊五（£2.50）。</div><button class="play-btn small" onclick="speak(`It's two pounds fifty.`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`It's two pounds fifty.`, 0.3, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">OK, I'll take this, please. And one biscuit.</div><div class="dialogue-zh">好，我要呢個，唔該。仲要一塊餅。</div><button class="play-btn small" onclick="speak(`OK, I'll take this, please. And one biscuit.`, 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`OK, I'll take this, please. And one biscuit.`, 0.3, 'you')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">That's four pounds. Do you take cards?</div><div class="dialogue-zh">總共四鎊。收唔收 card？</div><button class="play-btn small" onclick="speak(`That's four pounds. Do you take cards?`, 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`That's four pounds. Do you take cards?`, 0.3, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Yes. Can I have a bag, please?</div><div class="dialogue-zh">收。可唔可以畀個袋我，唔該？</div><button class="play-btn small" onclick="speak('Yes. Can I have a bag, please?', 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Yes. Can I have a bag, please?', 0.3, 'you')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar shop">🏪</div><div class="dialogue-bubble"><div class="dialogue-text">Sure. Here you are. Have a nice day!</div><div class="dialogue-zh">當然！畀你。祝你有美好一日！</div><button class="play-btn small" onclick="speak('Sure. Here you are. Have a nice day!', 0.3, 'shop')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Sure. Here you are. Have a nice day!', 0.3, 'shop')">🐢 極慢</button></div></div>
+          <div class="dialogue-line"><div class="dialogue-avatar you">😊</div><div class="dialogue-bubble you"><div class="dialogue-text">Thank you! You too!</div><div class="dialogue-zh">多謝！你都係！</div><button class="play-btn small" onclick="speak('Thank you! You too!', 0.3, 'you')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Thank you! You too!', 0.3, 'you')">🐢 極慢</button></div></div>
         </div>
 
         <div class="teacher-note"><strong>👩‍🏫 注意：</strong>呢段對話只係 7 個 turn，但已經涵蓋哂買嘢嘅完整流程。下一步會逐句拆解，等你識點用！</div>
@@ -385,12 +605,12 @@
         <div class="card-sub">每句聽 2-3 次，跟住讀</div>
 
         <div class="phrases-list">
-          <div class="phrase-card"><div class="phrase-num">1</div><div class="phrase-en">How much is this?</div><div class="phrase-zh">呢個幾錢？</div><div class="phrase-context">📍 用喺：指住件貨問價錢</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('How much is this?')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('How much is this?', 0.2)">🐢 極慢</button></div></div>
-          <div class="phrase-card"><div class="phrase-num">2</div><div class="phrase-en">Do you take cards?</div><div class="phrase-zh">收唔收 card？</div><div class="phrase-context">📍 用喺：俾錢之前確認可以用 card</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('Do you take cards?')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Do you take cards?', 0.2)">🐢 極慢</button></div></div>
-          <div class="phrase-card"><div class="phrase-num">3</div><div class="phrase-en">I'll take this, please.</div><div class="phrase-zh">我要呢個，唔該。</div><div class="phrase-context">📍 用喺：決定買乜，遞俾店員</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`I'll take this, please.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'll take this, please.`, 0.2)">🐢 極慢</button></div></div>
-          <div class="phrase-card"><div class="phrase-num">4</div><div class="phrase-en">Can I have a bag, please?</div><div class="phrase-zh">可唔可以畀個袋我，唔該？</div><div class="phrase-context">📍 用喺：英國要袋通常要俾 5p-10p</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('Can I have a bag, please?')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Can I have a bag, please?', 0.2)">🐢 極慢</button></div></div>
-          <div class="phrase-card"><div class="phrase-num">5</div><div class="phrase-en">That's everything, thanks.</div><div class="phrase-zh">就咁多，唔該。</div><div class="phrase-context">📍 用喺：店員問「仲要其他嘢嗎？」嘅回應</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`That's everything, thanks.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`That's everything, thanks.`, 0.2)">🐢 極慢</button></div></div>
-          <div class="phrase-card"><div class="phrase-num">6</div><div class="phrase-en">Receipt, please.</div><div class="phrase-zh">唔該畀張單。</div><div class="phrase-context">📍 用喺：想要收據（讀 "ree-SEET"，silent "p"！）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('Receipt, please.')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Receipt, please.', 0.2)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">1</div><div class="phrase-en">How much is this?</div><div class="phrase-zh">呢個幾錢？</div><div class="phrase-context">📍 用喺：指住件貨問價錢</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('How much is this?')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('How much is this?', 0.3)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">2</div><div class="phrase-en">Do you take cards?</div><div class="phrase-zh">收唔收 card？</div><div class="phrase-context">📍 用喺：俾錢之前確認可以用 card</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('Do you take cards?')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Do you take cards?', 0.3)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">3</div><div class="phrase-en">I'll take this, please.</div><div class="phrase-zh">我要呢個，唔該。</div><div class="phrase-context">📍 用喺：決定買乜，遞俾店員</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`I'll take this, please.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`I'll take this, please.`, 0.3)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">4</div><div class="phrase-en">Can I have a bag, please?</div><div class="phrase-zh">可唔可以畀個袋我，唔該？</div><div class="phrase-context">📍 用喺：英國要袋通常要俾 5p-10p</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('Can I have a bag, please?')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Can I have a bag, please?', 0.3)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">5</div><div class="phrase-en">That's everything, thanks.</div><div class="phrase-zh">就咁多，唔該。</div><div class="phrase-context">📍 用喺：店員問「仲要其他嘢嗎？」嘅回應</div><div class="phrase-actions"><button class="play-btn small" onclick="speak(`That's everything, thanks.`)">▶️ 聽</button> <button class="play-btn small blue" onclick="speak(`That's everything, thanks.`, 0.3)">🐢 極慢</button></div></div>
+          <div class="phrase-card"><div class="phrase-num">6</div><div class="phrase-en">Receipt, please.</div><div class="phrase-zh">唔該畀張單。</div><div class="phrase-context">📍 用喺：想要收據（讀 "ree-SEET"，silent "p"！）</div><div class="phrase-actions"><button class="play-btn small" onclick="speak('Receipt, please.')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('Receipt, please.', 0.3)">🐢 極慢</button></div></div>
         </div>
 
         <div class="teacher-note"><strong>👩‍🏫 發音 tips：</strong><br>• "Receipt" 嘅 <strong>"p" 唔讀</strong>（讀 ree-SEET）<br>• 句尾加 "please" 令請求變得超有禮貌<br>• 英國店員通常會自己問你 "Would you like a bag?"，唔使你問都得</div>
@@ -406,12 +626,12 @@
 
         <div class="subsection-title">💷 常見價錢練習</div>
         <div class="money-grid">
-          <div class="money-card"><div class="price">£1</div><div class="price-en">one pound</div><div class="price-zh">一鎊</div><button class="play-btn small" onclick="speak('one pound')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('one pound', 0.2)">🐢 極慢</button></div>
-          <div class="money-card"><div class="price">£2.50</div><div class="price-en">two pounds fifty</div><div class="price-zh">兩鎊五</div><button class="play-btn small" onclick="speak('two pounds fifty')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('two pounds fifty', 0.2)">🐢 極慢</button></div>
-          <div class="money-card"><div class="price">£5</div><div class="price-en">five pounds</div><div class="price-zh">五鎊</div><button class="play-btn small" onclick="speak('five pounds')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('five pounds', 0.2)">🐢 極慢</button></div>
-          <div class="money-card"><div class="price">£10.99</div><div class="price-en">ten ninety-nine</div><div class="price-zh">十鎊九毫九</div><button class="play-btn small" onclick="speak('ten ninety-nine')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('ten ninety-nine', 0.2)">🐢 極慢</button></div>
-          <div class="money-card"><div class="price">50p</div><div class="price-en">fifty pence</div><div class="price-zh">五毫</div><button class="play-btn small" onclick="speak('fifty pence')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('fifty pence', 0.2)">🐢 極慢</button></div>
-          <div class="money-card"><div class="price">£20</div><div class="price-en">twenty pounds</div><div class="price-zh">廿鎊</div><button class="play-btn small" onclick="speak('twenty pounds')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('twenty pounds', 0.2)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">£1</div><div class="price-en">one pound</div><div class="price-zh">一鎊</div><button class="play-btn small" onclick="speak('one pound')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('one pound', 0.3)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">£2.50</div><div class="price-en">two pounds fifty</div><div class="price-zh">兩鎊五</div><button class="play-btn small" onclick="speak('two pounds fifty')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('two pounds fifty', 0.3)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">£5</div><div class="price-en">five pounds</div><div class="price-zh">五鎊</div><button class="play-btn small" onclick="speak('five pounds')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('five pounds', 0.3)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">£10.99</div><div class="price-en">ten ninety-nine</div><div class="price-zh">十鎊九毫九</div><button class="play-btn small" onclick="speak('ten ninety-nine')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('ten ninety-nine', 0.3)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">50p</div><div class="price-en">fifty pence</div><div class="price-zh">五毫</div><button class="play-btn small" onclick="speak('fifty pence')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('fifty pence', 0.3)">🐢 極慢</button></div>
+          <div class="money-card"><div class="price">£20</div><div class="price-en">twenty pounds</div><div class="price-zh">廿鎊</div><button class="play-btn small" onclick="speak('twenty pounds')">▶️ 聽</button> <button class="play-btn small blue" onclick="speak('twenty pounds', 0.3)">🐢 極慢</button></div>
         </div>
 
         <div class="callback">💡 <strong>小貼士：</strong>英國人講價錢通常會 skip "pounds"！例如「£3.20」會講 "<strong>three twenty</strong>"，唔講 "three pounds twenty"。聽到呢個 pattern 就明係價錢啦。</div>
@@ -428,27 +648,27 @@
         <div class="instruction"><strong>📋 點玩：</strong>每句店員講完，到你諗點答。先諗，再 㩒 "💡 提示" 睇建議答案，最後 㩒 ▶️ 對比讀音。</div>
 
         <div class="roleplay-card">
-          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">Hello! How can I help you today?</div><div class="what-zh">你好！今日我可以點幫你？</div><button class="play-btn small blue" onclick="speak('Hello! How can I help you today?')">▶️ 聽店員</button> <button class="play-btn small" onclick="speak('Hello! How can I help you today?', 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">Hello! How can I help you today?</div><div class="what-zh">你好！今日我可以點幫你？</div><button class="play-btn small blue" onclick="speak('Hello! How can I help you today?')">▶️ 聽店員</button> <button class="play-btn small" onclick="speak('Hello! How can I help you today?', 0.3)">🐢 極慢</button></div>
           <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint1">先諗：點問熱朱古力幾錢？</div><button class="play-btn small" onclick="showHint(1, 'Hello! How much is this hot chocolate?', '你好！呢杯熱朱古力幾錢？')">💡 提示</button></div>
         </div>
 
         <div class="roleplay-card">
-          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">It's two pounds fifty.</div><div class="what-zh">兩鎊五。</div><button class="play-btn small blue" onclick="speak(`It's two pounds fifty.`)">▶️ 聽店員</button> <button class="play-btn small" onclick="speak(`It's two pounds fifty.`, 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">It's two pounds fifty.</div><div class="what-zh">兩鎊五。</div><button class="play-btn small blue" onclick="speak(`It's two pounds fifty.`)">▶️ 聽店員</button> <button class="play-btn small" onclick="speak(`It's two pounds fifty.`, 0.3)">🐢 極慢</button></div>
           <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint2">你決定買 → 點講？</div><button class="play-btn small" onclick="showHint(2, `OK, I'll take this, please.`, '好，我要呢個，唔該。')">💡 提示</button></div>
         </div>
 
         <div class="roleplay-card">
-          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">Anything else?</div><div class="what-zh">仲要其他嘢嗎？</div><button class="play-btn small blue" onclick="speak('Anything else?')">▶️ 聽店員</button> <button class="play-btn small" onclick="speak('Anything else?', 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">Anything else?</div><div class="what-zh">仲要其他嘢嗎？</div><button class="play-btn small blue" onclick="speak('Anything else?')">▶️ 聽店員</button> <button class="play-btn small" onclick="speak('Anything else?', 0.3)">🐢 極慢</button></div>
           <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint3">已經夠晒 → 點答？</div><button class="play-btn small" onclick="showHint(3, `That's everything, thanks.`, '就咁多，唔該。')">💡 提示</button></div>
         </div>
 
         <div class="roleplay-card">
-          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">That's two pounds fifty. Do you take a bag?</div><div class="what-zh">總共兩鎊五。要袋嗎？</div><button class="play-btn small blue" onclick="speak(`That's two pounds fifty. Do you take a bag?`)">▶️ 聽店員</button> <button class="play-btn small" onclick="speak(`That's two pounds fifty. Do you take a bag?`, 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">That's two pounds fifty. Do you take a bag?</div><div class="what-zh">總共兩鎊五。要袋嗎？</div><button class="play-btn small blue" onclick="speak(`That's two pounds fifty. Do you take a bag?`)">▶️ 聽店員</button> <button class="play-btn small" onclick="speak(`That's two pounds fifty. Do you take a bag?`, 0.3)">🐢 極慢</button></div>
           <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint4">你想要袋 → 點問？</div><button class="play-btn small" onclick="showHint(4, 'Yes, can I have a bag, please?', '要，可唔可以畀個袋我，唔該？')">💡 提示</button></div>
         </div>
 
         <div class="roleplay-card">
-          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">Here you are. Have a nice day!</div><div class="what-zh">畀你。祝你有美好一日！</div><button class="play-btn small blue" onclick="speak('Here you are. Have a nice day!')">▶️ 聽店員</button> <button class="play-btn small" onclick="speak('Here you are. Have a nice day!', 0.2)">🐢 極慢</button></div>
+          <div class="roleplay-prompt"><div class="who">🏪 店員</div><div class="what">Here you are. Have a nice day!</div><div class="what-zh">畀你。祝你有美好一日！</div><button class="play-btn small blue" onclick="speak('Here you are. Have a nice day!')">▶️ 聽店員</button> <button class="play-btn small" onclick="speak('Here you are. Have a nice day!', 0.3)">🐢 極慢</button></div>
           <div class="roleplay-your-turn"><div class="label">👉 你嘅回應</div><div class="hint" id="hint5">點禮貌咁回應？</div><button class="play-btn small" onclick="showHint(5, 'Thank you! You too!', '多謝！你都係！')">💡 提示</button></div>
         </div>
 
@@ -505,7 +725,7 @@
 
 <script>
 let currentStep = 1;
-let currentSpeed = 0.3;
+let currentSpeed = 0.7;
 const completedSteps = new Set();
 const TOTAL_STEPS = 6;
 
@@ -527,24 +747,68 @@ let englishVoice = null; // default fallback (= emmaVoice)
 
 function loadVoices() {
   const voices = speechSynthesis.getVoices();
-  const ukFemale = voices.filter(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female'));
-  const ukAny = voices.filter(v => v.lang === 'en-GB');
-  const enFemale = voices.filter(v => v.lang.startsWith('en-') && v.name.toLowerCase().includes('female'));
-  const enAny = voices.filter(v => v.lang.startsWith('en-'));
 
-  const femalePool = [...ukFemale, ...enFemale];
-  const generalPool = [...ukAny, ...enAny, ...voices];
+  // Known female voice names across iOS / Android / Chrome / macOS / Windows
+  const FEMALE_NAMES = [
+    'Samantha', 'Karen', 'Moira', 'Kate', 'Serena', 'Victoria', 'Tessa',
+    'Fiona', 'Veena', 'Allison', 'Ava', 'Susan', 'Zoe', 'Martha',
+    'Google UK English Female', 'Google US English',
+    'Hazel', 'Zira', 'Eva', 'Catherine',
+    'Female', 'female'
+  ];
 
-  const seen = new Set();
-  const uniqueFemale = femalePool.filter(v => !seen.has(v.name) && seen.add(v.name));
-  const seen2 = new Set();
-  const uniqueGeneral = generalPool.filter(v => !seen2.has(v.name) && seen2.add(v.name));
+  // High-quality iOS local voice names (sound clearer than cloud voices)
+  const IOS_LOCAL_FEMALES = ['Samantha', 'Karen', 'Moira', 'Tessa', 'Kate', 'Serena', 'Fiona', 'Victoria', 'Martha'];
 
-  emmaVoice = uniqueFemale[0] || uniqueGeneral[0] || voices[0];
-  hannahVoice = uniqueFemale.find(v => v !== emmaVoice)
-             || uniqueGeneral.find(v => v !== emmaVoice)
-             || emmaVoice;
-  englishVoice = emmaVoice;  // default for flashcards / single-line speak
+  function isFemale(voice) {
+    if (!voice || !voice.name) return false;
+    return FEMALE_NAMES.some(name => voice.name.includes(name));
+  }
+  function isEnhanced(voice) {
+    if (!voice || !voice.name) return false;
+    const n = voice.name.toLowerCase();
+    return n.includes('enhanced') || n.includes('premium') || n.includes('siri');
+  }
+  function isIosLocal(voice) {
+    if (!voice || !voice.name) return false;
+    return IOS_LOCAL_FEMALES.some(name => voice.name.includes(name));
+  }
+  function isGoogleCloud(voice) {
+    if (!voice || !voice.name) return false;
+    return voice.name.toLowerCase().startsWith('google');
+  }
+
+  // Pick Emma (shop/other) — prefer enhanced > iOS local > female non-cloud > female cloud
+  emmaVoice =
+    voices.find(v => isFemale(v) && isEnhanced(v) && v.lang.startsWith('en-')) ||
+    voices.find(v => v.lang === 'en-GB' && isIosLocal(v)) ||
+    voices.find(v => v.lang === 'en-IE' && isIosLocal(v)) ||
+    voices.find(v => v.lang === 'en-AU' && isIosLocal(v)) ||
+    voices.find(v => v.lang === 'en-ZA' && isIosLocal(v)) ||
+    voices.find(v => v.lang.startsWith('en-') && isIosLocal(v)) ||
+    voices.find(v => v.lang.startsWith('en-') && isFemale(v) && !isGoogleCloud(v)) ||
+    voices.find(v => v.lang.startsWith('en-') && isFemale(v)) ||
+    voices.find(v => v.lang === 'en-GB') ||
+    voices.find(v => v.lang.startsWith('en-')) ||
+    voices[0];
+
+  // Pick Hannah — prefer DIFFERENT female voice for variety
+  hannahVoice =
+    voices.find(v => v !== emmaVoice && isFemale(v) && isIosLocal(v) && v.lang.startsWith('en-')) ||
+    voices.find(v => v !== emmaVoice && isFemale(v) && !isGoogleCloud(v) && v.lang.startsWith('en-')) ||
+    voices.find(v => v !== emmaVoice && isFemale(v) && v.lang.startsWith('en-')) ||
+    emmaVoice;
+
+  englishVoice = emmaVoice;
+  window._voiceIsFemale = emmaVoice ? isFemale(emmaVoice) : false;
+
+  if (emmaVoice) {
+    console.log('[Voice Emma]', emmaVoice.name, '(' + emmaVoice.lang + ')',
+                'Enhanced:', isEnhanced(emmaVoice), 'iOS-local:', isIosLocal(emmaVoice));
+  }
+  if (hannahVoice) {
+    console.log('[Voice Hannah]', hannahVoice.name, '(' + hannahVoice.lang + ')');
+  }
 }
 if (typeof speechSynthesis !== 'undefined') {
   loadVoices();
@@ -555,13 +819,18 @@ if (typeof speechSynthesis !== 'undefined') {
 function speak(text, rate, voiceKind) {
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.rate = rate || 0.3;
-  u.pitch = 1;
+  u.rate = rate || currentSpeed || 0.7;
+  u.pitch = window._voiceIsFemale ? 1.0 : 1.4;
   u.volume = 1;
-  u.lang = 'en-GB';
-  if (voiceKind === 'you') u.voice = hannahVoice;
-  else if (voiceKind === 'shop') u.voice = emmaVoice;
-  else u.voice = englishVoice;
+  let v = englishVoice;
+  if (voiceKind === 'you') v = hannahVoice;
+  else if (voiceKind === 'shop') v = emmaVoice;
+  if (v) {
+    u.voice = v;
+    u.lang = v.lang;
+  } else {
+    u.lang = 'en-GB';
+  }
   speechSynthesis.speak(u);
 }
 
@@ -741,6 +1010,230 @@ document.querySelectorAll('.step-btn').forEach(btn => {
 });
 
 goToStep(1);
+
+
+// ============ CLICKABLE WORDS ============
+function speakWord(word, spanEl) {
+  if (!word) return;
+  const cleanWord = word.replace(/[.,!?;:"'`]/g, '').trim();
+  if (!cleanWord) return;
+  speechSynthesis.cancel();
+  document.querySelectorAll('.word.speaking').forEach(el => el.classList.remove('speaking'));
+  if (spanEl) spanEl.classList.add('speaking');
+  const u = new SpeechSynthesisUtterance(cleanWord);
+  u.rate = 0.7;
+  u.pitch = window._voiceIsFemale ? 1.0 : 1.4;
+  u.volume = 1;
+  if (englishVoice) {
+    u.voice = englishVoice;
+    u.lang = englishVoice.lang;
+  } else {
+    u.lang = 'en-GB';
+  }
+  u.onend = () => { if (spanEl) spanEl.classList.remove('speaking'); };
+  speechSynthesis.speak(u);
+}
+
+const WORD_SELECTORS = [
+  '.dialogue-text',
+  '.phrase-en',
+  '.roleplay-prompt .what',
+  '.money-card .price-en',
+];
+
+function makeWordsClickable(rootEl) {
+  const root = rootEl || document;
+  WORD_SELECTORS.forEach(sel => {
+    root.querySelectorAll(sel).forEach(el => {
+      if (el.dataset.wordsDone === 'true') return;
+      const text = el.textContent;
+      if (!text || text.trim().length === 0) return;
+      if (!/[a-zA-Z]/.test(text)) return;
+      const words = text.split(/(\s+)/);
+      el.innerHTML = '';
+      words.forEach(token => {
+        if (/^\s+$/.test(token)) {
+          el.appendChild(document.createTextNode(token));
+        } else if (/[a-zA-Z]/.test(token)) {
+          const span = document.createElement('span');
+          span.className = 'word';
+          span.textContent = token;
+          span.addEventListener('click', function(e) {
+            e.stopPropagation();
+            speakWord(token, this);
+          });
+          el.appendChild(span);
+        } else {
+          el.appendChild(document.createTextNode(token));
+        }
+      });
+      el.dataset.wordsDone = 'true';
+    });
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => makeWordsClickable());
+setTimeout(() => makeWordsClickable(), 100);
+
+// ============ INFO POPUP MODAL ============
+function showInfoModal(title, htmlBody) {
+  let backdrop = document.getElementById('info-modal-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'info-modal-backdrop';
+    backdrop.className = 'info-modal-backdrop';
+    backdrop.innerHTML = `
+      <div class="info-modal" onclick="event.stopPropagation()">
+        <button class="info-modal-close" onclick="closeInfoModal()" aria-label="關閉">×</button>
+        <div class="info-modal-header" id="info-modal-title"></div>
+        <div class="info-modal-body" id="info-modal-body"></div>
+        <button class="info-modal-ok" onclick="closeInfoModal()">明白！</button>
+      </div>
+    `;
+    backdrop.addEventListener('click', closeInfoModal);
+    document.body.appendChild(backdrop);
+  }
+  document.getElementById('info-modal-title').innerHTML = title;
+  document.getElementById('info-modal-body').innerHTML = htmlBody;
+  backdrop.classList.add('show');
+}
+
+function closeInfoModal() {
+  const b = document.getElementById('info-modal-backdrop');
+  if (b) b.classList.remove('show');
+}
+
+function convertInlineBoxesToPopups() {
+  const boxTypes = [
+    { selector: '.instruction', buttonLabel: '點玩', buttonEmoji: '💡', buttonClass: 'info-btn', modalTitle: '💡 點玩' },
+    { selector: '.teacher-note', buttonLabel: '老師貼士', buttonEmoji: '👩‍🏫', buttonClass: 'info-btn-float', modalTitle: '👩‍🏫 老師貼士' },
+    { selector: '.callback', buttonLabel: '小貼士', buttonEmoji: '💡', buttonClass: 'info-btn-float', modalTitle: '💡 小貼士' },
+  ];
+  boxTypes.forEach(type => {
+    document.querySelectorAll(type.selector).forEach(box => {
+      if (box.dataset.converted === 'true') return;
+      if (box.classList.contains('keep-inline')) return;
+      const content = box.innerHTML;
+      const btn = document.createElement('button');
+      btn.className = type.buttonClass;
+      const safeContent = content.replace(/"/g, '&quot;');
+      btn.setAttribute('data-info-content', safeContent);
+      btn.setAttribute('data-info-title', type.modalTitle);
+      if (type.buttonClass === 'info-btn') {
+        btn.innerHTML = `<span class="icon">${type.buttonEmoji}</span> ${type.buttonLabel}`;
+      } else {
+        btn.innerHTML = 'ℹ️';
+        btn.setAttribute('aria-label', type.modalTitle);
+      }
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        showInfoModal(this.getAttribute('data-info-title'), this.getAttribute('data-info-content'));
+      });
+      if (type.buttonClass === 'info-btn-float') {
+        const step = box.closest('.step-content');
+        if (step) step.appendChild(btn);
+        box.remove();
+      } else {
+        box.parentNode.insertBefore(btn, box);
+        box.remove();
+      }
+    });
+  });
+}
+window.addEventListener('DOMContentLoaded', convertInlineBoxesToPopups);
+setTimeout(convertInlineBoxesToPopups, 200);
+
+// ============ CARD PAGINATION ============
+const paginators = {};
+
+function setupPagination(stepNum, cardSelector, label) {
+  const stepEl = document.querySelector(`.step-content[data-step="${stepNum}"]`);
+  if (!stepEl) return;
+  if (stepEl.dataset.paginatorSetup === 'true') return;
+  const cards = Array.from(stepEl.querySelectorAll(cardSelector));
+  if (cards.length <= 1) return;
+  const pager = document.createElement('div');
+  pager.className = 'card-pager';
+  pager.innerHTML = `
+    <div class="card-pager-progress" id="pager-${stepNum}-dots"></div>
+    <div class="card-pager-counter" id="pager-${stepNum}-counter">第 1 / ${cards.length} ${label || ''}</div>
+    <div class="card-pager-controls">
+      <button class="card-pager-btn" id="pager-${stepNum}-prev" onclick="pagerGo(${stepNum}, -1)">← 上一個</button>
+      <button class="card-pager-btn primary" id="pager-${stepNum}-next" onclick="pagerGo(${stepNum}, 1)">下一個 →</button>
+    </div>
+  `;
+  const teacherNoteOrEnd = stepEl.querySelector('.teacher-note') || stepEl.querySelector('.info-btn-float');
+  if (teacherNoteOrEnd) {
+    teacherNoteOrEnd.parentNode.insertBefore(pager, teacherNoteOrEnd);
+  } else {
+    stepEl.appendChild(pager);
+  }
+  const dotsEl = document.getElementById(`pager-${stepNum}-dots`);
+  cards.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'card-pager-dot' + (i === 0 ? ' active' : '');
+    dotsEl.appendChild(dot);
+  });
+  paginators[stepNum] = { cards, current: 0, label: label || '' };
+  stepEl.dataset.paginatorSetup = 'true';
+  pagerRender(stepNum);
+}
+
+function pagerRender(stepNum) {
+  const p = paginators[stepNum];
+  if (!p) return;
+  p.cards.forEach((card, i) => {
+    if (i === p.current) card.classList.remove('card-page-hidden');
+    else card.classList.add('card-page-hidden');
+  });
+  const dots = document.querySelectorAll(`#pager-${stepNum}-dots .card-pager-dot`);
+  dots.forEach((d, i) => {
+    d.classList.remove('active', 'completed');
+    if (i < p.current) d.classList.add('completed');
+    else if (i === p.current) d.classList.add('active');
+  });
+  const counter = document.getElementById(`pager-${stepNum}-counter`);
+  if (counter) counter.textContent = `第 ${p.current + 1} / ${p.cards.length} ${p.label}`;
+  const prevBtn = document.getElementById(`pager-${stepNum}-prev`);
+  const nextBtn = document.getElementById(`pager-${stepNum}-next`);
+  if (prevBtn) prevBtn.disabled = p.current === 0;
+  if (nextBtn) {
+    if (p.current === p.cards.length - 1) {
+      nextBtn.textContent = '✓ 全部完成';
+      nextBtn.disabled = true;
+    } else {
+      nextBtn.textContent = '下一個 →';
+      nextBtn.disabled = false;
+    }
+  }
+}
+
+function pagerGo(stepNum, delta) {
+  const p = paginators[stepNum];
+  if (!p) return;
+  const newIdx = p.current + delta;
+  if (newIdx < 0 || newIdx >= p.cards.length) return;
+  speechSynthesis.cancel();
+  p.current = newIdx;
+  pagerRender(stepNum);
+  const stepEl = document.querySelector(`.step-content[data-step="${stepNum}"]`);
+  if (stepEl) stepEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setupAllPaginators() {
+  // Step 2: dialogues (8 lines, paginate them as 1 line per page)
+  setupPagination(2, '.dialogue-line', '句對話');
+  // Step 3: phrase cards (6 phrases)
+  setupPagination(3, '.phrase-card', '句套語');
+  // Step 4: money/price cards (6 prices)
+  setupPagination(4, '.money-card', '個字詞');
+  // Step 5: roleplay cards (5 turns)
+  setupPagination(5, '.roleplay-card', '個練習');
+}
+window.addEventListener('DOMContentLoaded', setupAllPaginators);
+setTimeout(setupAllPaginators, 250);
+
 </script>
 
 </body>
